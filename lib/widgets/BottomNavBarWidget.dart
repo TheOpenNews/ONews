@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muslimnews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
+import 'package:anynews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
 
 class BottomNavBarWidget extends StatelessWidget {
   const BottomNavBarWidget({

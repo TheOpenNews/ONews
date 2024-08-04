@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muslimnews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
-import 'package:muslimnews/modules/NewsCard.dart';
-import 'package:muslimnews/widgets/BottomNavBarWidget.dart';
+import 'package:anynews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
+import 'package:anynews/modules/NewsCard.dart';
+import 'package:anynews/widgets/BottomNavBarWidget.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});

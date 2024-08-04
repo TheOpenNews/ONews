@@ -1,4 +1,4 @@
-name: muslimnews
+name: anynews
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -40,6 +40,9 @@ dependencies:
   flutter_bloc: ^8.1.6
   equatable: ^2.0.5
   url_launcher: ^6.3.0
+  flutter_downloader: ^1.11.8
+  permission_handler: ^11.3.1
+  android_package_installer: ^0.0.2
 
 dev_dependencies:
   flutter_test:

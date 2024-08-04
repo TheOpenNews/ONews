@@ -1,4 +1,4 @@
-package anynews.extension.Extension
+package anynews.extensions
 
 
 enum class NewsType {
@@ -8,14 +8,18 @@ enum class NewsType {
 }
 
 class NewsCard(
-    var date : String,
     var title: String,
+    var date : String,
     var imgURL: String,
     var link: String,
     ) {
+
+    override fun toString(): String {
+        return "NewsCard(title: $title, date: $date, link: ${link.substring(0,17)}...)"
+    }
 }
 
 
-abstract class Extension {
-    abstract fun loadNewsHeadlines(type : NewsType, count : Integer, page : Integer) : List<NewsCard>
+abstract class ExtensionAbstract {
+    abstract  fun loadNewsHeadlines(type : NewsType, count : Int, page : Int) : ArrayList<NewsCard>
 }

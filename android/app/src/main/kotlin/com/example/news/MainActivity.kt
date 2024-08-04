@@ -1,4 +1,4 @@
-package com.example.muslimnews
+package com.example.anynews
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;

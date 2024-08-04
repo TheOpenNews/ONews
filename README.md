@@ -1,4 +1,4 @@
-# muslimnews
+# anynews
 
 A new Flutter project.
 

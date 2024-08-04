@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:muslimnews/DxLoader.dart';
-import 'package:muslimnews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
-import 'package:muslimnews/blocs/Extensions/extensions_bloc.dart';
-import 'package:muslimnews/modules/ExtensionInfo.dart';
-import 'package:muslimnews/repos/ExtensionsRepo.dart';
-import 'package:muslimnews/widgets/BottomNavBarWidget.dart';
+import 'package:anynews/DxLoader.dart';
+import 'package:anynews/blocs/Extensions/extensions_bloc.dart';
+import 'package:anynews/modules/ExtensionInfo.dart';
+import 'package:anynews/repos/ExtensionsRepo.dart';
+import 'package:anynews/widgets/BottomNavBarWidget.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ExtensionsPage extends StatefulWidget {
@@ -17,7 +17,6 @@ class ExtensionsPage extends StatefulWidget {
   @override
   State<ExtensionsPage> createState() => _ExtensionsPageState();
 }
-
 class _ExtensionsPageState extends State<ExtensionsPage>
     with SingleTickerProviderStateMixin {
   late TabController tabController;
@@ -107,7 +106,6 @@ class DisplayExtensionsWidget extends StatelessWidget {
     );
   }
 }
-
 class ExtensionPreviewCardWidget extends StatelessWidget {
   ExtensionInfo info;
   ExtensionPreviewCardWidget({
@@ -172,12 +170,12 @@ class DownloadExtensionsWidget extends StatelessWidget {
   });
 
   void onClick() async {
-  File dexFile = await DxLoader.loadFileFromUrl(
-      "https://github.com/TheMuslimNews/MN-ExtensionHub/raw/master/s2jnews/s2jnews.dex", "5.dex");
-      debugPrint("klasdklasdjkasd");
-  await DxLoader.loadClass(dexFile, "Extension");
-  await DxLoader.callMethod("Extension", "main");
-}
+
+  }
+
+  void onPermission() async {
+    Permission.storage.request();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -185,6 +183,13 @@ class DownloadExtensionsWidget extends StatelessWidget {
       builder: (context, state) {
         return Column(
           children: [
+            ElevatedButton(
+              onPressed: () => onPermission(),
+              child: Text("Permission"),
+            ),
+            SizedBox(height: 16),
+
+
             ElevatedButton(
               onPressed: () => onClick(),
               child: Text("Download"),
@@ -254,10 +259,11 @@ class ExtensionDownloadCardWidget extends StatelessWidget {
             ],
           ),
           SizedBox(width: 20),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(onPressed: () {}, icon: Icon(Icons.download)),
+              IconButton(onPressed: () => context.read<ExtensionsBloc>().add(DownloadExtensionApk(info.apkURL)), icon: Icon(Icons.download)),
               IconButton(
                   onPressed: () async =>
                       await launchUrl(Uri.parse(info.siteURL)),
