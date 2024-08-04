@@ -53,9 +53,4 @@ class MuslimNews extends StatelessWidget {
   }
 }
 
-void onClick() async {
-  File dexFile = await DxLoader.loadFileFromUrl(
-      "https://github.com/t-88/dex-test/raw/master/classes.dex", "test.dex");
-  await DxLoader.loadClass(dexFile, "Dex__");
-  await DxLoader.callMethod("Dex__", "main");
-}
+

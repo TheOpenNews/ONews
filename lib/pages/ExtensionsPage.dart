@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:muslimnews/DxLoader.dart';
 import 'package:muslimnews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
 import 'package:muslimnews/blocs/Extensions/extensions_bloc.dart';
 import 'package:muslimnews/modules/ExtensionInfo.dart';
@@ -168,12 +171,25 @@ class DownloadExtensionsWidget extends StatelessWidget {
     super.key,
   });
 
+  void onClick() async {
+  File dexFile = await DxLoader.loadFileFromUrl(
+      "https://github.com/TheMuslimNews/MN-ExtensionHub/raw/master/s2jnews/s2jnews.dex", "5.dex");
+      debugPrint("klasdklasdjkasd");
+  await DxLoader.loadClass(dexFile, "Extension");
+  await DxLoader.callMethod("Extension", "main");
+}
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ExtensionsBloc, ExtensionsState>(
       builder: (context, state) {
         return Column(
           children: [
+            ElevatedButton(
+              onPressed: () => onClick(),
+              child: Text("Download"),
+            ),
+            SizedBox(height: 16),
             ElevatedButton(
               onPressed: () =>
                   context.read<ExtensionsBloc>().add(LoadExtensionsInfo()),
