@@ -1,6 +1,10 @@
 import 'dart:io';
+import 'dart:isolate';
+import 'dart:ui';
 
 import 'package:android_package_installer/android_package_installer.dart';
+import 'package:anynews/ApkManager.dart';
+import 'package:anynews/modules/ExtensionInfo.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -14,14 +18,15 @@ part 'extensions_state.dart';
 
 class ExtensionsBloc extends Bloc<ExtensionsEvent, ExtensionsState> {
   ExtensionsRepo _extensionsRepo;
+
   ExtensionsBloc(this._extensionsRepo) : super(ExtensionsState()) {
     on<LoadExtensionsInfo>(onLoadExtensionsInfo);
-    on<DownloadExtensionApk>(onDownloadExtensionApk);
+    on<LoadLocalExtension>(onLoadLocalExtension);
+    
   }
 
   void onLoadExtensionsInfo(event, emit) async {
     emit(state.copyWith(loadState: ExtensionsLoadState.Loading));
-
     try {
       await _extensionsRepo.loadExtensionInfoList();
       emit(state.copyWith(loadState: ExtensionsLoadState.None));
@@ -31,28 +36,9 @@ class ExtensionsBloc extends Bloc<ExtensionsEvent, ExtensionsState> {
   }
 
 
-  void onDownloadExtensionApk(DownloadExtensionApk event, emit) async {
-    debugPrint("+++++++++++++++AA+++++++++");
-    debugPrint((await getDownloadsDirectory())!.path);
-    debugPrint(
-      (await File("/storage/emulated/0/Download" + "/s2jnews-debug.apk").exists()).toString()
-      );
-         debugPrint(
-        Directory("/storage/emulated/0/Download/").listSync().toString()
-      );
-
-
-      var out = await AndroidPackageInstaller.installApk(apkFilePath: "/storage/emulated/0/Download" + "/s2jnews-debug.apk");
-      debugPrint(out.toString());
-      debugPrint(PackageInstallerStatus.byCode(out!).toString());
-
-
-    // var taskID =  await FlutterDownloader.enqueue(
-    //   url: event.apkURL,
-    //   headers: {},
-    //   savedDir:  "/storage/emulated/0/Download",
-    //   showNotification: true,
-    //   saveInPublicStorage: true,
-    // );
+  void onLoadLocalExtension(LoadLocalExtension event, emit) {
+    emit(state.copyWith(localExtensions: event.localExtensions));
   }
+ 
+
 }

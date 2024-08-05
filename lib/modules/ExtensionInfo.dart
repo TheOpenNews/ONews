@@ -1,3 +1,4 @@
+import 'package:anynews/consts/Urls.dart';
 import 'package:equatable/equatable.dart';
 
 class ExtensionInfo extends Equatable {
@@ -5,8 +6,12 @@ class ExtensionInfo extends Equatable {
   String logoURL = "";
   String siteURL = "";
   String apkURL = "";
+  String apkName = "";
+  
 
-  ExtensionInfo(this.name, this.siteURL, this.logoURL, this.apkURL);
+  ExtensionInfo(this.name, this.siteURL, this.logoURL, this.apkName) {
+    this.apkURL = Urls.ExtensionApkDir + "/" + this.apkName;
+  }
 
   @override
   String toString() {

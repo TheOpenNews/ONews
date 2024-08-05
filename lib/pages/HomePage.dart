@@ -6,7 +6,7 @@ import 'package:anynews/widgets/BottomNavBarWidget.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
-  List<NewsCard> cards = [NewsCard("Titlte", "URL")];
+  List<NewsCard> cards = [];
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BottomNavBarCubit, BottomNavBarState>(
@@ -51,7 +51,7 @@ class NewsCardWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Text(card.imgUrl),
+          Text(card.imgURL),
           SizedBox(width: 10),
           Text(card.title),
         ],

@@ -1,23 +1,25 @@
 import 'dart:io';
 
+import 'package:anynews/blocs/ExtensionDownload/extension_download_bloc.dart';
+import 'package:anynews/blocs/NewsCard/news_card_bloc.dart';
+import 'package:anynews/consts/Paths.dart';
+import 'package:anynews/pages/NewsHeadlinesPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:anynews/DxLoader.dart';
 import 'package:anynews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
 import 'package:anynews/blocs/Extensions/extensions_bloc.dart';
 import 'package:anynews/modules/NewsCard.dart';
-import 'package:anynews/pages/ExtensionsPage.dart';
+import 'package:anynews/pages/ExtensionsPage/ExtensionsPage.dart';
 import 'package:anynews/pages/HomePage.dart';
 import 'package:anynews/repos/ExtensionsRepo.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  FlutterDownloader.initialize(
-    debug: false, // optional: set to false to disable printing logs to console (default: true)
-    ignoreSsl: true // option: set to false to disable working with http links (default: false)
-  );  
+  await FlutterDownloader.initialize(debug: false, ignoreSsl: true);
+  Paths.init();
+
   runApp(anynews());
 }
 
@@ -39,18 +41,15 @@ class anynews extends StatelessWidget {
         ],
         child: MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (context) => ExtensionsBloc(
-                context.read<ExtensionsRepo>(),
-              ),
-            ),
-            BlocProvider(
-              create: (context) => BottomNavBarCubit(),
-            ),
+            BlocProvider(create: (context) => BottomNavBarCubit()),
+            BlocProvider(create: (context) => ExtensionDownloadBloc()),
+            BlocProvider(create: (context) => NewsCardBloc()),
+            BlocProvider(create: (context) => ExtensionsBloc(context.read<ExtensionsRepo>())),
+            
           ],
           child: BlocBuilder<BottomNavBarCubit, BottomNavBarState>(
             builder: (context, state) {
-              return [HomePage(), ExtensionsPage()][state.curIdx];
+              return [HomePage(), ExtensionsPage(),NewsHeadlinesPage()][state.curIdx + 1];
             },
           ),
         ),
@@ -58,5 +57,3 @@ class anynews extends StatelessWidget {
     );
   }
 }
-
-
