@@ -1,4 +1,5 @@
 import 'package:anynews/blocs/ExtensionDownload/extension_download_bloc.dart';
+import 'package:anynews/blocs/Permission/permission_cubit.dart';
 import 'package:anynews/modules/ExtensionInfo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,11 +48,30 @@ class DownloadExtensionsCardWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                  onPressed: () => context
-                      .read<ExtensionDownloadBloc>()
-                      .add(DownloadExtensionApk(info.apkURL, info.apkName)),
-                  icon: Icon(Icons.download)),
+              BlocBuilder<PermissionCubit, PermissionState>(
+                builder: (context, state) {
+                  return IconButton(
+                    onPressed: () {
+                      if (state.packagePermission && state.packagePermission) {
+                        context.read<ExtensionDownloadBloc>().add(
+                            DownloadExtensionApk(info.apkURL, info.apkName));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                                "Please give permission to download and install extensions"),
+                          ),
+                        );
+                      }
+                    },
+                    icon: Icon(
+                      (!state.packagePermission || !state.storagePermission)
+                          ? Icons.download_outlined
+                          : Icons.download,
+                    ),
+                  );
+                },
+              ),
               IconButton(
                   onPressed: () async =>
                       await launchUrl(Uri.parse(info.siteURL)),

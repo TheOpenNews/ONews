@@ -4,17 +4,23 @@ package com.example.anynews
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.os.Handler
-import android.os.Looper
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.AdaptiveIconDrawable
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
+import android.util.Base64
 import androidx.annotation.NonNull
 import anynews.extension.shared.ExtensionAbstract
 import anynews.extension.shared.NewsCard
+import anynews.extension.shared.NewsPage
 import anynews.extension.shared.NewsType
 import dalvik.system.PathClassLoader
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
+import java.io.ByteArrayOutputStream
 import java.util.concurrent.Executors
 
 
@@ -31,9 +37,26 @@ class MainActivity : FlutterActivity() {
                 loadLocalExtensions(result);
             } else if(call.method == "loadNewsHeadlines") {
                 loadNewsHeadlines(call,result);
+            } else if(call.method == "scrapeUrl") {
+                scrapeUrl(call,result);
             }
 
         };
+    }
+
+    fun iconToBase64(icon : Drawable) : String {
+        val bitmap = Bitmap.createBitmap(
+            icon.getIntrinsicWidth(),
+            icon.getIntrinsicHeight(), Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        icon.setBounds(0, 0, canvas.width, canvas.height)
+        icon.draw(canvas)
+
+        val byteStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteStream)
+        val byteArray = byteStream.toByteArray()
+        return Base64.encodeToString(byteArray, Base64.DEFAULT).replace("\n","");
     }
     fun loadLocalExtensions(result : MethodChannel.Result) {
         val context: Context = this.applicationContext
@@ -52,12 +75,13 @@ class MainActivity : FlutterActivity() {
                     val name : String = it.applicationInfo.metaData.getString("name")!!
                     val logoURL : String = it.applicationInfo.metaData.getString("logoURL")!!
                     val siteURL : String = it.applicationInfo.metaData.getString("siteURL")!!
+                    val base64Icon : String = iconToBase64(it.applicationInfo.loadIcon(pkgManager))
 
                     info.put("name",name);
                     info.put("logoURL",logoURL);
                     info.put("siteURL",siteURL);
+                    info.put("base64Icon",base64Icon);
                     output.put(className,info);
-
 
                     val classLoader = PathClassLoader(it.applicationInfo.sourceDir,null,context.classLoader)
                     val clazz  = Class.forName("anynews.extension.s2jnews.S2JNews",false,classLoader)
@@ -76,18 +100,23 @@ class MainActivity : FlutterActivity() {
         val executor = Executors.newSingleThreadExecutor()
         executor.execute {
             val list : ArrayList<NewsCard> = ExtensionMap.get(extensionName)!!.loadNewsHeadlines(NewsType.valueOf(type),count,page);
-            var data : ArrayList<Map<String,String>> = ArrayList();
+            var data : ArrayList<Map<String,Any>> = ArrayList();
             for(card in list) {
-                var cardData : HashMap<String,String> = HashMap();
-                cardData.put("title",card.title);
-                cardData.put("date",card.date);
-                cardData.put("imgURL",card.imgURL);
-                cardData.put("link",card.link);
-                data.add(cardData);
+                data.add(card.toJson());
             }
             result.success(data);
         }
     }
+    fun scrapeUrl(call : MethodCall,result : MethodChannel.Result) {
+        val extensionName : String =  call.argument<String>("extensionName")!!;
+        val url : String =  call.argument<String>("url")!!;
+        val executor = Executors.newSingleThreadExecutor()
+        executor.execute {
+            val newsPage : NewsPage = ExtensionMap.get(extensionName)!!.scrapeUrl(url);
+            result.success(newsPage.toJson());
+        }
+    }
+
 
 }
 

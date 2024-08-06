@@ -50,15 +50,12 @@ class NativeInterface {
     return newsCards;
   }
 
-  static Future<void> loadClass(File dxFile, String className) async {
+  static Future<void> scrapeUrl(String url) async {
     _init();
-    await _platform!.invokeMethod<String>(
-        "loadClass", {"path": dxFile.path, "className": className});
-  }
-
-  static Future<void> callMethod(String className, String methodName) async {
-    _init();
-    await _platform!.invokeMethod<String>(
-        "callMethod", {"className": className, "methodName": methodName});
+        var pkgInfoList = await _platform!.invokeMethod<Map>("scrapeUrl", {
+      "extensionName": "S2JNews",
+      "url": url,
+    });
+    debugPrint(pkgInfoList.toString());
   }
 }

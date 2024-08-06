@@ -34,3 +34,4 @@ class NewsCard extends Equatable {
         link,
       ];
 }
+

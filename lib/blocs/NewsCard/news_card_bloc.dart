@@ -12,7 +12,7 @@ part 'news_card_state.dart';
 
 class NewsCardBloc extends Bloc<NewsCardEvent, NewsCardState> {
   NewsCardBloc()
-      : super(NewsCardState(extensionInfo: ExtensionInfo("", "", "", ""))) {
+      : super(NewsCardState(extensionInfo: ExtensionInfo("", "", "", "",""))) {
     on<SelectExtension>(onSelectExtension);
     on<NextPage>(onNextPage);
     on<ChangeCategory>(onChangeCategory);

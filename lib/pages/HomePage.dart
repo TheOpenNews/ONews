@@ -1,3 +1,4 @@
+import 'package:anynews/NativeInterface.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:anynews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
@@ -7,6 +8,10 @@ import 'package:anynews/widgets/BottomNavBarWidget.dart';
 class HomePage extends StatelessWidget {
   HomePage({super.key});
   List<NewsCard> cards = [];
+
+  void onScrapeUrl() {
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BottomNavBarCubit, BottomNavBarState>(
@@ -23,8 +28,15 @@ class HomePage extends StatelessWidget {
           bottomNavigationBar: BottomNavBarWidget(),
           body: Container(
             padding: EdgeInsets.all(16),
+            width: MediaQuery.of(context).size.width,
             child: Column(
-              children: [],
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(onPressed: onScrapeUrl, child: Text("Scrape URL"),),
+                Text("Sorry not implemented yet",style: TextStyle(fontSize: 20,),),
+                Text(":P",style: TextStyle(fontSize: 20,),),
+              ],
             ),
           ),
         );

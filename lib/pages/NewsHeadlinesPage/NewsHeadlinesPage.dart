@@ -1,7 +1,9 @@
+import 'package:anynews/NativeInterface.dart';
 import 'package:anynews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
 import 'package:anynews/blocs/NewsCard/news_card_bloc.dart';
 import 'package:anynews/modules/NewsCard.dart';
 import 'package:anynews/pages/NewsHeadlinesPage/CategoryFilterWidget.dart';
+import 'package:anynews/pages/NewsHeadlinesPage/HeadlineCardWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -119,60 +121,6 @@ class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
       backgroundColor: Color(0xFF13a2cc),
       iconTheme: IconThemeData(
         color: Colors.white,
-      ),
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: Colors.white),
-        onPressed: () => context.read<BottomNavBarCubit>().setIdx(1),
-      ),
-    );
-  }
-}
-
-class HeadlineCardWidget extends StatelessWidget {
-  NewsCard card;
-  HeadlineCardWidget({super.key, required this.card});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.all(8),
-      margin: EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.grey.withOpacity(0.2)),
-        borderRadius: BorderRadius.circular(2),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 4,
-            color: Colors.grey.withOpacity(0.1),
-            offset: Offset(0, 2),
-          )
-        ],
-      ),
-      child: Column(
-        children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              card.date,
-              textAlign: TextAlign.start,
-            ),
-          ),
-          SizedBox(height: 4),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              card.title,
-              textAlign: TextAlign.start,
-            ),
-          ),
-          SizedBox(height: 16),
-          Image.network(
-            card.imgURL,
-            alignment: Alignment.center,
-          ),
-        ],
       ),
     );
   }

@@ -26,6 +26,7 @@ class ExtensionsRepo {
           info["siteURL"] as String,
           info["logoURL"] as String,
           info["apk"] as String,
+          ""
         ),
       );
     });
@@ -37,7 +38,7 @@ class ExtensionsRepo {
   void loadLocalExtensions(Map<String,Map<String,String>> data) { 
     localExtensions = [];
     data.forEach((key,value) {
-      localExtensions.add(ExtensionInfo(key, value["siteURL"] as String, value["logoURL"] as String, ""));
+      localExtensions.add(ExtensionInfo(key, value["siteURL"] as String, value["logoURL"] as String, "",value["base64Icon"] as String));
     });
     debugPrint(localExtensions.toString());
   }
