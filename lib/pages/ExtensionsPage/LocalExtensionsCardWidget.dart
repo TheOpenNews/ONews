@@ -17,7 +17,7 @@ class LocalExtensionsCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     void onSelectExtension() async {
       context.read<NewsCardBloc>().add(SelectExtension(info));
-      context.read<BottomNavBarCubit>().setIdx(1);
+      context.read<BottomNavBarCubit>().setIdx(2);
 
       // debugPrint("jkasdjkasjkdjkasdjkasdjhhgasd");
       // NativeInterface.onSelectExtension(info);

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ExtensionDownloadCardWidget extends StatelessWidget {
+class DownloadExtensionsCardWidget extends StatelessWidget {
   ExtensionInfo info;
-  ExtensionDownloadCardWidget({
+  DownloadExtensionsCardWidget({
     super.key,
     required this.info,
   });

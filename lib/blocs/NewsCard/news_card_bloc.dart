@@ -15,6 +15,8 @@ class NewsCardBloc extends Bloc<NewsCardEvent, NewsCardState> {
       : super(NewsCardState(extensionInfo: ExtensionInfo("", "", "", ""))) {
     on<SelectExtension>(onSelectExtension);
     on<NextPage>(onNextPage);
+    on<ChangeCategory>(onChangeCategory);
+    on<SelectPage>(onSelectPage);
   }
 
   void onSelectExtension(SelectExtension event, emit) async {
@@ -24,20 +26,54 @@ class NewsCardBloc extends Bloc<NewsCardEvent, NewsCardState> {
   }
 
   void onNextPage(NextPage event, emit) async {
-    debugPrint(state.loadingStatus.toString());
-    if (state.loadingStatus == NewsCardsLoadingStatus.Loading) return;
     emit(state.copyWith(loadingStatus: NewsCardsLoadingStatus.Loading));
-
-    debugPrint((state.page + 1).toString());
     List<NewsCard> cards = await NativeInterface.loadNewsHeadlines(
       state.extensionInfo,
       page: state.page + 1,
+      category: state.category,
     );
 
-    emit(state.copyWith(
-      page: state.page + 1,
-      newsCards: state.newsCards = [...state.newsCards, ...cards],
-      loadingStatus: NewsCardsLoadingStatus.None,
-    ));
+    // news done
+    if (cards.length == 0) {
+      emit(state.copyWith(newsDone: true));
+    } else {
+      emit(state.copyWith(
+        page: state.page + 1,
+        newsCards: state.newsCards = [...state.newsCards, ...cards],
+        loadingStatus: NewsCardsLoadingStatus.None,
+      ));
+    }
+  }
+
+  void onChangeCategory(ChangeCategory event, emit) async {
+    emit(
+      state.copyWith(
+        newsDone: false,
+        category: event.category,
+        page: 1,
+        newsCards: [],
+        loadingStatus: NewsCardsLoadingStatus.None,
+      ),
+    );
+  }
+
+  void onSelectPage(SelectPage event, emit) async {
+    emit(state.copyWith(loadingStatus: NewsCardsLoadingStatus.Loading));
+    List<NewsCard> cards = await NativeInterface.loadNewsHeadlines(
+      state.extensionInfo,
+      page: event.page,
+      category: state.category,
+    );
+
+    // news done
+    if (cards.length == 0) {
+      emit(state.copyWith(newsDone: true));
+    } else {
+      emit(state.copyWith(
+        page: event.page,
+        newsCards: state.newsCards = [...state.newsCards, ...cards],
+        loadingStatus: NewsCardsLoadingStatus.None,
+      ));
+    }
   }
 }

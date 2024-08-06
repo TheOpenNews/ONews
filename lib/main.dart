@@ -2,8 +2,9 @@ import 'dart:io';
 
 import 'package:anynews/blocs/ExtensionDownload/extension_download_bloc.dart';
 import 'package:anynews/blocs/NewsCard/news_card_bloc.dart';
+import 'package:anynews/blocs/Permission/permission_cubit.dart';
 import 'package:anynews/consts/Paths.dart';
-import 'package:anynews/pages/NewsHeadlinesPage.dart';
+import 'package:anynews/pages/NewsHeadlinesPage/NewsHeadlinesPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,6 +43,7 @@ class anynews extends StatelessWidget {
         child: MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => BottomNavBarCubit()),
+            BlocProvider(create: (context) => PermissionCubit()),
             BlocProvider(create: (context) => ExtensionDownloadBloc()),
             BlocProvider(create: (context) => NewsCardBloc()),
             BlocProvider(create: (context) => ExtensionsBloc(context.read<ExtensionsRepo>())),
@@ -49,7 +51,7 @@ class anynews extends StatelessWidget {
           ],
           child: BlocBuilder<BottomNavBarCubit, BottomNavBarState>(
             builder: (context, state) {
-              return [HomePage(), ExtensionsPage(),NewsHeadlinesPage()][state.curIdx + 1];
+              return [HomePage(), ExtensionsPage(),NewsHeadlinesPage()][state.curIdx];
             },
           ),
         ),

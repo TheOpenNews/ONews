@@ -13,3 +13,11 @@ class SelectExtension extends NewsCardEvent {
   SelectExtension(this.info);
 }
 class NextPage extends NewsCardEvent {}
+class SelectPage extends NewsCardEvent {
+  int page;
+  SelectPage(this.page);
+}
+class ChangeCategory extends NewsCardEvent {
+  String category;
+  ChangeCategory(this.category);
+}

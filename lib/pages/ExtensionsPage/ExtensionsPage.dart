@@ -6,9 +6,10 @@ import 'package:anynews/NativeInterface.dart';
 import 'package:anynews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
 import 'package:anynews/blocs/ExtensionDownload/extension_download_bloc.dart';
 import 'package:anynews/blocs/NewsCard/news_card_bloc.dart';
+import 'package:anynews/consts/Colors.dart';
 import 'package:anynews/pages/ExtensionsPage/DownloadExtensionsWidget.dart';
 import 'package:anynews/pages/ExtensionsPage/LocalExtensionsWidget.dart';
-import 'package:anynews/pages/NewsHeadlinesPage.dart';
+import 'package:anynews/pages/NewsHeadlinesPage/NewsHeadlinesPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -89,9 +90,9 @@ class _ExtensionsPageState extends State<ExtensionsPage>
         }
       },
       child: Scaffold(
-        backgroundColor: Color(0xFFf4f4f6),
+        backgroundColor: CColors.greyWhite,
         appBar: AppBar(
-          backgroundColor: Color(0xFF13a2cc),
+          backgroundColor: CColors.lightBlue,
           title: Text(
             "Extensions",
             style: TextStyle(color: Colors.white),

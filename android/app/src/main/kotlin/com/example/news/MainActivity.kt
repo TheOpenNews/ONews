@@ -7,9 +7,9 @@ import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.NonNull
-import anynews.extensions.ExtensionAbstract
-import anynews.extensions.NewsCard
-import anynews.extensions.NewsType
+import anynews.extension.shared.ExtensionAbstract
+import anynews.extension.shared.NewsCard
+import anynews.extension.shared.NewsType
 import dalvik.system.PathClassLoader
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -60,9 +60,9 @@ class MainActivity : FlutterActivity() {
 
 
                     val classLoader = PathClassLoader(it.applicationInfo.sourceDir,null,context.classLoader)
-                    val clazz  = Class.forName("anynews.extensions.S2JNews",false,classLoader);
-                    val extension : ExtensionAbstract =  clazz.getDeclaredConstructor().newInstance() as ExtensionAbstract;
-                    ExtensionMap.put(className,extension);
+                    val clazz  = Class.forName("anynews.extension.s2jnews.S2JNews",false,classLoader)
+                    val extension : ExtensionAbstract =  clazz.getDeclaredConstructor().newInstance() as ExtensionAbstract
+                    ExtensionMap.put(className,extension)
                 }
             }
         }

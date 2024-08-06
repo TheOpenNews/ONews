@@ -1,4 +1,4 @@
-package anynews.extensions
+package anynews.extension.shared
 
 
 enum class NewsType {

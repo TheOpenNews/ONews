@@ -30,11 +30,11 @@ class NativeInterface {
     return data;
   }
 
-  static Future<List<NewsCard>> loadNewsHeadlines(ExtensionInfo info,{int count = 6, int page = 1}) async {
+  static Future<List<NewsCard>> loadNewsHeadlines(ExtensionInfo info,{int count = 6, int page = 1, String category = "Politics"}) async {
     _init();
     var pkgInfoList = await _platform!.invokeMethod<List>("loadNewsHeadlines", {
       "extensionName": info.name,
-      "type": "Politics",
+      "type": category,
       "count": count,
       "page": page,
     });

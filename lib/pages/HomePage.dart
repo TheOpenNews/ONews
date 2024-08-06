@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
           body: Container(
             padding: EdgeInsets.all(16),
             child: Column(
-              children: [NewsCardWidget(card: cards[0])],
+              children: [],
             ),
           ),
         );
