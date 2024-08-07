@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:anynews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
@@ -23,9 +22,6 @@ class LocalExtensionsCardWidget extends StatelessWidget {
       Navigator.pushNamed(context, Routes.NewsHeadlines);
     }
 
-        
-
-
     return InkWell(
       onTap: () => onSelectExtension(),
       child: Container(
@@ -47,11 +43,16 @@ class LocalExtensionsCardWidget extends StatelessWidget {
           children: [
             Row(
               children: [
+                SizedBox(width: 8),
                 Container(
-                  height: 32,
-                  child: Image.memory(base64Decode(info.base64Icon)),
+                    width: 32,
+                    height: 32,
+                  child: Image.memory(
+                    base64Decode(info.base64Icon),
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                SizedBox(width: 10),
+                SizedBox(width: 16),
                 Text(
                   info.name,
                   style: TextStyle(

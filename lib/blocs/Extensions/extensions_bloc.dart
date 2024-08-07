@@ -26,13 +26,13 @@ class ExtensionsBloc extends Bloc<ExtensionsEvent, ExtensionsState> {
   }
 
   void onLoadExtensionsInfo(event, emit) async {
+      _extensionsRepo.extensionsInfoList = [];
     emit(state.copyWith(loadState: ExtensionsLoadState.Loading));
     try {
       await _extensionsRepo.loadExtensionInfoList();
-      emit(state.copyWith(loadState: ExtensionsLoadState.None));
     } catch (e) {
-      emit(state.copyWith(loadState: ExtensionsLoadState.None));
     }
+    emit(state.copyWith(loadState: ExtensionsLoadState.None));
   }
 
 

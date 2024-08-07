@@ -32,10 +32,17 @@ class DownloadExtensionsCardWidget extends StatelessWidget {
         children: [
           Row(
             children: [
+              SizedBox(width: 8),
               Container(
-                height: 42,
-                child: Image.network(info.logoURL),
+                width: 32,
+                    height: 32,
+
+                child: Image.network(
+                  info.logoURL,
+                    fit: BoxFit.fill
+                ),
               ),
+              SizedBox(width: 16),
               Text(
                 info.name,
                 style: TextStyle(
