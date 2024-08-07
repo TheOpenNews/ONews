@@ -1,16 +1,10 @@
-# anynews
+# ONews
+**Under Dev!!**    
+ONews is a platform that provides easy and fast access to news. It is open-source, trustworthy, and fully customizable using extensions.     
+ONews is like Tachiyomi but for news, meaning it uses extensions to gather and scrape news from websites and display them in the app with just a few clicks.      
+The app is just an interface for extensions, meaning any website can be added as an extension and installed in the app without needing to update the app.
 
-A new Flutter project.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Preview
+---
+...
