@@ -8,6 +8,5 @@ ONews is like Tachiyomi but for news, meaning it uses extensions to gather and s
 The app is just an interface for extensions, meaning any website can be added as an extension and installed in the app without needing to update the app.
 
 
-Preview
----
+### Preview
 ...
