@@ -19,6 +19,8 @@ class ExtensionsRepo {
     assert(jsonData.keys.contains("Extensions"));
     extensionsInfoList = [];
     List extensionsInfo = jsonData["Extensions"];
+
+
     extensionsInfo.forEach((info) {
       extensionsInfoList.add(
         ExtensionInfo(
@@ -26,7 +28,8 @@ class ExtensionsRepo {
           info["siteURL"] as String,
           info["logoURL"] as String,
           info["apk"] as String,
-          ""
+          "",
+          []
         ),
       );
     });
@@ -35,10 +38,15 @@ class ExtensionsRepo {
   }
 
 
-  void loadLocalExtensions(Map<String,Map<String,String>> data) { 
+  void loadLocalExtensions(Map<String,Map<String,dynamic>> data) { 
     localExtensions = [];
     data.forEach((key,value) {
-      localExtensions.add(ExtensionInfo(key, value["siteURL"] as String, value["logoURL"] as String, "",value["base64Icon"] as String));
+    List<String> categories = [];
+      (value["categories"] as List).forEach((cat) {
+          categories.add(cat);
+      });
+      debugPrint(categories.toString());
+      localExtensions.add(ExtensionInfo(key, value["siteURL"] as String, value["logoURL"] as String, "",value["base64Icon"] as String, categories));
     });
     debugPrint(localExtensions.toString());
   }

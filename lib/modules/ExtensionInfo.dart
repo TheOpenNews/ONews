@@ -8,9 +8,10 @@ class ExtensionInfo extends Equatable {
   String apkURL = "";
   String apkName = "";
   String base64Icon = "";
+  List<String> categories = [];
   
 
-  ExtensionInfo(this.name, this.siteURL, this.logoURL, this.apkName,this.base64Icon) {
+  ExtensionInfo(this.name, this.siteURL, this.logoURL, this.apkName,this.base64Icon,this.categories) {
     this.apkURL = Urls.ExtensionApkDir + "/" + this.apkName;
   }
 
@@ -26,5 +27,6 @@ class ExtensionInfo extends Equatable {
         siteURL,
         apkURL,
         base64Icon,
+        categories
       ];
 }

@@ -14,7 +14,6 @@ import androidx.annotation.NonNull
 import anynews.extension.shared.ExtensionAbstract
 import anynews.extension.shared.NewsCard
 import anynews.extension.shared.NewsPage
-import anynews.extension.shared.NewsType
 import dalvik.system.PathClassLoader
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -64,12 +63,12 @@ class MainActivity : FlutterActivity() {
         val pkgs = pkgManager.getInstalledPackages(PackageManager.GET_META_DATA)
         val anyNewsPkgs: ArrayList<PackageInfo> = ArrayList<PackageInfo>();
 
-        var output : HashMap<String,HashMap<String,String>> = HashMap();
+        var output : HashMap<String,HashMap<String,Any>> = HashMap();
         pkgs.asSequence().forEach {
             if (it.applicationInfo.metaData != null) {
                 if (it.applicationInfo.metaData.containsKey("isAnyNewsExtension")) {
                     anyNewsPkgs.add(it);
-                    var info : HashMap<String,String> = HashMap();
+                    var info : HashMap<String,Any> = HashMap();
 
                     val className : String =  it.applicationInfo.metaData.getString("className")!!
                     val name : String = it.applicationInfo.metaData.getString("name")!!
@@ -81,11 +80,15 @@ class MainActivity : FlutterActivity() {
                     info.put("logoURL",logoURL);
                     info.put("siteURL",siteURL);
                     info.put("base64Icon",base64Icon);
-                    output.put(className,info);
 
                     val classLoader = PathClassLoader(it.applicationInfo.sourceDir,null,context.classLoader)
                     val clazz  = Class.forName("anynews.extension.s2jnews.S2JNews",false,classLoader)
                     val extension : ExtensionAbstract =  clazz.getDeclaredConstructor().newInstance() as ExtensionAbstract
+
+                    info.put("categories",extension.categories);
+                    output.put(className,info);
+
+
                     ExtensionMap.put(className,extension)
                 }
             }
@@ -101,7 +104,7 @@ class MainActivity : FlutterActivity() {
         executor.execute {
             var list : ArrayList<NewsCard>?
             try {
-                list = ExtensionMap.get(extensionName)!!.loadNewsHeadlines(NewsType.valueOf(type),count,page);
+                list = ExtensionMap.get(extensionName)!!.loadNewsHeadlines(type,count,page);
                 if(list == null) {
                     result.success(null);
                     return@execute

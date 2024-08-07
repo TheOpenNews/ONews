@@ -17,16 +17,16 @@ class NativeInterface {
     _platform = MethodChannel("anynews/native.interface");
   }
 
-  static Future<Map<String, Map<String, String>>> loadLocalExtensions() async {
+  static Future<Map<String, Map<String, dynamic>>> loadLocalExtensions() async {
     _init();
     var pkgInfoList = await _platform!.invokeMethod<Map>("loadLocalExtensions");
 
     // parsing out from kotlin map to more nice dart map
-    Map<String, Map<String, String>> data = Map<String, Map<String, String>>();
+    Map<String, Map<String, dynamic>> data = Map<String, Map<String, dynamic>>();
     pkgInfoList!.forEach((key1, value) {
-      data[key1.toString()] = Map<String, String>();
+      data[key1.toString()] = Map<String, dynamic>();
       value.forEach((key2, value) {
-        data[key1.toString()]![key2.toString()] = value.toString();
+        data[key1.toString()]![key2.toString()] = value;
       });
     });
     return data;

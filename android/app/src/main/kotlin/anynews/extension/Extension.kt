@@ -1,11 +1,7 @@
 package anynews.extension.shared
 
 
-enum class NewsType {
-    Politics,
-    Sport,
-    General
-}
+
 
 val HEADER_TITLE : String = "title"
 val HEADER_AUTHOR : String = "author"
@@ -57,7 +53,9 @@ class NewsPage(
 
 
 abstract class ExtensionAbstract {
-    abstract  fun loadNewsHeadlines(type : NewsType, count : Int, page : Int) : ArrayList<NewsCard>?
+    var categories : ArrayList<String> = ArrayList();
+
+    abstract  fun loadNewsHeadlines(type : String, count : Int, page : Int) : ArrayList<NewsCard>?
     abstract  fun scrapeUrl(url: String) : NewsPage?
 }
 

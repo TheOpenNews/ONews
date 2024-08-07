@@ -19,12 +19,14 @@ class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
   late ScrollController scrollController;
   bool stopLoadingNews = false;
   bool networkError = false;
+  late List<String> tags = [];
 
   @override
   void initState() {
     scrollController = ScrollController();
     scrollController.addListener(() {
-      if (scrollController.offset == scrollController.position.maxScrollExtent) {
+      if (scrollController.offset ==
+          scrollController.position.maxScrollExtent) {
         if (stopLoadingNews) return;
         if (networkError) return;
         context.read<NewsCardBloc>().add(NextPage());
@@ -38,12 +40,6 @@ class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
     scrollController.dispose();
     super.dispose();
   }
-
-  List<String> tags = [
-    "Politics",
-    "Sport",
-    "General",
-  ];
 
   void onSelectCategory(tag) {
     context.read<NewsCardBloc>().add(ChangeCategory(tag));
@@ -61,12 +57,16 @@ class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
   Widget build(BuildContext context) {
     return BlocConsumer<NewsCardBloc, NewsCardState>(
       listener: (context, state) {
+        setState(() {
+          tags = context.read<NewsCardBloc>().state.extensionInfo.categories;
+        });
         if (state.newsDone != stopLoadingNews) {
           setState(() {
             stopLoadingNews = state.newsDone;
           });
         }
-        if (state.loadingStatus == NewsCardsLoadingStatus.Failed && !networkError) {
+        if (state.loadingStatus == NewsCardsLoadingStatus.Failed &&
+            !networkError) {
           setState(() {
             networkError = true;
           });
@@ -85,8 +85,10 @@ class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
           appBar: _appbar(state, context),
           backgroundColor: Color(0xFFf4f4f6),
           body: Container(
+
             padding: EdgeInsets.only(left: 16, right: 16, top: 8),
             child: Column(
+            
               children: [
                 Container(
                   margin: EdgeInsets.all(8),

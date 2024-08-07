@@ -4,6 +4,7 @@ import 'package:anynews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
 import 'package:anynews/blocs/NewsCard/news_card_bloc.dart';
 import 'package:anynews/consts/Routes.dart';
 import 'package:anynews/modules/ExtensionInfo.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -45,12 +46,10 @@ class LocalExtensionsCardWidget extends StatelessWidget {
               children: [
                 SizedBox(width: 8),
                 Container(
-                    width: 32,
-                    height: 32,
-                  child: Image.memory(
-                    base64Decode(info.base64Icon),
-                    fit: BoxFit.cover,
-                  ),
+                  width: 32,
+                  height: 32,
+                  child: CachedNetworkImage(
+                      imageUrl: info.logoURL, fit: BoxFit.fill),
                 ),
                 SizedBox(width: 16),
                 Text(

@@ -12,7 +12,7 @@ part 'news_card_state.dart';
 
 class NewsCardBloc extends Bloc<NewsCardEvent, NewsCardState> {
   NewsCardBloc()
-      : super(NewsCardState(extensionInfo: ExtensionInfo("", "", "", "", ""),latestEvent: SelectPage(1),)) {
+      : super(NewsCardState(extensionInfo: ExtensionInfo("", "", "", "", "",[]),latestEvent: SelectPage(1),)) {
     on<SelectExtension>(onSelectExtension);
     on<NextPage>(onNextPage);
     on<ChangeCategory>(onChangeCategory);
@@ -23,7 +23,7 @@ class NewsCardBloc extends Bloc<NewsCardEvent, NewsCardState> {
     emit(state.copyWith(
         extensionInfo: event.info,
         loadingStatus: NewsCardsLoadingStatus.Loading));
-    List<NewsCard>? cards = await NativeInterface.loadNewsHeadlines(event.info);
+    List<NewsCard>? cards = await NativeInterface.loadNewsHeadlines(event.info,category:  event.info.categories[0]);
 
     if (cards == null) {
       emit(state.copyWith(loadingStatus: NewsCardsLoadingStatus.Failed));
