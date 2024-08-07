@@ -23,8 +23,11 @@ class NewsPageBloc extends Bloc<NewsPageEvent, NewsPageState> {
 
   void onLoadNewsPage(event,emit) async {
     emit(state.copyWith(loadingStatus: PageNewsLoadingStatus.Loading));
-    News news =  await NativeInterface.scrapeUrl(state.card.link);
-    debugPrint(news.toString());
+    News? news =  await NativeInterface.scrapeUrl(state.card.link);
+    if(news == null) {
+      emit(state.copyWith(loadingStatus: PageNewsLoadingStatus.Failed));
+      return;
+    }
     emit(state.copyWith(loadingStatus: PageNewsLoadingStatus.None, news : news));
   }
 }

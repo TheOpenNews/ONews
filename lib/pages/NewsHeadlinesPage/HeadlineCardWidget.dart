@@ -1,9 +1,9 @@
-
 import 'package:anynews/NativeInterface.dart';
 import 'package:anynews/blocs/NewsPage/news_page_bloc.dart';
 import 'package:anynews/consts/Routes.dart';
 import 'package:anynews/modules/NewsCard.dart';
 import 'package:anynews/pages/NewsPreviewPage/NewsPreviewPage.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,13 +11,12 @@ class HeadlineCardWidget extends StatelessWidget {
   NewsCard card;
   HeadlineCardWidget({super.key, required this.card});
 
-
   @override
   Widget build(BuildContext context) {
-  void onSelectHeadline() {
-    context.read<NewsPageBloc>().add(ShowNewsPage(card));
-    Navigator.pushNamed(context, Routes.NewsPreviewPage);
-  }
+    void onSelectHeadline() {
+      context.read<NewsPageBloc>().add(ShowNewsPage(card));
+      Navigator.pushNamed(context, Routes.NewsPreviewPage);
+    }
 
     return GestureDetector(
       onTap: onSelectHeadline,
@@ -55,9 +54,10 @@ class HeadlineCardWidget extends StatelessWidget {
               ),
             ),
             SizedBox(height: 16),
-            Image.network(
-              card.imgURL,
+            CachedNetworkImage(
+              imageUrl: card.imgURL,
               alignment: Alignment.center,
+              errorWidget: (context, url, error) => Icon(Icons.error,color: Colors.black,),
             ),
           ],
         ),

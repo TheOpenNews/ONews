@@ -57,6 +57,13 @@ class NewsPage(
 
 
 abstract class ExtensionAbstract {
-    abstract  fun loadNewsHeadlines(type : NewsType, count : Int, page : Int) : ArrayList<NewsCard>
-    abstract  fun scrapeUrl(url: String) : NewsPage
+    abstract  fun loadNewsHeadlines(type : NewsType, count : Int, page : Int) : ArrayList<NewsCard>?
+    abstract  fun scrapeUrl(url: String) : NewsPage?
 }
+
+
+
+
+
+
+

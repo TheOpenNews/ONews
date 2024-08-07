@@ -9,9 +9,6 @@ class HomePage extends StatelessWidget {
   HomePage({super.key});
   List<NewsCard> cards = [];
 
-  void onScrapeUrl() {
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BottomNavBarCubit, BottomNavBarState>(
@@ -33,7 +30,6 @@ class HomePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(onPressed: onScrapeUrl, child: Text("Scrape URL"),),
                 Text("Sorry not implemented yet",style: TextStyle(fontSize: 20,),),
                 Text(":P",style: TextStyle(fontSize: 20,),),
               ],

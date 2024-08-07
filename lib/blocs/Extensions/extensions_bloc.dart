@@ -24,17 +24,17 @@ class ExtensionsBloc extends Bloc<ExtensionsEvent, ExtensionsState> {
     on<LoadLocalExtension>(onLoadLocalExtension);
     
   }
-
   void onLoadExtensionsInfo(event, emit) async {
-      _extensionsRepo.extensionsInfoList = [];
     emit(state.copyWith(loadState: ExtensionsLoadState.Loading));
+    var extensionsInfoList;
     try {
-      await _extensionsRepo.loadExtensionInfoList();
+      extensionsInfoList =  await _extensionsRepo.loadExtensionInfoList();
     } catch (e) {
+      emit(state.copyWith(loadState: ExtensionsLoadState.Error));
+      return;
     }
-    emit(state.copyWith(loadState: ExtensionsLoadState.None));
+    emit(state.copyWith(extensionInfo: extensionsInfoList, loadState: ExtensionsLoadState.None));
   }
-
 
   void onLoadLocalExtension(LoadLocalExtension event, emit) {
     emit(state.copyWith(localExtensions: event.localExtensions));

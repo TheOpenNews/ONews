@@ -32,15 +32,18 @@ class NativeInterface {
     return data;
   }
 
-  static Future<List<NewsCard>> loadNewsHeadlines(ExtensionInfo info,
+  static Future<List<NewsCard>?> loadNewsHeadlines(ExtensionInfo info,
       {int count = 6, int page = 1, String category = "Politics"}) async {
     _init();
-    var pkgInfoList = await _platform!.invokeMethod<List>("loadNewsHeadlines", {
+    var pkgInfoList = await _platform!.invokeMethod<List?>("loadNewsHeadlines", {
       "extensionName": info.name,
       "type": category,
       "count": count,
       "page": page,
     });
+    if(pkgInfoList ==  null) {
+      return null;
+    }
 
     List<NewsCard> newsCards = [];
     pkgInfoList!.forEach((card) {
@@ -53,12 +56,16 @@ class NativeInterface {
     return newsCards;
   }
 
-  static Future<News> scrapeUrl(String url) async {
+  static Future<News?> scrapeUrl(String url) async {
     _init();
-    var newsPageMap = await _platform!.invokeMethod<Map>("scrapeUrl", {
+    var newsPageMap = await _platform!.invokeMethod<Map?>("scrapeUrl", {
       "extensionName": "S2JNews",
       "url": url,
     });
+
+    if(newsPageMap == null) {
+      return null;
+    }
 
     News news = News(content: []);
     Map<String,String> header;

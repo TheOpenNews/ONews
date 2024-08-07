@@ -19,7 +19,6 @@ class DownloadExtensionsWidget extends StatefulWidget {
 }
 
 class _DownloadExtensionsWidgetState extends State<DownloadExtensionsWidget> {
-  void onClick() async {}
 
   void onStoragePermission() async {
     Permission.storage.request();
@@ -32,12 +31,38 @@ class _DownloadExtensionsWidgetState extends State<DownloadExtensionsWidget> {
   @override
   void initState() {
     super.initState();
+    if(!interentError) {
+    context.read<ExtensionsBloc>().add(LoadExtensionsInfo());
+    }
+  }
+
+  void onTryAgain() {
+    setState(() {
+      interentError = false;
+    });
     context.read<ExtensionsBloc>().add(LoadExtensionsInfo());
   }
 
+  bool interentError = false;
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ExtensionsBloc, ExtensionsState>(
+    return BlocConsumer<ExtensionsBloc, ExtensionsState>(
+      listener: (context, state) {
+        if (state.loadState == ExtensionsLoadState.Error && !interentError) {
+          setState(() {
+            interentError = true;
+          });
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "Failed to extensions, check your interent connection",
+              ),
+            ),
+          );
+        }
+      },
       builder: (context, state) {
         return Column(
           children: [
@@ -54,16 +79,28 @@ class _DownloadExtensionsWidgetState extends State<DownloadExtensionsWidget> {
               ),
             ),
             SizedBox(height: 16),
-            ...context
-                .read<ExtensionsRepo>()
-                .extensionsInfoList
-                .map(
-                  (info) => DownloadExtensionsCardWidget(info: info),
-                )
-                .toList(),
+            Builder(
+              builder: (context) {
+                var extensionsList =
+                    context.read<ExtensionsRepo>().extensionsInfoList;
+                if (state.loadState == ExtensionsLoadState.Error) {
+                  return ElevatedButton(
+                      onPressed: onTryAgain, child: Text("Try Again"));
+                }
+                return Column(
+                  children: [
+                    ...extensionsList
+                        .map(
+                          (info) => DownloadExtensionsCardWidget(info: info),
+                        )
+                        .toList(),
+                  ],
+                );
+              },
+            ),
             SizedBox(height: 16),
             state.loadState == ExtensionsLoadState.Loading
-                ?  CircularProgressIndicator()
+                ? CircularProgressIndicator()
                 : SizedBox(),
           ],
         );
@@ -71,4 +108,3 @@ class _DownloadExtensionsWidgetState extends State<DownloadExtensionsWidget> {
     );
   }
 }
-

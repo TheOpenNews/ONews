@@ -3,6 +3,7 @@ import 'package:anynews/blocs/Extensions/extensions_bloc.dart';
 import 'package:anynews/pages/ExtensionsPage/LocalExtensionsCardWidget.dart';
 import 'package:anynews/repos/ExtensionsRepo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LocalExtensionsWidget extends StatefulWidget {
@@ -40,16 +41,36 @@ class _LocalExtensionsWidgetState extends State<LocalExtensionsWidget> {
             Text(
               "Extensions:",
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(height: 16),
-            ...state.localExtensions
-                .map((info) => LocalExtensionsCardWidget(
-                      info: info,
-                    ))
-                .toList(),
+            Builder(builder: (context) {
+              if (state.localExtensions.length == 0) {
+                return Expanded(
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "You have no local extensions, go download some :L",
+                        textAlign: TextAlign.center,
+                    
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                );
+              }
+
+              return Column(children: [
+                ...state.localExtensions
+                    .map((info) => LocalExtensionsCardWidget(
+                          info: info,
+                        ))
+                    .toList()
+              ]);
+            })
           ],
         );
       },

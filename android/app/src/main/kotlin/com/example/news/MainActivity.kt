@@ -99,7 +99,18 @@ class MainActivity : FlutterActivity() {
         val page : Int =  call.argument<Int>("page")!!;
         val executor = Executors.newSingleThreadExecutor()
         executor.execute {
-            val list : ArrayList<NewsCard> = ExtensionMap.get(extensionName)!!.loadNewsHeadlines(NewsType.valueOf(type),count,page);
+            var list : ArrayList<NewsCard>?
+            try {
+                list = ExtensionMap.get(extensionName)!!.loadNewsHeadlines(NewsType.valueOf(type),count,page);
+                if(list == null) {
+                    result.success(null);
+                    return@execute
+                }
+            } catch (e : Exception) {
+                result.success(null);
+                return@execute
+            }
+
             var data : ArrayList<Map<String,Any>> = ArrayList();
             for(card in list) {
                 data.add(card.toJson());
@@ -112,7 +123,18 @@ class MainActivity : FlutterActivity() {
         val url : String =  call.argument<String>("url")!!;
         val executor = Executors.newSingleThreadExecutor()
         executor.execute {
-            val newsPage : NewsPage = ExtensionMap.get(extensionName)!!.scrapeUrl(url);
+            var newsPage : NewsPage?
+
+            try {
+                newsPage  = ExtensionMap.get(extensionName)!!.scrapeUrl(url);
+                if(newsPage == null) {
+                    result.success(null);
+                    return@execute
+                }
+            } catch (e : Exception) {
+                result.success(null);
+                return@execute
+            }
             result.success(newsPage.toJson());
         }
     }

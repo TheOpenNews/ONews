@@ -18,14 +18,15 @@ class NewsHeadlinesPage extends StatefulWidget {
 class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
   late ScrollController scrollController;
   bool stopLoadingNews = false;
+  bool networkError = false;
 
   @override
   void initState() {
     scrollController = ScrollController();
     scrollController.addListener(() {
-      if (scrollController.offset ==
-          scrollController.position.maxScrollExtent) {
+      if (scrollController.offset == scrollController.position.maxScrollExtent) {
         if (stopLoadingNews) return;
+        if (networkError) return;
         context.read<NewsCardBloc>().add(NextPage());
       }
     });
@@ -49,6 +50,13 @@ class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
     context.read<NewsCardBloc>().add(SelectPage(1));
   }
 
+  void onTryAgain() {
+    networkError = false;
+    context
+        .read<NewsCardBloc>()
+        .add(context.read<NewsCardBloc>().state.latestEvent);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<NewsCardBloc, NewsCardState>(
@@ -57,6 +65,19 @@ class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
           setState(() {
             stopLoadingNews = state.newsDone;
           });
+        }
+        if (state.loadingStatus == NewsCardsLoadingStatus.Failed && !networkError) {
+          setState(() {
+            networkError = true;
+          });
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "Failed to load headlines, check your interent connection",
+              ),
+            ),
+          );
         }
       },
       builder: (context, state) {
@@ -75,36 +96,57 @@ class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
                   ),
                 ),
                 Expanded(
-                  child: state.newsCards.length == 0
+                  child: state.newsCards.length == 0 &&
+                          state.loadingStatus == NewsCardsLoadingStatus.Loading
                       ? Center(
                           child: CircularProgressIndicator(),
                         )
-                      : ListView.builder(
-                          controller: scrollController,
-                          itemBuilder: (context, index) {
-                            if (index < state.newsCards.length) {
-                              return HeadlineCardWidget(
-                                card: state.newsCards[index],
-                              );
-                            } else {
-                              Widget widget = CircularProgressIndicator();
-                              if (state.newsDone) {
-                                widget = Text(
-                                  ". . .",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                );
-                              }
-                              return Container(
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.only(top: 8, bottom: 8),
-                                child: widget,
-                              );
-                            }
-                          },
-                          itemCount: state.newsCards.length + 1,
-                        ),
+                      : state.newsCards.length == 0 &&
+                              state.loadingStatus ==
+                                  NewsCardsLoadingStatus.Failed
+                          ? Align(
+                              alignment: Alignment.center,
+                              child: ElevatedButton(
+                                onPressed: onTryAgain,
+                                child: Text("Try Again"),
+                              ),
+                            )
+                          : ListView.builder(
+                              controller: scrollController,
+                              itemBuilder: (context, index) {
+                                if (index < state.newsCards.length) {
+                                  return HeadlineCardWidget(
+                                    card: state.newsCards[index],
+                                  );
+                                } else {
+                                  Widget widget = CircularProgressIndicator();
+
+                                  if (state.loadingStatus ==
+                                      NewsCardsLoadingStatus.Failed) {
+                                    widget = Align(
+                                      alignment: Alignment.center,
+                                      child: ElevatedButton(
+                                        onPressed: onTryAgain,
+                                        child: Text("Try Again"),
+                                      ),
+                                    );
+                                  } else if (state.newsDone) {
+                                    widget = Text(
+                                      ". . .",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    );
+                                  }
+                                  return Container(
+                                    alignment: Alignment.center,
+                                    margin: EdgeInsets.only(top: 8, bottom: 8),
+                                    child: widget,
+                                  );
+                                }
+                              },
+                              itemCount: state.newsCards.length + 1,
+                            ),
                 ),
               ],
             ),

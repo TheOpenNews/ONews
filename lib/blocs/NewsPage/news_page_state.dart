@@ -1,6 +1,6 @@
 part of 'news_page_bloc.dart';
 
-enum PageNewsLoadingStatus { Loading, None }
+enum PageNewsLoadingStatus { Loading, None , Failed }
 
 class NewsPageState extends Equatable {
   NewsCard card;

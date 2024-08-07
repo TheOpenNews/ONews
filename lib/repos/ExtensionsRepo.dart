@@ -13,7 +13,7 @@ class ExtensionsRepo {
 
   ExtensionsRepo() {}
 
-  Future<void> loadExtensionInfoList() async {
+  Future<List<ExtensionInfo>> loadExtensionInfoList() async {
     Response res = await dio.get(Urls.ExtensionInfo);
     Map jsonData = await jsonDecode(res.data);
     assert(jsonData.keys.contains("Extensions"));
@@ -31,7 +31,7 @@ class ExtensionsRepo {
       );
     });
 
-    debugPrint(extensionsInfoList.toString());
+  return extensionsInfoList;
   }
 
 

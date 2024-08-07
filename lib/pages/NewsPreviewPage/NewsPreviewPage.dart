@@ -21,10 +21,25 @@ class _NewsPageState extends State<NewsPreviewPage> {
     super.initState();
   }
 
+  void onTryAgain() {
+    context.read<NewsPageBloc>().add(LoadNewsPage());
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NewsPageBloc, NewsPageState>(
+    return BlocConsumer<NewsPageBloc, NewsPageState>(
+      listener: (context, state) {
+        if (state.loadingStatus == PageNewsLoadingStatus.Failed) {
+          ScaffoldMessenger.of(context).clearSnackBars();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "Failed to load page, check your interent connection",
+              ),
+            ),
+          );
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           appBar: _appbar(state),
@@ -32,11 +47,19 @@ class _NewsPageState extends State<NewsPreviewPage> {
             padding: EdgeInsets.only(top: 16, left: 16, right: 16),
             child: state.loadingStatus == PageNewsLoadingStatus.Loading
                 ? Center(child: CircularProgressIndicator())
-                : SingleChildScrollView(
-                    child: PageBodyWidget(
-                      news: state.news,
-                    ),
-                  ),
+                : state.loadingStatus == PageNewsLoadingStatus.Failed
+                    ? Align(
+                      alignment: Alignment.center,
+                      child: ElevatedButton(
+                        onPressed: onTryAgain,
+                        child: Text("Try Again"),
+                      ),
+                    )
+                    : SingleChildScrollView(
+                        child: PageBodyWidget(
+                          news: state.news,
+                        ),
+                      ),
           ),
         );
       },

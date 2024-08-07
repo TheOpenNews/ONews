@@ -1,6 +1,7 @@
 import 'package:anynews/blocs/ExtensionDownload/extension_download_bloc.dart';
 import 'package:anynews/blocs/Permission/permission_cubit.dart';
 import 'package:anynews/modules/ExtensionInfo.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -37,8 +38,8 @@ class DownloadExtensionsCardWidget extends StatelessWidget {
                 width: 32,
                     height: 32,
 
-                child: Image.network(
-                  info.logoURL,
+                child: CachedNetworkImage(
+                  imageUrl : info.logoURL,
                     fit: BoxFit.fill
                 ),
               ),
