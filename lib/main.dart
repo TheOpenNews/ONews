@@ -8,7 +8,7 @@ import 'package:anynews/consts/Paths.dart';
 import 'package:anynews/consts/Routes.dart';
 import 'package:anynews/pages/BottomBarNavPageManager.dart';
 import 'package:anynews/pages/NewsHeadlinesPage/NewsHeadlinesPage.dart';
-import 'package:anynews/pages/NewsPage.dart';
+import 'package:anynews/pages/NewsPreviewPage/NewsPreviewPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -55,7 +55,7 @@ class anynews extends StatelessWidget {
           routes: {
             Routes.Home: (context) => BottomBarNavPageManager(),
             Routes.NewsHeadlines: (context) => NewsHeadlinesPage(),
-            Routes.NewsPage: (context) => NewsPage()
+            Routes.NewsPreviewPage: (context) => NewsPreviewPage()
           },
         ),
       ),

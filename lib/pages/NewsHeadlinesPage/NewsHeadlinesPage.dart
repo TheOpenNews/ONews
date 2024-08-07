@@ -53,11 +53,10 @@ class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
   Widget build(BuildContext context) {
     return BlocConsumer<NewsCardBloc, NewsCardState>(
       listener: (context, state) {
-        if(state.newsDone != stopLoadingNews) {
-            setState(() {
-              stopLoadingNews = state.newsDone;
-            });
-
+        if (state.newsDone != stopLoadingNews) {
+          setState(() {
+            stopLoadingNews = state.newsDone;
+          });
         }
       },
       builder: (context, state) {
@@ -76,31 +75,36 @@ class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
                   ),
                 ),
                 Expanded(
-                  child: ListView.builder(
-                    controller: scrollController,
-                    itemBuilder: (context, index) {
-                      if (index < state.newsCards.length) {
-                        return HeadlineCardWidget(
-                          card: state.newsCards[index],
-                        );
-                      } else {
-                        Widget widget = CircularProgressIndicator();
-                        if (state.newsDone) {
-                          widget = Text(
-                            ". . .",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          );
-                        }
-                        return Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.only(top: 8, bottom: 8),
-                          child: widget,
-                        );
-                      }
-                    },
-                    itemCount: state.newsCards.length + 1,
-                  ),
+                  child: state.newsCards.length == 0
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : ListView.builder(
+                          controller: scrollController,
+                          itemBuilder: (context, index) {
+                            if (index < state.newsCards.length) {
+                              return HeadlineCardWidget(
+                                card: state.newsCards[index],
+                              );
+                            } else {
+                              Widget widget = CircularProgressIndicator();
+                              if (state.newsDone) {
+                                widget = Text(
+                                  ". . .",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                );
+                              }
+                              return Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(top: 8, bottom: 8),
+                                child: widget,
+                              );
+                            }
+                          },
+                          itemCount: state.newsCards.length + 1,
+                        ),
                 ),
               ],
             ),

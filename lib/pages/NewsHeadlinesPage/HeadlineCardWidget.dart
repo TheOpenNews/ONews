@@ -3,7 +3,7 @@ import 'package:anynews/NativeInterface.dart';
 import 'package:anynews/blocs/NewsPage/news_page_bloc.dart';
 import 'package:anynews/consts/Routes.dart';
 import 'package:anynews/modules/NewsCard.dart';
-import 'package:anynews/pages/NewsPage.dart';
+import 'package:anynews/pages/NewsPreviewPage/NewsPreviewPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,7 +16,7 @@ class HeadlineCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
   void onSelectHeadline() {
     context.read<NewsPageBloc>().add(ShowNewsPage(card));
-    Navigator.pushNamed(context, Routes.NewsPage);
+    Navigator.pushNamed(context, Routes.NewsPreviewPage);
   }
 
     return GestureDetector(

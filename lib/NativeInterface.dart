@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:anynews/consts/DateFormat.dart';
 import 'package:anynews/modules/ExtensionInfo.dart';
 import 'package:anynews/modules/NewsCard.dart';
+import 'package:anynews/modules/News.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
@@ -30,7 +32,8 @@ class NativeInterface {
     return data;
   }
 
-  static Future<List<NewsCard>> loadNewsHeadlines(ExtensionInfo info,{int count = 6, int page = 1, String category = "Politics"}) async {
+  static Future<List<NewsCard>> loadNewsHeadlines(ExtensionInfo info,
+      {int count = 6, int page = 1, String category = "Politics"}) async {
     _init();
     var pkgInfoList = await _platform!.invokeMethod<List>("loadNewsHeadlines", {
       "extensionName": info.name,
@@ -50,12 +53,33 @@ class NativeInterface {
     return newsCards;
   }
 
-  static Future<void> scrapeUrl(String url) async {
+  static Future<News> scrapeUrl(String url) async {
     _init();
-        var pkgInfoList = await _platform!.invokeMethod<Map>("scrapeUrl", {
+    var newsPageMap = await _platform!.invokeMethod<Map>("scrapeUrl", {
       "extensionName": "S2JNews",
       "url": url,
     });
-    debugPrint(pkgInfoList.toString());
+
+    News news = News(content: []);
+    Map<String,String> header;
+    (newsPageMap!["header"] as Map).entries.forEach((entry) { 
+      switch(entry.key) {
+        case HEADER_TITLE: news.title = entry.value; break;
+        case HEADER_AUTHOR: news.author = entry.value; break;
+        case HEADER_AUTHOR_LINK: news.author_link = entry.value; break;
+        case HEADER_DATE: news.date = DDateFormat.DefaultDF.format(DateTime.parse(entry.value)); break;
+      }
+    });
+
+    (newsPageMap!["content"] as List).forEach((item) { 
+      MapEntry elem = (item as Map).entries.first;
+      switch (elem.key) {
+        case CONTENT_IMAGE: news.content.add(MapEntry(ContentType.img, elem.value)); break;
+        case CONTENT_PARAGRAPH: news.content.add(MapEntry(ContentType.p, elem.value)); break;
+      }
+    });
+
+    return news;
   }
+
 }

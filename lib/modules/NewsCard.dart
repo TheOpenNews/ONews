@@ -1,3 +1,4 @@
+import 'package:anynews/consts/DateFormat.dart';
 import 'package:equatable/equatable.dart';
 
 class NewsCard extends Equatable {
@@ -15,7 +16,7 @@ class NewsCard extends Equatable {
   factory NewsCard.fromMap(Map<String, String> map) {
     return NewsCard(
       map["title"] as String,
-      map["date"] as String,
+      DDateFormat.DefaultDF.format(DateTime.parse(map["date"] as String)),
       map["imgURL"] as String,
       map["link"] as String,
     );

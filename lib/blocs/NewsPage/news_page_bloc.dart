@@ -1,14 +1,16 @@
 import 'package:anynews/NativeInterface.dart';
 import 'package:anynews/blocs/NewsCard/news_card_bloc.dart';
+import 'package:anynews/modules/News.dart';
 import 'package:anynews/modules/NewsCard.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 part 'news_page_event.dart';
 part 'news_page_state.dart';
 
 class NewsPageBloc extends Bloc<NewsPageEvent, NewsPageState> {
-  NewsPageBloc() : super(NewsPageState(card: NewsCard("","","",""))) {
+  NewsPageBloc() : super(NewsPageState(card: NewsCard("","","",""),news: News(content: []))) {
     on<ShowNewsPage>(onShowNewsPage);
     on<LoadNewsPage>(onLoadNewsPage);
     
@@ -21,8 +23,9 @@ class NewsPageBloc extends Bloc<NewsPageEvent, NewsPageState> {
 
   void onLoadNewsPage(event,emit) async {
     emit(state.copyWith(loadingStatus: PageNewsLoadingStatus.Loading));
-    await NativeInterface.scrapeUrl(state.card.link);
-    emit(state.copyWith(loadingStatus: PageNewsLoadingStatus.None));
+    News news =  await NativeInterface.scrapeUrl(state.card.link);
+    debugPrint(news.toString());
+    emit(state.copyWith(loadingStatus: PageNewsLoadingStatus.None, news : news));
   }
 }
 
