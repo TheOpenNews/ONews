@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:anynews/consts/DateFormat.dart';
-import 'package:anynews/modules/ExtensionInfo.dart';
-import 'package:anynews/modules/NewsCard.dart';
-import 'package:anynews/modules/News.dart';
+import 'package:onews/consts/DateFormat.dart';
+import 'package:onews/modules/ExtensionInfo.dart';
+import 'package:onews/modules/NewsCard.dart';
+import 'package:onews/modules/News.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,12 +14,15 @@ class NativeInterface {
 
   static void _init() {
     if (_platform != null) return;
-    _platform = MethodChannel("anynews/native.interface");
+    _platform = MethodChannel("onews/native.interface");
   }
 
-  static Future<Map<String, Map<String, dynamic>>> loadLocalExtensions() async {
+  static Future<Map<String, Map<String, dynamic>>?> loadLocalExtensions() async {
     _init();
-    var pkgInfoList = await _platform!.invokeMethod<Map>("loadLocalExtensions");
+    var pkgInfoList = await _platform!.invokeMethod<Map?>("loadLocalExtensions");
+    if(pkgInfoList == null) {
+      return null;
+    }
 
     // parsing out from kotlin map to more nice dart map
     Map<String, Map<String, dynamic>> data = Map<String, Map<String, dynamic>>();
@@ -90,3 +93,5 @@ class NativeInterface {
   }
 
 }
+
+

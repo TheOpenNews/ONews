@@ -1,33 +1,33 @@
 import 'dart:io';
 
-import 'package:anynews/blocs/ExtensionDownload/extension_download_bloc.dart';
-import 'package:anynews/blocs/NewsCard/news_card_bloc.dart';
-import 'package:anynews/blocs/NewsPage/news_page_bloc.dart';
-import 'package:anynews/blocs/Permission/permission_cubit.dart';
-import 'package:anynews/consts/Paths.dart';
-import 'package:anynews/consts/Routes.dart';
-import 'package:anynews/pages/BottomBarNavPageManager.dart';
-import 'package:anynews/pages/NewsHeadlinesPage/NewsHeadlinesPage.dart';
-import 'package:anynews/pages/NewsPreviewPage/NewsPreviewPage.dart';
+import 'package:onews/blocs/ExtensionDownload/extension_download_bloc.dart';
+import 'package:onews/blocs/NewsCard/news_card_bloc.dart';
+import 'package:onews/blocs/NewsPage/news_page_bloc.dart';
+import 'package:onews/blocs/Permission/permission_cubit.dart';
+import 'package:onews/consts/Paths.dart';
+import 'package:onews/consts/Routes.dart';
+import 'package:onews/pages/BottomBarNavPageManager.dart';
+import 'package:onews/pages/NewsHeadlinesPage/NewsHeadlinesPage.dart';
+import 'package:onews/pages/NewsPreviewPage/NewsPreviewPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:anynews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
-import 'package:anynews/blocs/Extensions/extensions_bloc.dart';
-import 'package:anynews/pages/ExtensionsPage/ExtensionsPage.dart';
-import 'package:anynews/pages/HomePage.dart';
-import 'package:anynews/repos/ExtensionsRepo.dart';
+import 'package:onews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
+import 'package:onews/blocs/Extensions/extensions_bloc.dart';
+import 'package:onews/pages/ExtensionsPage/ExtensionsPage.dart';
+import 'package:onews/pages/HomePage.dart';
+import 'package:onews/repos/ExtensionsRepo.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterDownloader.initialize(debug: false, ignoreSsl: true);
   Paths.init();
 
-  runApp(anynews());
+  runApp(onews());
 }
 
-class anynews extends StatelessWidget {
-  anynews({super.key});
+class onews extends StatelessWidget {
+  onews({super.key});
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(

@@ -1,7 +1,7 @@
-import 'package:anynews/NativeInterface.dart';
-import 'package:anynews/blocs/NewsCard/news_card_bloc.dart';
-import 'package:anynews/modules/News.dart';
-import 'package:anynews/modules/NewsCard.dart';
+import 'package:onews/NativeInterface.dart';
+import 'package:onews/blocs/NewsCard/news_card_bloc.dart';
+import 'package:onews/modules/News.dart';
+import 'package:onews/modules/NewsCard.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';

@@ -1,6 +1,6 @@
-import 'package:anynews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
-import 'package:anynews/pages/ExtensionsPage/ExtensionsPage.dart';
-import 'package:anynews/pages/HomePage.dart';
+import 'package:onews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
+import 'package:onews/pages/ExtensionsPage/ExtensionsPage.dart';
+import 'package:onews/pages/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

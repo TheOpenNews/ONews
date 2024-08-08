@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:anynews/consts/Urls.dart';
-import 'package:anynews/modules/ExtensionInfo.dart';
+import 'package:onews/consts/Urls.dart';
+import 'package:onews/modules/ExtensionInfo.dart';
 
 class ExtensionsRepo {
   List<ExtensionInfo> extensionsInfoList = [];

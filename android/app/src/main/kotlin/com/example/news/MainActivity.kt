@@ -1,4 +1,4 @@
-package com.example.anynews
+package com.example.onews
 
 
 import android.content.Context
@@ -10,6 +10,7 @@ import android.graphics.drawable.AdaptiveIconDrawable
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.util.Base64
+import android.os.Build
 import androidx.annotation.NonNull
 import anynews.extension.shared.ExtensionAbstract
 import anynews.extension.shared.NewsCard
@@ -24,7 +25,7 @@ import java.util.concurrent.Executors
 
 
 class MainActivity : FlutterActivity() {
-    private val CHANNEL = "anynews/native.interface"
+    private val CHANNEL = "onews/native.interface"
     private  val ExtensionMap  : HashMap<String,ExtensionAbstract> = HashMap<String,ExtensionAbstract>();
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -59,15 +60,31 @@ class MainActivity : FlutterActivity() {
     }
     fun loadLocalExtensions(result : MethodChannel.Result) {
         val context: Context = this.applicationContext
-        val pkgManager = context.packageManager
-        val pkgs = pkgManager.getInstalledPackages(PackageManager.GET_META_DATA)
-        val anyNewsPkgs: ArrayList<PackageInfo> = ArrayList<PackageInfo>();
+        var pkgManager : PackageManager
+        var pkgs : List<PackageInfo> 
+        var S : String = "";
+        try {
+            pkgManager = context.packageManager
+            if(pkgManager == null) {
+                result.success(null);
+                return;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                pkgs = pkgManager.getInstalledPackages(PackageManager.PackageInfoFlags.of(PackageManager.GET_META_DATA.toLong()))
+            } else {
+                pkgs = packageManager.getInstalledPackages(PackageManager.GET_META_DATA);
+            }            
+        }catch(e : Exception) {
+            result.success(null);
+            return;
+        }
+        val anynewsPkgs: ArrayList<PackageInfo> = ArrayList<PackageInfo>();
 
         var output : HashMap<String,HashMap<String,Any>> = HashMap();
         pkgs.asSequence().forEach {
             if (it.applicationInfo.metaData != null) {
                 if (it.applicationInfo.metaData.containsKey("isAnyNewsExtension")) {
-                    anyNewsPkgs.add(it);
+                    anynewsPkgs.add(it);
                     var info : HashMap<String,Any> = HashMap();
 
                     val className : String =  it.applicationInfo.metaData.getString("className")!!
@@ -79,17 +96,18 @@ class MainActivity : FlutterActivity() {
                     info.put("name",name);
                     info.put("logoURL",logoURL);
                     info.put("siteURL",siteURL);
-                    info.put("base64Icon",base64Icon);
+                   info.put("base64Icon",base64Icon);
+
 
                     val classLoader = PathClassLoader(it.applicationInfo.sourceDir,null,context.classLoader)
                     val clazz  = Class.forName("anynews.extension.s2jnews.S2JNews",false,classLoader)
-                    val extension : ExtensionAbstract =  clazz.getDeclaredConstructor().newInstance() as ExtensionAbstract
+                   val extension : ExtensionAbstract =  clazz.getDeclaredConstructor().newInstance() as ExtensionAbstract
 
-                    info.put("categories",extension.categories);
-                    output.put(className,info);
+                   info.put("categories",extension.categories);
+                   output.put(className,info);
 
 
-                    ExtensionMap.put(className,extension)
+                   ExtensionMap.put(className,extension)
                 }
             }
         }

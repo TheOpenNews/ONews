@@ -1,9 +1,9 @@
-import 'package:anynews/NativeInterface.dart';
-import 'package:anynews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
-import 'package:anynews/blocs/NewsCard/news_card_bloc.dart';
-import 'package:anynews/modules/NewsCard.dart';
-import 'package:anynews/pages/NewsHeadlinesPage/CategoryFilterWidget.dart';
-import 'package:anynews/pages/NewsHeadlinesPage/HeadlineCardWidget.dart';
+import 'package:onews/NativeInterface.dart';
+import 'package:onews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
+import 'package:onews/blocs/NewsCard/news_card_bloc.dart';
+import 'package:onews/modules/NewsCard.dart';
+import 'package:onews/pages/NewsHeadlinesPage/CategoryFilterWidget.dart';
+import 'package:onews/pages/NewsHeadlinesPage/HeadlineCardWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

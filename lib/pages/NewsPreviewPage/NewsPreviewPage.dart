@@ -1,8 +1,8 @@
-import 'package:anynews/blocs/NewsPage/news_page_bloc.dart';
-import 'package:anynews/modules/News.dart';
-import 'package:anynews/pages/NewsPreviewPage/ImageElemWidget.dart';
-import 'package:anynews/pages/NewsPreviewPage/PageBodyWidget.dart';
-import 'package:anynews/pages/NewsPreviewPage/TextElemWidget.dart';
+import 'package:onews/blocs/NewsPage/news_page_bloc.dart';
+import 'package:onews/modules/News.dart';
+import 'package:onews/pages/NewsPreviewPage/ImageElemWidget.dart';
+import 'package:onews/pages/NewsPreviewPage/PageBodyWidget.dart';
+import 'package:onews/pages/NewsPreviewPage/TextElemWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';

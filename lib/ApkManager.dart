@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:android_package_installer/android_package_installer.dart';
-import 'package:anynews/consts/Paths.dart';
+import 'package:onews/consts/Paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';

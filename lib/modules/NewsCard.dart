@@ -1,4 +1,4 @@
-import 'package:anynews/consts/DateFormat.dart';
+import 'package:onews/consts/DateFormat.dart';
 import 'package:equatable/equatable.dart';
 
 class NewsCard extends Equatable {

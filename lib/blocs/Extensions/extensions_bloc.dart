@@ -3,14 +3,14 @@ import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:android_package_installer/android_package_installer.dart';
-import 'package:anynews/ApkManager.dart';
-import 'package:anynews/modules/ExtensionInfo.dart';
+import 'package:onews/ApkManager.dart';
+import 'package:onews/modules/ExtensionInfo.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:meta/meta.dart';
-import 'package:anynews/repos/ExtensionsRepo.dart';
+import 'package:onews/repos/ExtensionsRepo.dart';
 import 'package:path_provider/path_provider.dart';
 
 part 'extensions_event.dart';

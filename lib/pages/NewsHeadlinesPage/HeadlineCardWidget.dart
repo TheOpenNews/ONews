@@ -1,8 +1,8 @@
-import 'package:anynews/NativeInterface.dart';
-import 'package:anynews/blocs/NewsPage/news_page_bloc.dart';
-import 'package:anynews/consts/Routes.dart';
-import 'package:anynews/modules/NewsCard.dart';
-import 'package:anynews/pages/NewsPreviewPage/NewsPreviewPage.dart';
+import 'package:onews/NativeInterface.dart';
+import 'package:onews/blocs/NewsPage/news_page_bloc.dart';
+import 'package:onews/consts/Routes.dart';
+import 'package:onews/modules/NewsCard.dart';
+import 'package:onews/pages/NewsPreviewPage/NewsPreviewPage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

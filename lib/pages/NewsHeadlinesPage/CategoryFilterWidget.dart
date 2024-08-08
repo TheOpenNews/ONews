@@ -1,4 +1,4 @@
-import 'package:anynews/consts/Colors.dart';
+import 'package:onews/consts/Colors.dart';
 import 'package:flutter/material.dart';
 
 class CategoryFilterWidget extends StatefulWidget {

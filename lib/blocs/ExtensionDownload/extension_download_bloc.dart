@@ -1,5 +1,5 @@
-import 'package:anynews/ApkManager.dart';
-import 'package:anynews/consts/Paths.dart';
+import 'package:onews/ApkManager.dart';
+import 'package:onews/consts/Paths.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';

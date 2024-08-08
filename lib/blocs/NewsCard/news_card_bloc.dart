@@ -1,11 +1,12 @@
 import 'dart:ffi';
 
-import 'package:anynews/NativeInterface.dart';
-import 'package:anynews/modules/ExtensionInfo.dart';
-import 'package:anynews/modules/NewsCard.dart';
+import 'package:onews/NativeInterface.dart';
+import 'package:onews/modules/ExtensionInfo.dart';
+import 'package:onews/modules/NewsCard.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 part 'news_card_event.dart';
 part 'news_card_state.dart';
@@ -24,6 +25,7 @@ class NewsCardBloc extends Bloc<NewsCardEvent, NewsCardState> {
         extensionInfo: event.info,
         loadingStatus: NewsCardsLoadingStatus.Loading));
     List<NewsCard>? cards = await NativeInterface.loadNewsHeadlines(event.info,category:  event.info.categories[0]);
+    
 
     if (cards == null) {
       emit(state.copyWith(loadingStatus: NewsCardsLoadingStatus.Failed));

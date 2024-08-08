@@ -1,9 +1,11 @@
-import 'package:anynews/NativeInterface.dart';
+import 'package:onews/NativeInterface.dart';
+import 'package:onews/blocs/Extensions/extensions_bloc.dart';
+import 'package:onews/repos/ExtensionsRepo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:anynews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
-import 'package:anynews/modules/NewsCard.dart';
-import 'package:anynews/widgets/BottomNavBarWidget.dart';
+import 'package:onews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
+import 'package:onews/modules/NewsCard.dart';
+import 'package:onews/widgets/BottomNavBarWidget.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -14,7 +16,7 @@ class HomePage extends StatelessWidget {
     return BlocBuilder<BottomNavBarCubit, BottomNavBarState>(
       builder: (context, state) {
         return Scaffold(
-      backgroundColor: Color(0xFFf4f4f6),
+          backgroundColor: Color(0xFFf4f4f6),
           appBar: AppBar(
             backgroundColor: Color(0xFF13a2cc),
             title: Text(
@@ -30,8 +32,18 @@ class HomePage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Sorry not implemented yet",style: TextStyle(fontSize: 20,),),
-                Text(":P",style: TextStyle(fontSize: 20,),),
+                Text(
+                  "Sorry not implemented yet",
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                Text(
+                  ":P",
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
               ],
             ),
           ),

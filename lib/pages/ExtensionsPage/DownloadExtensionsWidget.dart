@@ -1,8 +1,8 @@
-import 'package:anynews/blocs/Extensions/extensions_bloc.dart';
-import 'package:anynews/blocs/Permission/permission_cubit.dart';
-import 'package:anynews/pages/ExtensionsPage/DownloadExtensionsCardWidget.dart';
-import 'package:anynews/pages/ExtensionsPage/PermissionWidget.dart';
-import 'package:anynews/repos/ExtensionsRepo.dart';
+import 'package:onews/blocs/Extensions/extensions_bloc.dart';
+import 'package:onews/blocs/Permission/permission_cubit.dart';
+import 'package:onews/pages/ExtensionsPage/DownloadExtensionsCardWidget.dart';
+import 'package:onews/pages/ExtensionsPage/PermissionWidget.dart';
+import 'package:onews/repos/ExtensionsRepo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

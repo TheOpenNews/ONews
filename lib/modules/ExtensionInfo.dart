@@ -1,4 +1,4 @@
-import 'package:anynews/consts/Urls.dart';
+import 'package:onews/consts/Urls.dart';
 import 'package:equatable/equatable.dart';
 
 class ExtensionInfo extends Equatable {
