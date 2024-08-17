@@ -1,8 +1,8 @@
-import 'package:onews/NativeInterface.dart';
+import 'dart:math';
+
 import 'package:onews/blocs/NewsPage/news_page_bloc.dart';
 import 'package:onews/consts/Routes.dart';
 import 'package:onews/modules/NewsCard.dart';
-import 'package:onews/pages/NewsPreviewPage/NewsPreviewPage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,41 +23,63 @@ class HeadlineCardWidget extends StatelessWidget {
       child: Container(
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.all(8),
-        margin: EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+        margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(color: Colors.grey.withOpacity(0.2)),
-          borderRadius: BorderRadius.circular(2),
+          borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
               blurRadius: 4,
-              color: Colors.grey.withOpacity(0.1),
+              color: Colors.grey.withOpacity(0.3),
               offset: Offset(0, 2),
             )
           ],
         ),
-        child: Column(
+        child: Row(
           children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                card.date,
-                textAlign: TextAlign.start,
+            Container(
+              clipBehavior: Clip.hardEdge,
+              padding: EdgeInsets.all(1),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: CachedNetworkImage(
+                  imageUrl: card.imgURL,
+                  width: 90,
+                  height: 90,
+                  alignment: Alignment.center,
+                  fit: BoxFit.cover,
+                  errorWidget: (context, url, error) => Icon(
+                    Icons.error,
+                    color: Colors.black,
+                  ),
+                ),
               ),
             ),
-            SizedBox(height: 4),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                card.title,
-                textAlign: TextAlign.start,
+            SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    card.date,
+                    style: TextStyle(
+                      fontVariations: [FontVariation("wght", 500)],
+                      color: Colors.black.withOpacity(0.6),
+                    ),
+                  ),
+                  Text(
+                    card.title.length > 60 ? card.title.substring(0,60) + "..." : card.title,
+                    style: TextStyle(
+                      fontVariations: [FontVariation("wght", 600)],
+                    ),
+                  ),
+                ],
               ),
-            ),
-            SizedBox(height: 16),
-            CachedNetworkImage(
-              imageUrl: card.imgURL,
-              alignment: Alignment.center,
-              errorWidget: (context, url, error) => Icon(Icons.error,color: Colors.black,),
             ),
           ],
         ),

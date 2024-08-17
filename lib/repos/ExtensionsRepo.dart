@@ -26,10 +26,11 @@ class ExtensionsRepo {
         ExtensionInfo(
           info["name"] as String,
           info["siteURL"] as String,
-          info["logoURL"] as String,
+          Urls.ExtensionApkDir + "/" + info["logoURL"] as String,
           info["apk"] as String,
           "",
-          []
+          categories: [],
+          version:  info["version"] as String,
         ),
       );
     });
@@ -45,10 +46,8 @@ class ExtensionsRepo {
       (value["categories"] as List).forEach((cat) {
           categories.add(cat);
       });
-      debugPrint(categories.toString());
-      localExtensions.add(ExtensionInfo(key, value["siteURL"] as String, value["logoURL"] as String, "",value["base64Icon"] as String, categories));
+      localExtensions.add(ExtensionInfo(key,"",Urls.ExtensionApkDir + "/" +  value["logoURL"] as String, "", "", categories:  categories,version: value["version"] as String));
     });
-    debugPrint(localExtensions.toString());
   }
 
 }

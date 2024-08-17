@@ -7,17 +7,18 @@ class ExtensionInfo extends Equatable {
   String siteURL = "";
   String apkURL = "";
   String apkName = "";
+  String version = "";
   String base64Icon = "";
   List<String> categories = [];
   
 
-  ExtensionInfo(this.name, this.siteURL, this.logoURL, this.apkName,this.base64Icon,this.categories) {
+  ExtensionInfo(this.name, this.siteURL, this.logoURL, this.apkName,this.base64Icon,{this.categories = const [],this.version = ""}) {
     this.apkURL = Urls.ExtensionApkDir + "/" + this.apkName;
   }
 
   @override
   String toString() {
-    return "ExtensionInfo(name: $name, siteURL: ${siteURL.substring(0, 16)}...)";
+    return "ExtensionInfo(name: $name, siteURL: ...)";
   }
 
   @override
@@ -27,6 +28,7 @@ class ExtensionInfo extends Equatable {
         siteURL,
         apkURL,
         base64Icon,
-        categories
+        categories,
+        version
       ];
 }

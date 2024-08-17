@@ -18,6 +18,8 @@ class News extends Equatable {
   String author;
   String author_link;
   String date;
+  String thumbnail;
+  
   List<MapEntry<ContentType, String>> content;
 
   
@@ -27,6 +29,7 @@ class News extends Equatable {
     this.author = "",
     this.author_link = "",
     this.date = "",
+    this.thumbnail = "",
   });
 
 
@@ -34,9 +37,12 @@ class News extends Equatable {
   @override
   List<Object?> get props => [
         title,
+        thumbnail,
         author,
         author_link,
         date,
         content,
+    
+
       ];
 }

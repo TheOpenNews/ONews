@@ -45,6 +45,8 @@ dependencies:
   android_package_installer: ^0.0.2
   intl: ^0.19.0
   cached_network_image: ^3.4.0
+  flutter_svg: ^2.0.10+1
+  scroll_snap_list: ^0.9.1
 
 dev_dependencies:
   flutter_test:
@@ -69,8 +71,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -84,11 +86,11 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+    - family: Raleway
+      fonts:
+        - asset: fonts/Raleway/Raleway-Italic-VariableFont_wght.ttf
+        - asset: fonts/Raleway/Raleway-VariableFont_wght.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

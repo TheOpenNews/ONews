@@ -17,10 +17,8 @@ class LocalExtensionsWidget extends StatefulWidget {
 
 class _LocalExtensionsWidgetState extends State<LocalExtensionsWidget> {
   void loadLocalExtensions() async {
-    var data = await NativeInterface.loadLocalExtensions();
-    context.read<ExtensionsRepo>().loadLocalExtensions(data!);
     context.read<ExtensionsBloc>().add(
-        LoadLocalExtension(context.read<ExtensionsRepo>().localExtensions));
+        LoadLocalExtension());
   }
 
   @override

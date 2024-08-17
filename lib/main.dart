@@ -6,7 +6,8 @@ import 'package:onews/blocs/NewsPage/news_page_bloc.dart';
 import 'package:onews/blocs/Permission/permission_cubit.dart';
 import 'package:onews/consts/Paths.dart';
 import 'package:onews/consts/Routes.dart';
-import 'package:onews/pages/BottomBarNavPageManager.dart';
+import 'package:onews/pages/ExtensionLibaryPage.dart';
+import 'package:onews/pages/ExtensionsPage.dart';
 import 'package:onews/pages/NewsHeadlinesPage/NewsHeadlinesPage.dart';
 import 'package:onews/pages/NewsPreviewPage/NewsPreviewPage.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +15,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:onews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
 import 'package:onews/blocs/Extensions/extensions_bloc.dart';
-import 'package:onews/pages/ExtensionsPage/ExtensionsPage.dart';
 import 'package:onews/pages/HomePage.dart';
+import 'package:onews/pages/PermissionsPage.dart';
+import 'package:onews/pages/PlaceholderPage.dart';
 import 'package:onews/repos/ExtensionsRepo.dart';
 
 void main() async {
@@ -46,14 +48,40 @@ class onews extends StatelessWidget {
                   ExtensionsBloc(context.read<ExtensionsRepo>())),
         ],
         child: MaterialApp(
-          title: 'Any News',
+          title: 'ONews',
           theme: ThemeData(
+            fontFamily: "Raleway",
+            textTheme: Theme.of(context).textTheme.apply(fontFamily: 'Raleway'),
+            pageTransitionsTheme: PageTransitionsTheme(
+              builders: {
+                TargetPlatform.android: ZoomPageTransitionsBuilder(),
+              },
+            ),
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
             useMaterial3: true,
           ),
+          debugShowCheckedModeBanner: false,
           initialRoute: Routes.Home,
           routes: {
-            Routes.Home: (context) => BottomBarNavPageManager(),
+            Routes.Home: (context) =>
+                BlocBuilder<BottomNavBarCubit, BottomNavBarState>(
+                  builder: (context, state) {
+                    return [
+                      HomePage(),
+                      ExtensionLibaryPage(),
+                      PlaceholderPage(),
+                      BlocBuilder<PermissionCubit, PermissionState>(
+                        builder: (context, state) {
+                          if (!((state.storagePermission &&
+                              state.packagePermission) || true )) {
+                            return PermissionsPage();
+                          }
+                          return ExtensionsPage();
+                        },
+                      ),
+                    ][state.curIdx];
+                  },
+                ),
             Routes.NewsHeadlines: (context) => NewsHeadlinesPage(),
             Routes.NewsPreviewPage: (context) => NewsPreviewPage()
           },

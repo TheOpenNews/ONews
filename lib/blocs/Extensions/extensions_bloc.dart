@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:android_package_installer/android_package_installer.dart';
 import 'package:onews/ApkManager.dart';
+import 'package:onews/NativeInterface.dart';
 import 'package:onews/modules/ExtensionInfo.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -22,23 +23,25 @@ class ExtensionsBloc extends Bloc<ExtensionsEvent, ExtensionsState> {
   ExtensionsBloc(this._extensionsRepo) : super(ExtensionsState()) {
     on<LoadExtensionsInfo>(onLoadExtensionsInfo);
     on<LoadLocalExtension>(onLoadLocalExtension);
-    
   }
   void onLoadExtensionsInfo(event, emit) async {
     emit(state.copyWith(loadState: ExtensionsLoadState.Loading));
     var extensionsInfoList;
     try {
-      extensionsInfoList =  await _extensionsRepo.loadExtensionInfoList();
+      extensionsInfoList = await _extensionsRepo.loadExtensionInfoList();
     } catch (e) {
       emit(state.copyWith(loadState: ExtensionsLoadState.Error));
       return;
     }
-    emit(state.copyWith(extensionInfo: extensionsInfoList, loadState: ExtensionsLoadState.None));
+    emit(state.copyWith(
+        extensionInfo: extensionsInfoList,
+        loadState: ExtensionsLoadState.None));
   }
 
-  void onLoadLocalExtension(LoadLocalExtension event, emit) {
-    emit(state.copyWith(localExtensions: event.localExtensions));
+  void onLoadLocalExtension(LoadLocalExtension event, emit) async {
+    emit(state.copyWith(libaryLoadState: ExtensionsLoadState.Loading));
+    var data = await NativeInterface.loadLocalExtensions();
+    _extensionsRepo.loadLocalExtensions(data!);
+    emit(state.copyWith(localExtensions: _extensionsRepo.localExtensions,libaryLoadState: ExtensionsLoadState.None));
   }
- 
-
 }

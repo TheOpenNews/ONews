@@ -1,4 +1,4 @@
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:onews/modules/News.dart';
 import 'package:onews/pages/NewsPreviewPage/ImageElemWidget.dart';
 import 'package:onews/pages/NewsPreviewPage/TextElemWidget.dart';
@@ -10,7 +10,6 @@ class PageBodyWidget extends StatelessWidget {
     super.key,
     required this.news,
   });
-
 
   Widget mapNewsElemToUiElem(MapEntry<ContentType, String> elem) {
     Widget widget = SizedBox();
@@ -65,9 +64,11 @@ class PageBodyWidget extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(news.date),
+            SizedBox(height: 8),
+            CachedNetworkImage(imageUrl: news.thumbnail),
           ],
         ),
-        SizedBox(height: 16),
+        SizedBox(height: 32),
         Column(
           children: [
             ...news.content

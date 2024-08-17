@@ -21,3 +21,6 @@ class ChangeCategory extends NewsCardEvent {
   String category;
   ChangeCategory(this.category);
 }
+
+class LoadHomePageHeadlines extends NewsCardEvent {
+}

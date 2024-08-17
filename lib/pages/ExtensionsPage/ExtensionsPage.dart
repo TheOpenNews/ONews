@@ -15,8 +15,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onews/blocs/Extensions/extensions_bloc.dart';
 import 'package:onews/modules/ExtensionInfo.dart';
+import 'package:onews/pages/ui/BottomNavBarWidget.dart';
 import 'package:onews/repos/ExtensionsRepo.dart';
-import 'package:onews/widgets/BottomNavBarWidget.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -28,8 +28,7 @@ class ExtensionsPage extends StatefulWidget {
   State<ExtensionsPage> createState() => _ExtensionsPageState();
 }
 
-class _ExtensionsPageState extends State<ExtensionsPage>
-    with SingleTickerProviderStateMixin {
+class _ExtensionsPageState extends State<ExtensionsPage>{
   late TabController tabController;
   bool initDownloadIsolate = false;
   static String downloadApkIsolate = "Download-Apk-Isolate";
@@ -72,7 +71,7 @@ class _ExtensionsPageState extends State<ExtensionsPage>
 
   @override
   void initState() {
-    tabController = TabController(length: 2, vsync: this);
+    // tabController = TabController(length: 2, vsync: this);
     initDownloadExtensionIsolate();
     super.initState();
   }
@@ -115,22 +114,27 @@ class _ExtensionsPageState extends State<ExtensionsPage>
             ],
           ),
         ),
-        bottomNavigationBar: BottomNavBarWidget(),
-        body: Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(10),
-          child: TabBarView(
-            controller: tabController,
-            clipBehavior: Clip.none,
-            children: [
-              LocalExtensionsWidget(),
-              DownloadExtensionsWidget(),
-            ],
-          ),
+        body: Stack(
+          children: [
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(10),
+              child: TabBarView(
+                controller: tabController,
+                clipBehavior: Clip.none,
+                children: [
+                  LocalExtensionsWidget(),
+                  DownloadExtensionsWidget(),
+                ],
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              child: BottomNavBarWidget(),
+            )
+          ],
         ),
       ),
     );
   }
 }
-
-
