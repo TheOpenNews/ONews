@@ -18,6 +18,7 @@ class NewsCardState extends Equatable {
 
   String errorMsg;
   HeadlinesErrorType errorType;
+  NewsCard selectedCard;
 
 
   HomePageHeadlinesState homePageHeadlinesState;
@@ -25,6 +26,7 @@ class NewsCardState extends Equatable {
   NewsCardState({
     required this.extensionInfo,
     required NewsCardEvent latestEvent,
+    required this.selectedCard,
     this.newsCards = const [],
     this.homePageHeadlines = const [],
     this.page = 1,
@@ -48,6 +50,7 @@ class NewsCardState extends Equatable {
     String? errorType,
     String? errorMsg,
     HomePageHeadlinesState? homePageHeadlinesState,
+    NewsCard? selectedCard,
   }) {
     Map<String, HeadlinesErrorType> errorTypeMap = {
       "Network": HeadlinesErrorType.Network,
@@ -61,7 +64,6 @@ class NewsCardState extends Equatable {
     return NewsCardState(
       extensionInfo: extensionInfo ?? this.extensionInfo,
       newsCards: newsCards ?? this.newsCards,
-      homePageHeadlines: homePageHeadlines ?? this.homePageHeadlines,
       page: page ?? this.page,
       loadingStatus: loadingStatus ?? this.loadingStatus,
       newsDone: newsDone ?? this.newsDone,
@@ -69,7 +71,10 @@ class NewsCardState extends Equatable {
       latestEvent: latestEvent ?? this.latestEvent,
       errorType: errorTypeMap[errorType] ?? HeadlinesErrorType.None,
       errorMsg: errorMsg ?? "",
+      homePageHeadlines: homePageHeadlines ?? this.homePageHeadlines,
       homePageHeadlinesState: homePageHeadlinesState ?? this.homePageHeadlinesState,
+      selectedCard: selectedCard ?? this.selectedCard,
+      
     );
   }
 
@@ -86,5 +91,6 @@ class NewsCardState extends Equatable {
         errorMsg,
         errorType,
         homePageHeadlinesState,
+selectedCard,
       ];
 }

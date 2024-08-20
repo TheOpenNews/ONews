@@ -47,7 +47,7 @@ class _PermissionsPageState extends State<PermissionsPage> {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: Colors.white,
-          appBar: _appbarWidget(),
+          appBar: _appbar_widget(),
           body: Stack(
             children: [
               BlocBuilder<PermissionCubit, PermissionState>(
@@ -100,7 +100,7 @@ class _PermissionsPageState extends State<PermissionsPage> {
     );
   }
 
-  AppBar _appbarWidget() {
+  AppBar _appbar_widget() {
     return AppBar(
       backgroundColor: Colors.white,
       title: Row(

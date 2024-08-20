@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:flutter/cupertino.dart';
 import 'package:onews/NativeInterface.dart';
 import 'package:onews/modules/ExtensionInfo.dart';
 import 'package:onews/modules/NewsCard.dart';
@@ -25,10 +26,12 @@ List<NewsCard> parseJsonDataToHeadlines(List<Object?> data) {
 }
 
 class NewsCardBloc extends Bloc<NewsCardEvent, NewsCardState> {
+  String curCategory = "";
   NewsCardBloc()
       : super(NewsCardState(
           extensionInfo: ExtensionInfo("", "", "", "", ""),
           latestEvent: SelectPage(1),
+          selectedCard: NewsCard("","","","")
         )) {
     on<SelectExtension>(onSelectExtension);
     on<NextPage>(onNextPage);
@@ -132,15 +135,61 @@ class NewsCardBloc extends Bloc<NewsCardEvent, NewsCardState> {
   }
 
   void onChangeCategory(ChangeCategory event, emit) async {
+    curCategory = event.category;
     emit(
       state.copyWith(
         newsDone: false,
-        category: event.category,
+        category: event.category, 
         page: 1,
         newsCards: [],
-        loadingStatus: NewsCardsLoadingStatus.None,
+        loadingStatus: NewsCardsLoadingStatus.Loading,
       ),
     );
+
+    Map<String, dynamic> data = await NativeInterface.loadNewsHeadlines(
+      state.extensionInfo,
+      page: 1,
+      category: event.category,
+    );
+
+    if(curCategory != event.category) {
+      return;
+    }
+
+    if (data.keys.contains("error")) {
+      Map<String, String> error = Map<String, String>();
+      (data["error"] as Map).forEach((key, value) {
+        error[key] = value;
+      });
+
+      if (error["type"] == "NoHeadlines") {
+        emit(
+          state.copyWith(
+            newsDone: true,
+            errorMsg: error["msg"],
+            errorType: error["type"],
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            loadingStatus: NewsCardsLoadingStatus.Failed,
+            latestEvent: event,
+            errorMsg: error["msg"],
+            errorType: error["type"],
+          ),
+        );
+      }
+    } else {
+      emit(state.copyWith(
+        page: 1,
+        newsCards: state.newsCards = [
+          ...state.newsCards,
+          ...parseJsonDataToHeadlines(data["data"])
+        ],
+        loadingStatus: NewsCardsLoadingStatus.None,
+      ));
+    }
   }
 
   void onSelectPage(SelectPage event, emit) async {
@@ -148,7 +197,6 @@ class NewsCardBloc extends Bloc<NewsCardEvent, NewsCardState> {
       state.copyWith(
         loadingStatus: NewsCardsLoadingStatus.Loading,
         newsCards: [],
-        homePageHeadlines: [],
       ),
     );
     Map<String, dynamic> data = await NativeInterface.loadNewsHeadlines(

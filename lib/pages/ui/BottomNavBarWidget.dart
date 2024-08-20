@@ -36,7 +36,7 @@ class BottomNavBarWidget extends StatelessWidget {
             ],
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ...navs.asMap().entries.map(
@@ -60,32 +60,35 @@ class BottomNavBarWidget extends StatelessWidget {
 
   Widget _bottomnavBtn(
       String path, String text, bool selected, Function callback) {
-    return GestureDetector(
-      onTap: () => callback(),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(
-            !selected
-                ? path
-                : path.substring(0, path.length - 4) + "-filled.svg",
-            height: 18,
-            color: !selected ? Colors.black : CColors.primaryBlue,
-          ),
-          SizedBox(height: 4),
-          ...selected
-              ? [
-                  Text(
-                    text,
-                    style: TextStyle(
-                      color: !selected ? Colors.black : CColors.primaryBlue,
-                      fontSize: 12,
-                      fontVariations: [FontVariation('wght', 600)],
-                    ),
-                  )
-                ]
-              : [SizedBox()],
-        ],
+    return Expanded(
+      flex: 1,
+      child: GestureDetector(
+        onTap: () => callback(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              !selected
+                  ? path
+                  : path.substring(0, path.length - 4) + "-filled.svg",
+              height: 18,
+              color: !selected ? Colors.black : CColors.primaryBlue,
+            ),
+            SizedBox(height: 4),
+            ...selected
+                ? [
+                    Text(
+                      text,
+                      style: TextStyle(
+                        color: !selected ? Colors.black : CColors.primaryBlue,
+                        fontSize: 12,
+                        fontVariations: [FontVariation('wght', 600)],
+                      ),
+                    )
+                  ]
+                : [SizedBox()],
+          ],
+        ),
       ),
     );
   }

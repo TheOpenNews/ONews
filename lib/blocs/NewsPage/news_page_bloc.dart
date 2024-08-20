@@ -21,7 +21,7 @@ class NewsPageBloc extends Bloc<NewsPageEvent, NewsPageState> {
     emit(state.copyWith(card: event.card));
   }
 
-  void onLoadNewsPage(event,emit) async {
+  void onLoadNewsPage(LoadNewsPage event,emit) async {
     emit(state.copyWith(loadingStatus: PageNewsLoadingStatus.Loading));
     News? news =  await NativeInterface.scrapeUrl(state.card.link);
     if(news == null) {

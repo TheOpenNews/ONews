@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:onews/consts/DateFormat.dart';
 import 'package:equatable/equatable.dart';
 
@@ -14,9 +15,16 @@ class NewsCard extends Equatable {
   ) {}
 
   factory NewsCard.fromMap(Map<String, String> map) {
+    var date = "";
+    try {
+      date =
+          DDateFormat.DefaultDF.format(DateTime.parse(map["date"] as String));
+    } catch (e) {
+      date = map["date"] as String;
+    }
     return NewsCard(
       map["title"] as String,
-      DDateFormat.DefaultDF.format(DateTime.parse(map["date"] as String)),
+      date,
       map["imgURL"] as String,
       map["link"] as String,
     );
@@ -35,4 +43,3 @@ class NewsCard extends Equatable {
         link,
       ];
 }
-

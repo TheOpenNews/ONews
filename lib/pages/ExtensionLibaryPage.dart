@@ -39,7 +39,7 @@ class _ExtensionLibaryPageState extends State<ExtensionLibaryPage> {
     return BlocBuilder<ExtensionsBloc, ExtensionsState>(
       builder: (context, state) => Scaffold(
         backgroundColor: Colors.white,
-        appBar: _appbarWidget(),
+        appBar: _appbar_widget(),
         body: Stack(
           children: [
             Container(
@@ -111,7 +111,7 @@ class _ExtensionLibaryPageState extends State<ExtensionLibaryPage> {
     );
   }
 
-  AppBar _appbarWidget() {
+  AppBar _appbar_widget() {
     return AppBar(
       backgroundColor: Colors.white,
       title: Row(

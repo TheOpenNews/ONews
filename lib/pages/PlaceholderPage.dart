@@ -18,7 +18,7 @@ class PlaceholderPage extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: Colors.white,
-          appBar: _appbarWidget(),
+          appBar: _appbar_widget(),
           // bottomNavigationBar: BottomNavBarWidget(),
           body: Stack(
             children: [
@@ -55,7 +55,7 @@ class PlaceholderPage extends StatelessWidget {
     );
   }
 
-  AppBar _appbarWidget() {
+  AppBar _appbar_widget() {
     return AppBar(
       backgroundColor: Colors.white,
       title: Row(

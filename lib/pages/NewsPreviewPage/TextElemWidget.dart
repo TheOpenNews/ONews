@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 
 class TextElemWidget extends StatelessWidget {
@@ -15,7 +12,8 @@ class TextElemWidget extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        fontSize: 16,
+        fontSize: 14,
+        fontVariations: [FontVariation("wght", 500)],
       ),
     );
   }

@@ -42,6 +42,7 @@ class _CategoryFilterWidgetState extends State<CategoryFilterWidget> {
                     }
                   },
                   child: Container(
+
                     padding: EdgeInsets.symmetric(horizontal:  10, vertical: 8),
                     margin: EdgeInsets.only(right: 10),
                     decoration: BoxDecoration(

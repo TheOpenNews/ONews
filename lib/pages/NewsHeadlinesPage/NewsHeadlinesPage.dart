@@ -55,45 +55,43 @@ class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
 
   void onSelectCategory(tag) {
     context.read<NewsCardBloc>().add(ChangeCategory(tag));
-    context.read<NewsCardBloc>().add(SelectPage(1));
   }
 
   void onTryAgain() {
     networkError = false;
-    context
-        .read<NewsCardBloc>()
-        .add(context.read<NewsCardBloc>().state.latestEvent);
+    context.read<NewsCardBloc>().add(
+          context.read<NewsCardBloc>().state.latestEvent,
+        );
   }
 
   void errorTypeSnackbar(NewsCardState state) {
-    if (state.errorType == HeadlinesErrorType.None ||
-        state.errorType == HeadlinesErrorType.NoHeadlines) {
-      return;
-    }
-    String msg = "";
-    switch (state.errorType) {
-      case HeadlinesErrorType.Extension:
-      // msg = "The Extension Encountered a problem, please report it";
-      // break;
-      case HeadlinesErrorType.Network:
-        msg = "Encountered a Network problem, check your network connection";
-        break;
-      default:
-        return;
-    }
+    // if (state.errorType == HeadlinesErrorType.None ||
+    // state.errorType == HeadlinesErrorType.NoHeadlines) {
+    // return;
+    // }
+    // String msg = "";
+    // switch (state.errorType) {
+    // case HeadlinesErrorType.Extension:
+    // msg = "The Extension Encountered a problem, please report it";
+    // break;
+    // case HeadlinesErrorType.Network:
+    // msg = "Encountered a Network problem, check your network connection";
+    // break;
+    // default:
+    // return;
 
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          msg,
-          style: TextStyle(
-            fontSize: 18,
-            fontVariations: [FontVariation("wght", 500)],
-          ),
-        ),
-      ),
-    );
+    // ScaffoldMessenger.of(context).clearSnackBars();
+    // ScaffoldMessenger.of(context).showSnackBar(
+      // SnackBar(
+        // content: Text(
+          // msg,
+          // style: TextStyle(
+            // fontSize: 18,
+            // fontVariations: [FontVariation("wght", 500)],
+          // ),
+        // ),
+      // ),
+    // );
   }
 
   @override
@@ -103,15 +101,16 @@ class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
       backgroundColor: Colors.white,
       body: Container(
         padding: EdgeInsets.only(left: 16, right: 16),
+        clipBehavior: Clip.none,
         child: BlocConsumer<NewsCardBloc, NewsCardState>(
           listener: (context, state) {
             errorTypeSnackbar(state);
           },
           builder: (context, state) {
-            if (state.errorType != HeadlinesErrorType.None &&
-                state.errorType != HeadlinesErrorType.NoHeadlines) {
-              return _error_widget();
-            }
+            // if (state.errorType != HeadlinesErrorType.None &&
+            //     state.errorType != HeadlinesErrorType.NoHeadlines) {
+            //   return _error_widget();
+            // }
 
             return SingleChildScrollView(
               child: Column(
@@ -131,7 +130,7 @@ class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
                   _searchbar_widget(),
                   _category_widget(state.extensionInfo.categories),
                   _headlines_widget(state),
-                  _load_more_news_widget(state),
+                  // _load_more_news_widget(state),
                 ],
               ),
             );
@@ -240,6 +239,7 @@ class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
 
   Container _category_widget(categories) {
     return Container(
+      clipBehavior: Clip.none,
       margin: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
       child: CategoryFilterWidget(
         tags: categories,
@@ -316,6 +316,34 @@ class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
             HeadlineCardLoadingWidget(),
             SizedBox(height: 8)
           ],
+        ],
+      );
+    }
+    if (state.newsCards.length == 0) {
+      return Column(
+        children: [
+          SizedBox(height: 64),
+          Text(
+            "Encounted a problem loading news headlines",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 18,
+              fontVariations: [FontVariation("wght", 500)],
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              context.read<NewsCardBloc>().add(state.latestEvent);
+            },
+            child: Text(
+              "Retry",
+              style: TextStyle(
+                fontSize: 18,
+                color: CColors.primaryBlue,
+                fontVariations: [FontVariation("wght", 600)],
+              ),
+            ),
+          )
         ],
       );
     }
@@ -429,7 +457,7 @@ class HomePageHeadlinesLoadingWidget extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: Colors.grey[300],
+        color: Colors.grey[200],
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
@@ -439,35 +467,36 @@ class HomePageHeadlinesLoadingWidget extends StatelessWidget {
           ),
         ],
       ),
-      child: Align(
-        alignment: Alignment.bottomLeft,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: LoadingLineWidget(
-                width: 80,
-                color: Colors.grey[350]!,
-              ),
-            ),
-            SizedBox(height: 10),
-            LoadingLineWidget(
-              width: double.infinity,
-              color: Colors.grey[350]!,
-            ),
-            SizedBox(height: 10),
-            LoadingLineWidget(
-              width: double.infinity,
-              color: Colors.grey[350]!,
-            ),
-            SizedBox(height: 10),
-            LoadingLineWidget(
-              width: double.infinity,
-              color: Colors.grey[350]!,
-            ),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          CircularProgressIndicator(
+            color: CColors.primaryBlue,
+          ),
+          // Align(
+          //   alignment: Alignment.topLeft,
+          //   child: LoadingLineWidget(
+          //     width: 80,
+          //     color: Colors.grey[350]!,
+          //   ),
+          // ),
+          // SizedBox(height: 10),
+          // LoadingLineWidget(
+          //   width: double.infinity,
+          //   color: Colors.grey[350]!,
+          // ),
+          // SizedBox(height: 10),
+          // LoadingLineWidget(
+          //   width: double.infinity,
+          //   color: Colors.grey[350]!,
+          // ),
+          // SizedBox(height: 10),
+          // LoadingLineWidget(
+          //   width: double.infinity,
+          //   color: Colors.grey[350]!,
+          // ),
+        ],
       ),
     );
   }

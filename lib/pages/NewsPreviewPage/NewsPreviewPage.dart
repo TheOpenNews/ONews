@@ -1,4 +1,5 @@
 import 'package:onews/blocs/NewsPage/news_page_bloc.dart';
+import 'package:onews/consts/Colors.dart';
 import 'package:onews/modules/News.dart';
 import 'package:onews/pages/NewsPreviewPage/ImageElemWidget.dart';
 import 'package:onews/pages/NewsPreviewPage/PageBodyWidget.dart';
@@ -42,48 +43,53 @@ class _NewsPageState extends State<NewsPreviewPage> {
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: _appbar(state),
-          body: Container(
-            padding: EdgeInsets.only(top: 16, left: 16, right: 16),
-            child: state.loadingStatus == PageNewsLoadingStatus.Loading
-                ? Center(child: CircularProgressIndicator())
-                : state.loadingStatus == PageNewsLoadingStatus.Failed
-                    ? Align(
+          appBar: _appbar_widget(),
+          body: state.loadingStatus == PageNewsLoadingStatus.Loading
+              ? Center(
+                  child: CircularProgressIndicator(
+                    color: CColors.primaryBlue,
+                  ),
+                )
+              : state.loadingStatus == PageNewsLoadingStatus.Failed
+                  ? Align(
                       alignment: Alignment.center,
                       child: ElevatedButton(
                         onPressed: onTryAgain,
                         child: Text("Try Again"),
                       ),
                     )
-                    : SingleChildScrollView(
-                        child: PageBodyWidget(
-                          news: state.news,
-                        ),
-                      ),
-          ),
+                  : PageBodyWidget(
+                      news: state.news,
+                    ),
         );
       },
     );
   }
 
-  AppBar _appbar(NewsPageState state) {
+  AppBar _appbar_widget() {
     return AppBar(
-      title: Text(
-        "NewsPreviewPage",
-        style: TextStyle(
-          color: Colors.white,
-        ),
-      ),
-      backgroundColor: Color(0xFF13a2cc),
-      iconTheme: IconThemeData(
-        color: Colors.white,
+      backgroundColor: Colors.white,
+      iconTheme: IconThemeData(color: Colors.black.withOpacity(0.9)),
+      title: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            "ONews",
+            style: TextStyle(
+              fontSize: 26,
+              color: Colors.black,
+              fontVariations: [FontVariation('wght', 700)],
+            ),
+          ),
+        ],
       ),
       actions: [
-        IconButton(
-          onPressed: () => launchUrl(Uri.parse(state.card.link)),
-          icon: Icon(Icons.preview),
-        ),
+        IconButton(onPressed: () {}, icon: Icon(Icons.bookmark_border)),
       ],
+      elevation: 2,
+      foregroundColor: Colors.white,
+      surfaceTintColor: Colors.white,
+      shadowColor: Colors.grey.withOpacity(0.1),
     );
   }
 }

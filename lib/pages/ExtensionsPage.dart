@@ -87,7 +87,7 @@ class _ExtensionsPageState extends State<ExtensionsPage> {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: _appbarWidget(),
+        appBar: _appbar_widget(),
         body: Stack(
           children: [
             Column(
@@ -196,7 +196,7 @@ class _ExtensionsPageState extends State<ExtensionsPage> {
     );
   }
 
-  AppBar _appbarWidget() {
+  AppBar _appbar_widget() {
     return AppBar(
       backgroundColor: Colors.white,
       title: Row(

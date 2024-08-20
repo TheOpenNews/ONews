@@ -47,6 +47,9 @@ class NativeInterface {
       "page": page
     });
 
+    debugPrint("loadNewsHeadlines: " + dataMap.toString());
+
+
     Map<String,dynamic> out = Map<String,dynamic>(); 
     (dataMap as Map).forEach((key, value) {
       out[key] = value;
@@ -75,6 +78,7 @@ class NativeInterface {
   static Future<Map<String,dynamic>> scrapeHomePage(ExtensionInfo info) async {
     _init();
     var dataMap = await _platform!.invokeMethod<Map>("scrapeHomePage", {"extensionName": info.name});
+    debugPrint("scrapeHomePage: " + dataMap.toString());
     Map<String,dynamic> out = Map<String,dynamic>(); 
     (dataMap as Map).forEach((key, value) {
       out[key] = value;
