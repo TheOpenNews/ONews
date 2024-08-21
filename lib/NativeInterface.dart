@@ -38,7 +38,8 @@ class NativeInterface {
     return data;
   }
 
-  static Future<Map<String,dynamic>> loadNewsHeadlines(ExtensionInfo info,{int count = 6, int page = 1, String category = "Politics"}) async {
+  static Future<Map<String, dynamic>> loadNewsHeadlines(ExtensionInfo info,
+      {int count = 6, int page = 1, String category = "Politics"}) async {
     _init();
     var dataMap = await _platform!.invokeMethod<Map>("loadNewsHeadlines", {
       "extensionName": info.name,
@@ -49,14 +50,11 @@ class NativeInterface {
 
     debugPrint("loadNewsHeadlines: " + dataMap.toString());
 
-
-    Map<String,dynamic> out = Map<String,dynamic>(); 
+    Map<String, dynamic> out = Map<String, dynamic>();
     (dataMap as Map).forEach((key, value) {
       out[key] = value;
     });
     return out;
-
-
 
     // if (dataMap!.keys.contains("error")) {
     //   return null;
@@ -75,18 +73,18 @@ class NativeInterface {
     // return newsCards;
   }
 
-  static Future<Map<String,dynamic>> scrapeHomePage(ExtensionInfo info) async {
+  static Future<Map<String, dynamic>> scrapeHomePage(ExtensionInfo info) async {
     _init();
-    var dataMap = await _platform!.invokeMethod<Map>("scrapeHomePage", {"extensionName": info.name});
+    var dataMap = await _platform!
+        .invokeMethod<Map>("scrapeHomePage", {"extensionName": info.name});
     debugPrint("scrapeHomePage: " + dataMap.toString());
-    Map<String,dynamic> out = Map<String,dynamic>(); 
+    Map<String, dynamic> out = Map<String, dynamic>();
     (dataMap as Map).forEach((key, value) {
       out[key] = value;
     });
 
     return out;
 
-   
     // List<NewsCard> newsCards = [];
     // var data = dataMap["data"] as List;
     // for (var i = 0; i < data.length; i++) {
@@ -100,17 +98,20 @@ class NativeInterface {
     // return newsCards;
   }
 
-  static Future<News?> scrapeUrl(String url) async {
+  static Future<News?> scrapeUrl(ExtensionInfo info, String url) async {
     _init();
-    var newsPageMap = await _platform!.invokeMethod<Map?>("scrapeUrl", {
-      "extensionName": "S2JNews",
+    debugPrint("scrapeUrl " + info.toString() + url.toString());
+
+    var newsPageMap = await _platform!.invokeMethod<Map>("scrapeUrl", {
+      "extensionName": info.name,
       "url": url,
     });
 
-    if (newsPageMap == null) {
+    debugPrint(newsPageMap.toString());
+
+    if (newsPageMap!.containsKey("error")) {
       return null;
     }
-
 
     News news = News(content: []);
     Map<String, String> header;
@@ -129,7 +130,12 @@ class NativeInterface {
           news.author_link = entry.value;
           break;
         case "date":
-          news.date = DDateFormat.DefaultDF.format(DateTime.parse(entry.value));
+          try {
+            news.date =
+                DDateFormat.DefaultDF.format(DateTime.parse(entry.value));
+          } catch (e) {
+            news.date = entry.value;
+          }
           break;
       }
     });

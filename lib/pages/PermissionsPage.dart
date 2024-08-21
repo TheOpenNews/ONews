@@ -39,6 +39,13 @@ class _PermissionsPageState extends State<PermissionsPage> {
     context
         .read<PermissionCubit>()
         .setPackagePermission((await checkPackageInstallPermission()) as bool);
+    
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    init();
   }
 
   @override
@@ -52,7 +59,9 @@ class _PermissionsPageState extends State<PermissionsPage> {
             children: [
               BlocBuilder<PermissionCubit, PermissionState>(
                 builder: (context, state) {
+                  debugPrint((!state.packagePermission).toString() + (!state.storagePermission).toString());
                   if (!state.packagePermission || !state.storagePermission) {
+                    
                     return Container(
                       margin: EdgeInsets.only(
                         top: 32,

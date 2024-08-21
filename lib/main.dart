@@ -72,8 +72,11 @@ class onews extends StatelessWidget {
                       PlaceholderPage(),
                       BlocBuilder<PermissionCubit, PermissionState>(
                         builder: (context, state) {
-                          if (!((state.storagePermission &&
-                              state.packagePermission) || true )) {
+                          
+
+                          debugPrint((!state.storagePermission).toString()  + " " + (!state.packagePermission).toString());
+                          if (!state.storagePermission ||
+                              !state.packagePermission) {
                             return PermissionsPage();
                           }
                           return ExtensionsPage();

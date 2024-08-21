@@ -8,14 +8,17 @@ sealed class NewsPageEvent extends Equatable {
 
 class ShowNewsPage extends NewsPageEvent {
   NewsCard card;
-  ShowNewsPage(this.card);
+  ExtensionInfo info;
+  ShowNewsPage(this.card,this.info);
 
   @override
   List<Object> get props => [
         card,
+        info
       ];
 }
 
 
 class LoadNewsPage extends NewsPageEvent {
+  
 }

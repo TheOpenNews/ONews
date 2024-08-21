@@ -31,14 +31,14 @@ class _NewsPageState extends State<NewsPreviewPage> {
     return BlocConsumer<NewsPageBloc, NewsPageState>(
       listener: (context, state) {
         if (state.loadingStatus == PageNewsLoadingStatus.Failed) {
-          ScaffoldMessenger.of(context).clearSnackBars();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                "Failed to load page, check your interent connection",
-              ),
-            ),
-          );
+          // ScaffoldMessenger.of(context).clearSnackBars();
+          // ScaffoldMessenger.of(context).showSnackBar(
+          // SnackBar(
+          // content: Text(
+          // "Failed to load page, check your interent connection",
+          // ),
+          // ),
+          // );
         }
       },
       builder: (context, state) {
@@ -51,13 +51,33 @@ class _NewsPageState extends State<NewsPreviewPage> {
                   ),
                 )
               : state.loadingStatus == PageNewsLoadingStatus.Failed
-                  ? Align(
-                      alignment: Alignment.center,
-                      child: ElevatedButton(
-                        onPressed: onTryAgain,
-                        child: Text("Try Again"),
+                  ? Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Encounted a problem loading the page, if it persists please report it",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontVariations: [FontVariation("wght", 500)]),
+                          ),
+                          SizedBox(height: 8),
+                          TextButton(
+                            onPressed: onTryAgain,
+                            child: Text(
+                              "Reload",
+                              style: TextStyle(
+                                  color: CColors.primaryBlue,
+                                  fontSize: 20,
+                                  fontVariations: [FontVariation("wght", 600)]),
+                            ),
+                          ),
+                        ],
                       ),
-                    )
+                  )
                   : PageBodyWidget(
                       news: state.news,
                     ),

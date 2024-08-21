@@ -6,10 +6,12 @@ class NewsPageState extends Equatable {
   NewsCard card;
   PageNewsLoadingStatus loadingStatus;
   News news;
+  ExtensionInfo? extInfo;
 
   NewsPageState({
     required this.card,
     required this.news,
+    this.extInfo = null,
     this.loadingStatus = PageNewsLoadingStatus.Loading,
 
   });
@@ -18,11 +20,13 @@ class NewsPageState extends Equatable {
     NewsCard? card,
     PageNewsLoadingStatus? loadingStatus,
     News? news,
+    ExtensionInfo?  extInfo,
   }) =>
       NewsPageState(
         card: card ?? this.card,
         news: news ?? this.news,
         loadingStatus: loadingStatus ?? this.loadingStatus,
+        extInfo: extInfo ?? this.extInfo,
       );
 
   @override

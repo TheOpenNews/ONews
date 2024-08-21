@@ -1,5 +1,6 @@
 import 'package:onews/NativeInterface.dart';
 import 'package:onews/blocs/NewsCard/news_card_bloc.dart';
+import 'package:onews/modules/ExtensionInfo.dart';
 import 'package:onews/modules/News.dart';
 import 'package:onews/modules/NewsCard.dart';
 import 'package:bloc/bloc.dart';
@@ -18,12 +19,12 @@ class NewsPageBloc extends Bloc<NewsPageEvent, NewsPageState> {
 
 
   void onShowNewsPage(ShowNewsPage event , emit) {
-    emit(state.copyWith(card: event.card));
+    emit(state.copyWith(extInfo: event.info,card: event.card));
   }
 
   void onLoadNewsPage(LoadNewsPage event,emit) async {
     emit(state.copyWith(loadingStatus: PageNewsLoadingStatus.Loading));
-    News? news =  await NativeInterface.scrapeUrl(state.card.link);
+    News? news =  await NativeInterface.scrapeUrl(state.extInfo!,state.card.link);
     if(news == null) {
       emit(state.copyWith(loadingStatus: PageNewsLoadingStatus.Failed));
       return;
