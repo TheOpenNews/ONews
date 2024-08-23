@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:onews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
 import 'package:onews/consts/Colors.dart';
-import 'package:onews/consts/Routes.dart';
 
 class BottomNavBarWidget extends StatelessWidget {
   BottomNavBarWidget({
@@ -64,30 +63,33 @@ class BottomNavBarWidget extends StatelessWidget {
       flex: 1,
       child: GestureDetector(
         onTap: () => callback(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              !selected
-                  ? path
-                  : path.substring(0, path.length - 4) + "-filled.svg",
-              height: 18,
-              color: !selected ? Colors.black : CColors.primaryBlue,
-            ),
-            SizedBox(height: 4),
-            ...selected
-                ? [
-                    Text(
-                      text,
-                      style: TextStyle(
-                        color: !selected ? Colors.black : CColors.primaryBlue,
-                        fontSize: 12,
-                        fontVariations: [FontVariation('wght', 600)],
-                      ),
-                    )
-                  ]
-                : [SizedBox()],
-          ],
+        child: Container(
+          color: Colors.transparent,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                !selected
+                    ? path
+                    : path.substring(0, path.length - 4) + "-filled.svg",
+                height: 18,
+                color: !selected ? Colors.black : CColors.primaryBlue,
+              ),
+              SizedBox(height: 4),
+              ...selected
+                  ? [
+                      Text(
+                        text,
+                        style: TextStyle(
+                          color: !selected ? Colors.black : CColors.primaryBlue,
+                          fontSize: 12,
+                          fontVariations: [FontVariation('wght', 600)],
+                        ),
+                      )
+                    ]
+                  : [SizedBox()],
+            ],
+          ),
         ),
       ),
     );
