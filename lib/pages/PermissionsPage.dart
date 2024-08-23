@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
 import 'package:onews/blocs/Permission/permission_cubit.dart';
 import 'package:onews/consts/Colors.dart';
-import 'package:onews/pages/ui/BottomNavBarWidget.dart';
+import 'package:onews/Ui/BottomNavBarWidget.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionsPage extends StatefulWidget {
@@ -15,7 +15,7 @@ class PermissionsPage extends StatefulWidget {
 
 class _PermissionsPageState extends State<PermissionsPage> {
   Future<dynamic> checkStoragePermission() async {
-    return await Permission.storage.isGranted;
+    return await Permission.manageExternalStorage.isGranted;
   }
 
   Future<dynamic> checkPackageInstallPermission() async {
@@ -23,7 +23,7 @@ class _PermissionsPageState extends State<PermissionsPage> {
   }
 
   void onStoragePermission() async {
-    await Permission.storage.request();
+    await Permission.manageExternalStorage.request();
     setState(() {});
   }
 
@@ -33,13 +33,8 @@ class _PermissionsPageState extends State<PermissionsPage> {
   }
 
   void init() async {
-    context
-        .read<PermissionCubit>()
-        .setStoragePermission((await checkStoragePermission()) as bool);
-    context
-        .read<PermissionCubit>()
-        .setPackagePermission((await checkPackageInstallPermission()) as bool);
-    
+    context.read<PermissionCubit>().setStoragePermission((await checkStoragePermission()) as bool);
+    context.read<PermissionCubit>().setPackagePermission((await checkPackageInstallPermission()) as bool);
   }
 
   @override
@@ -61,7 +56,6 @@ class _PermissionsPageState extends State<PermissionsPage> {
                 builder: (context, state) {
                   debugPrint((!state.packagePermission).toString() + (!state.storagePermission).toString());
                   if (!state.packagePermission || !state.storagePermission) {
-                    
                     return Container(
                       margin: EdgeInsets.only(
                         top: 32,

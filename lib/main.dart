@@ -1,14 +1,12 @@
-import 'dart:io';
-
 import 'package:onews/blocs/ExtensionDownload/extension_download_bloc.dart';
 import 'package:onews/blocs/NewsCard/news_card_bloc.dart';
 import 'package:onews/blocs/NewsPage/news_page_bloc.dart';
 import 'package:onews/blocs/Permission/permission_cubit.dart';
 import 'package:onews/consts/Paths.dart';
 import 'package:onews/consts/Routes.dart';
-import 'package:onews/pages/ExtensionLibaryPage.dart';
-import 'package:onews/pages/ExtensionsPage.dart';
-import 'package:onews/pages/NewsHeadlinesPage/NewsHeadlinesPage.dart';
+import 'package:onews/pages/ExtensionLibaryPage/ExtensionLibaryPage.dart';
+import 'package:onews/pages/ExtensionsPage/ExtensionsPage.dart';
+import 'package:onews/pages/NewsHeadlinesPage/HeadlinePreviewPage.dart';
 import 'package:onews/pages/NewsPreviewPage/NewsPreviewPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,19 +15,18 @@ import 'package:onews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
 import 'package:onews/blocs/Extensions/extensions_bloc.dart';
 import 'package:onews/pages/HomePage.dart';
 import 'package:onews/pages/PermissionsPage.dart';
-import 'package:onews/pages/PlaceholderPage.dart';
+import 'package:onews/pages/SavedHeadlinesPage.dart';
 import 'package:onews/repos/ExtensionsRepo.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterDownloader.initialize(debug: false, ignoreSsl: true);
   Paths.init();
-
-  runApp(onews());
+  runApp(Onews());
 }
 
-class onews extends StatelessWidget {
-  onews({super.key});
+class Onews extends StatelessWidget {
+  Onews({super.key});
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
@@ -43,9 +40,7 @@ class onews extends StatelessWidget {
           BlocProvider(create: (context) => ExtensionDownloadBloc()),
           BlocProvider(create: (context) => NewsCardBloc()),
           BlocProvider(create: (context) => NewsPageBloc()),
-          BlocProvider(
-              create: (context) =>
-                  ExtensionsBloc(context.read<ExtensionsRepo>())),
+          BlocProvider(create: (context) => ExtensionsBloc(context.read<ExtensionsRepo>())),
         ],
         child: MaterialApp(
           title: 'ONews',
@@ -69,14 +64,12 @@ class onews extends StatelessWidget {
                     return [
                       HomePage(),
                       ExtensionLibaryPage(),
-                      PlaceholderPage(),
+                      SavedHeadlinesPage(),
+                      //TODO: remove this, ugly 
                       BlocBuilder<PermissionCubit, PermissionState>(
                         builder: (context, state) {
                           
-
-                          debugPrint((!state.storagePermission).toString()  + " " + (!state.packagePermission).toString());
-                          if (!state.storagePermission ||
-                              !state.packagePermission) {
+                          if (!state.storagePermission || !state.packagePermission) {
                             return PermissionsPage();
                           }
                           return ExtensionsPage();
@@ -85,7 +78,7 @@ class onews extends StatelessWidget {
                     ][state.curIdx];
                   },
                 ),
-            Routes.NewsHeadlines: (context) => NewsHeadlinesPage(),
+            Routes.NewsHeadlines: (context) => HeadlinePreviewPage(),
             Routes.NewsPreviewPage: (context) => NewsPreviewPage()
           },
         ),

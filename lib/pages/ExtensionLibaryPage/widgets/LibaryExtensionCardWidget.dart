@@ -11,9 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class LocalExtensionsCardWidget extends StatelessWidget {
+class LibaryExtensionCardWidget extends StatelessWidget {
   ExtensionInfo info;
-  LocalExtensionsCardWidget({
+  LibaryExtensionCardWidget({
     super.key,
     required this.info,
   });

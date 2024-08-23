@@ -1,34 +1,28 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:clickable_list_wheel_view/clickable_list_wheel_widget.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/rendering.dart';
-import 'package:onews/NativeInterface.dart';
-import 'package:onews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
 import 'package:onews/blocs/NewsCard/news_card_bloc.dart';
 import 'package:onews/consts/Colors.dart';
 import 'package:onews/modules/NewsCard.dart';
-import 'package:onews/pages/NewsHeadlinesPage/CategoryFilterWidget.dart';
-import 'package:onews/pages/NewsHeadlinesPage/HeadlineCardLoadingWidget.dart';
-import 'package:onews/pages/NewsHeadlinesPage/HeadlineCardWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:onews/pages/ui/LoadingLineWidget.dart';
+import 'package:onews/pages/NewsHeadlinesPage/widgets/CategoryFilterWidget.dart';
+import 'package:onews/pages/NewsHeadlinesPage/widgets/HeadlineCardLoadingWidget.dart';
+import 'package:onews/pages/NewsHeadlinesPage/widgets/HeadlineCardWidget.dart';
+import 'package:onews/pages/NewsHeadlinesPage/widgets/HomeHeadlinesLoadingWidget.dart';
+import 'package:onews/pages/NewsHeadlinesPage/widgets/HomeHeadlinesWidget.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
-class NewsHeadlinesPage extends StatefulWidget {
-  const NewsHeadlinesPage({super.key});
+class HeadlinePreviewPage extends StatefulWidget {
+  const HeadlinePreviewPage({super.key});
 
   @override
-  State<NewsHeadlinesPage> createState() => _NewsHeadlinesPageState();
+  State<HeadlinePreviewPage> createState() => _HeadlinePreviewPageState();
 }
 
-class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
+class _HeadlinePreviewPageState extends State<HeadlinePreviewPage> {
   late ScrollController scrollController;
   bool stopLoadingNews = false;
   bool networkError = false;
   late List<String> tags = [];
-  late ScrollController _scrollController;
 
   @override
   void initState() {
@@ -43,7 +37,6 @@ class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
     });
     context.read<NewsCardBloc>().add(LoadHomePageHeadlines());
     context.read<NewsCardBloc>().add(NextPage());
-    _scrollController = ScrollController();
     super.initState();
   }
 
@@ -53,45 +46,18 @@ class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
     super.dispose();
   }
 
-  void onSelectCategory(tag) {
+  void _onSelectCategory(tag) {
     context.read<NewsCardBloc>().add(ChangeCategory(tag));
   }
 
-  void onTryAgain() {
+  void _onTryAgain() {
     networkError = false;
     context.read<NewsCardBloc>().add(
           context.read<NewsCardBloc>().state.latestEvent,
         );
   }
 
-  void errorTypeSnackbar(NewsCardState state) {
-    // if (state.errorType == HeadlinesErrorType.None ||
-    // state.errorType == HeadlinesErrorType.NoHeadlines) {
-    // return;
-    // }
-    // String msg = "";
-    // switch (state.errorType) {
-    // case HeadlinesErrorType.Extension:
-    // msg = "The Extension Encountered a problem, please report it";
-    // break;
-    // case HeadlinesErrorType.Network:
-    // msg = "Encountered a Network problem, check your network connection";
-    // break;
-    // default:
-    // return;
-
-    // ScaffoldMessenger.of(context).clearSnackBars();
-    // ScaffoldMessenger.of(context).showSnackBar(
-      // SnackBar(
-        // content: Text(
-          // msg,
-          // style: TextStyle(
-            // fontSize: 18,
-            // fontVariations: [FontVariation("wght", 500)],
-          // ),
-        // ),
-      // ),
-    // );
+  void _errorTypeSnackbar(NewsCardState state) {
   }
 
   @override
@@ -104,7 +70,7 @@ class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
         clipBehavior: Clip.none,
         child: BlocConsumer<NewsCardBloc, NewsCardState>(
           listener: (context, state) {
-            errorTypeSnackbar(state);
+            _errorTypeSnackbar(state);
           },
           builder: (context, state) {
             // if (state.errorType != HeadlinesErrorType.None &&
@@ -195,11 +161,10 @@ class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
             itemBuilder: (ctx, idx) {
               if (state.homePageHeadlinesState ==
                   HomePageHeadlinesState.Loading) {
-                return HomePageHeadlinesLoadingWidget();
+                return HomeHeadlinesLoadingWidget();
               } else {
-                return HomePageHeadlines(
-                  headline: state.homePageHeadlines[idx],
-                );
+                return HomeHeadlinesWidget(
+                    headline: state.homePageHeadlines[idx]);
               }
             },
           ),
@@ -243,7 +208,7 @@ class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
       margin: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
       child: CategoryFilterWidget(
         tags: categories,
-        onSelectCategory: onSelectCategory,
+        onSelectCategory: _onSelectCategory,
       ),
     );
   }
@@ -355,149 +320,6 @@ class _NewsHeadlinesPageState extends State<NewsHeadlinesPage> {
           ),
         )
       ],
-    );
-  }
-}
-
-class HomePageHeadlines extends StatelessWidget {
-  HomePageHeadlines({
-    super.key,
-    required this.headline,
-  });
-  NewsCard headline;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 320,
-      height: 220,
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 4,
-            color: Colors.grey.withOpacity(0.6),
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Stack(
-            children: [
-              Positioned(
-                child: Container(
-                  width: 320,
-                  height: 220,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: CachedNetworkImageProvider(
-                        headline.imgURL,
-                      ),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                top: 0,
-                left: 0,
-                child: Container(
-                  width: 320,
-                  height: 220,
-                  color: Colors.black.withOpacity(0.3),
-                ),
-              ),
-              Positioned(
-                child: Container(
-                  width: 320,
-                  height: 220,
-                  padding: EdgeInsets.all(8),
-                  child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Text.rich(TextSpan(children: [
-                      TextSpan(
-                          text: headline.date + "\n",
-                          style: TextStyle(
-                              color: Colors.white.withOpacity(0.95),
-                              fontVariations: [FontVariation("wght", 600)])),
-                      TextSpan(
-                        text: headline.title.length > 60
-                            ? headline.title.substring(0, 60) + "..."
-                            : headline.title,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontVariations: [FontVariation("wght", 700)],
-                        ),
-                      ),
-                    ])),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class HomePageHeadlinesLoadingWidget extends StatelessWidget {
-  HomePageHeadlinesLoadingWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 320,
-      height: 200,
-      clipBehavior: Clip.antiAlias,
-      padding: EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 4,
-            color: Colors.grey.withOpacity(0.4),
-            offset: Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          CircularProgressIndicator(
-            color: CColors.primaryBlue,
-          ),
-          // Align(
-          //   alignment: Alignment.topLeft,
-          //   child: LoadingLineWidget(
-          //     width: 80,
-          //     color: Colors.grey[350]!,
-          //   ),
-          // ),
-          // SizedBox(height: 10),
-          // LoadingLineWidget(
-          //   width: double.infinity,
-          //   color: Colors.grey[350]!,
-          // ),
-          // SizedBox(height: 10),
-          // LoadingLineWidget(
-          //   width: double.infinity,
-          //   color: Colors.grey[350]!,
-          // ),
-          // SizedBox(height: 10),
-          // LoadingLineWidget(
-          //   width: double.infinity,
-          //   color: Colors.grey[350]!,
-          // ),
-        ],
-      ),
     );
   }
 }

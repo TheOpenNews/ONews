@@ -26,15 +26,15 @@ class ExtensionsBloc extends Bloc<ExtensionsEvent, ExtensionsState> {
   }
   void onLoadExtensionsInfo(event, emit) async {
     emit(state.copyWith(loadState: ExtensionsLoadState.Loading));
-    var extensionsInfoList;
+    var onlineExtensions;
     try {
-      extensionsInfoList = await _extensionsRepo.loadExtensionInfoList();
+      onlineExtensions = await _extensionsRepo.queryExtensionInfo();
     } catch (e) {
       emit(state.copyWith(loadState: ExtensionsLoadState.Error));
       return;
     }
     emit(state.copyWith(
-        extensionInfo: extensionsInfoList,
+        extensionInfo: onlineExtensions,
         loadState: ExtensionsLoadState.None));
   }
 

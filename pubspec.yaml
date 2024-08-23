@@ -42,11 +42,15 @@ dependencies:
   url_launcher: ^6.3.0
   flutter_downloader: ^1.11.8
   permission_handler: ^11.3.1
-  android_package_installer: ^0.0.2
   intl: ^0.19.0
   cached_network_image: ^3.4.0
   flutter_svg: ^2.0.10+1
   scroll_snap_list: ^0.9.1
+  android_package_installer: ^0.0.2
+  flutter_app_installer: 
+    git:
+      url: https://github.com/t-88/flutter_app_installer-1.0.0-fork
+      ref: master
 
 dev_dependencies:
   flutter_test:

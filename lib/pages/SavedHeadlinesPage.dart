@@ -1,15 +1,14 @@
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:onews/NativeInterface.dart';
-import 'package:onews/blocs/Extensions/extensions_bloc.dart';
-import 'package:onews/pages/ui/BottomNavBarWidget.dart';
-import 'package:onews/repos/ExtensionsRepo.dart';
+import 'package:onews/Ui/BottomNavBarWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
 import 'package:onews/modules/NewsCard.dart';
 
-class PlaceholderPage extends StatelessWidget {
-  PlaceholderPage({super.key});
+
+// temp page, remove later
+
+class SavedHeadlinesPage extends StatelessWidget {
+  SavedHeadlinesPage({super.key});
   List<NewsCard> cards = [];
 
   @override
@@ -19,7 +18,6 @@ class PlaceholderPage extends StatelessWidget {
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: _appbar_widget(),
-          // bottomNavigationBar: BottomNavBarWidget(),
           body: Stack(
             children: [
               Container(

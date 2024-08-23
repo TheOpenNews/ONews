@@ -1,12 +1,5 @@
-import 'dart:ffi';
-import 'dart:math';
-
-import 'package:animate_gradient/animate_gradient.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:onews/pages/ui/LoadingLineWidget.dart';
+import 'package:onews/Ui/LoadingLineWidget.dart';
 
 class HeadlineCardLoadingWidget extends StatelessWidget {
   HeadlineCardLoadingWidget({super.key});

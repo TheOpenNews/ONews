@@ -9,9 +9,9 @@ import 'package:onews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
 import 'package:onews/blocs/ExtensionDownload/extension_download_bloc.dart';
 import 'package:onews/blocs/Extensions/extensions_bloc.dart';
 import 'package:onews/consts/Colors.dart';
-import 'package:onews/pages/ExtensionsPage/DownloadExtensionsCardWidget.dart';
-import 'package:onews/pages/ExtensionsPage/LocalExtensionsCardWidget.dart';
-import 'package:onews/pages/ui/BottomNavBarWidget.dart';
+import 'package:onews/pages/ExtensionsPage/widgets/DownloadExtensionCardWidget.dart';
+import 'package:onews/pages/ExtensionLibaryPage/widgets/LibaryExtensionCardWidget.dart';
+import 'package:onews/Ui/BottomNavBarWidget.dart';
 import 'package:onews/repos/ExtensionsRepo.dart';
 
 class ExtensionLibaryPage extends StatefulWidget {
@@ -67,7 +67,7 @@ class _ExtensionLibaryPageState extends State<ExtensionLibaryPage> {
                     Column(children: [
                       ...state.localExtensions
                           .map(
-                            (info) => LocalExtensionsCardWidget(
+                            (info) => LibaryExtensionCardWidget(
                               info: info,
                             ),
                           )

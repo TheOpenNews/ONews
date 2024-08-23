@@ -1,8 +1,4 @@
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:onews/NativeInterface.dart';
-import 'package:onews/blocs/Extensions/extensions_bloc.dart';
-import 'package:onews/pages/ui/BottomNavBarWidget.dart';
-import 'package:onews/repos/ExtensionsRepo.dart';
+import 'package:onews/Ui/BottomNavBarWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';

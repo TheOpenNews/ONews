@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:onews/blocs/NewsCard/news_card_bloc.dart';
 import 'package:onews/blocs/NewsPage/news_page_bloc.dart';
 import 'package:onews/consts/Routes.dart';
