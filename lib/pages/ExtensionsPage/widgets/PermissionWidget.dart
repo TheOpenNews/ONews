@@ -1,4 +1,4 @@
-import 'package:onews/blocs/Permission/permission_cubit.dart';
+import 'package:onews/cubits/Permission/permission_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onews/consts/Colors.dart';

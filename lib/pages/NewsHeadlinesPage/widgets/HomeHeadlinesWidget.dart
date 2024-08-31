@@ -1,14 +1,14 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:onews/modules/NewsCard.dart';
+import 'package:onews/modules/HeadlineCard.dart';
 
 class HomeHeadlinesWidget extends StatelessWidget {
   HomeHeadlinesWidget({
     super.key,
     required this.headline,
   });
-  NewsCard headline;
+  HeadlineCard headline;
 
   @override
   Widget build(BuildContext context) {

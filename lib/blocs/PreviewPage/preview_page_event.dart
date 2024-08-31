@@ -1,4 +1,4 @@
-part of 'news_page_bloc.dart';
+part of 'preview_page_bloc.dart';
 
 sealed class NewsPageEvent extends Equatable {
   const NewsPageEvent();
@@ -7,7 +7,7 @@ sealed class NewsPageEvent extends Equatable {
 }
 
 class ShowNewsPage extends NewsPageEvent {
-  NewsCard card;
+  HeadlineCard card;
   ExtensionInfo info;
   ShowNewsPage(this.card,this.info);
 
@@ -18,7 +18,4 @@ class ShowNewsPage extends NewsPageEvent {
       ];
 }
 
-
-class LoadNewsPage extends NewsPageEvent {
-  
-}
+class LoadNewsPage extends NewsPageEvent {}

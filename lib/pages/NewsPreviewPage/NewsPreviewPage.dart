@@ -1,4 +1,4 @@
-import 'package:onews/blocs/NewsPage/news_page_bloc.dart';
+import 'package:onews/blocs/PreviewPage/preview_page_bloc.dart';
 import 'package:onews/consts/Colors.dart';
 import 'package:onews/pages/NewsPreviewPage/widgets/PageBodyWidget.dart';
 import 'package:flutter/material.dart';

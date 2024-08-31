@@ -1,11 +1,11 @@
-part of 'news_page_bloc.dart';
+part of 'preview_page_bloc.dart';
 
 enum PageNewsLoadingStatus { Loading, None , Failed }
 
 class NewsPageState extends Equatable {
-  NewsCard card;
+  HeadlineCard card;
   PageNewsLoadingStatus loadingStatus;
-  News news;
+  PreviewNewsData news;
   ExtensionInfo? extInfo;
 
   NewsPageState({
@@ -17,9 +17,9 @@ class NewsPageState extends Equatable {
   });
 
   NewsPageState copyWith({
-    NewsCard? card,
+    HeadlineCard? card,
     PageNewsLoadingStatus? loadingStatus,
-    News? news,
+    PreviewNewsData? news,
     ExtensionInfo?  extInfo,
   }) =>
       NewsPageState(

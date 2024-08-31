@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:onews/NativeInterface.dart';
-import 'package:onews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
-import 'package:onews/blocs/ExtensionDownload/extension_download_bloc.dart';
-import 'package:onews/blocs/Extensions/extensions_bloc.dart';
+import 'package:onews/cubits/BottomNavBar/bottom_nav_bar_cubit.dart';
+import 'package:onews/blocs/DownloadExtensionApk/download_extension_apk_bloc.dart';
+import 'package:onews/blocs/ExtensionManager/extension_manager_bloc.dart';
 import 'package:onews/consts/Colors.dart';
 import 'package:onews/pages/ExtensionsPage/widgets/DownloadExtensionCardWidget.dart';
 import 'package:onews/pages/ExtensionLibaryPage/widgets/LibaryExtensionCardWidget.dart';
@@ -23,7 +23,7 @@ class ExtensionLibaryPage extends StatefulWidget {
 
 class _ExtensionLibaryPageState extends State<ExtensionLibaryPage> {
   void loadLocalExtensions() async {
-    context.read<ExtensionsBloc>().add(LoadLocalExtension());
+    context.read<ExtensionManagerBloc>().add(LoadLocalExtension());
   }
 
   @override
@@ -36,7 +36,7 @@ class _ExtensionLibaryPageState extends State<ExtensionLibaryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ExtensionsBloc, ExtensionsState>(
+    return BlocBuilder<ExtensionManagerBloc, ExtensionManagerState>(
       builder: (context, state) => Scaffold(
         backgroundColor: Colors.white,
         appBar: _appbar_widget(),

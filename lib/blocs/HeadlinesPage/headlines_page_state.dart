@@ -1,31 +1,31 @@
-part of 'news_card_bloc.dart';
+
+
+part of 'headlines_page_bloc.dart';
 
 enum NewsCardsLoadingStatus { Loading, None, Failed }
-
-
 enum HomePageHeadlinesState {None , Loading}
 enum HeadlinesErrorType { Network, NoHeadlines, Extension, None }
 
-class NewsCardState extends Equatable {
+class HeadlinesPageState extends Equatable {
   ExtensionInfo extensionInfo;
-  List<NewsCard> newsCards;
-  List<NewsCard> homePageHeadlines;
+  List<HeadlineCard> newsCards;
+  List<HeadlineCard> homePageHeadlines;
   NewsCardsLoadingStatus loadingStatus;
   int page = 1;
   bool newsDone = false;
   String category;
-  NewsCardEvent latestEvent = SelectPage(1);
+  HeadlinesPageEvent latestEvent = SelectPage();
 
   String errorMsg;
   HeadlinesErrorType errorType;
-  NewsCard selectedCard;
+  HeadlineCard selectedCard;
 
 
   HomePageHeadlinesState homePageHeadlinesState;
   
-  NewsCardState({
+  HeadlinesPageState({
     required this.extensionInfo,
-    required NewsCardEvent latestEvent,
+    required HeadlinesPageEvent latestEvent,
     required this.selectedCard,
     this.newsCards = const [],
     this.homePageHeadlines = const [],
@@ -38,19 +38,19 @@ class NewsCardState extends Equatable {
     this.homePageHeadlinesState = HomePageHeadlinesState.None,
   });
 
-  NewsCardState copyWith({
+  HeadlinesPageState copyWith({
     ExtensionInfo? extensionInfo,
-    List<NewsCard>? newsCards,
-    List<NewsCard>? homePageHeadlines,
+    List<HeadlineCard>? newsCards,
+    List<HeadlineCard>? homePageHeadlines,
     int? page,
     NewsCardsLoadingStatus? loadingStatus,
     bool? newsDone,
     String? category,
-    NewsCardEvent? latestEvent,
+    HeadlinesPageEvent? latestEvent,
     String? errorType,
     String? errorMsg,
     HomePageHeadlinesState? homePageHeadlinesState,
-    NewsCard? selectedCard,
+    HeadlineCard? selectedCard,
   }) {
     Map<String, HeadlinesErrorType> errorTypeMap = {
       "Network": HeadlinesErrorType.Network,
@@ -61,7 +61,7 @@ class NewsCardState extends Equatable {
 
 
 
-    return NewsCardState(
+    return HeadlinesPageState(
       extensionInfo: extensionInfo ?? this.extensionInfo,
       newsCards: newsCards ?? this.newsCards,
       page: page ?? this.page,

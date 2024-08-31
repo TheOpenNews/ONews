@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:onews/blocs/ExtensionDownload/extension_download_bloc.dart';
-import 'package:onews/blocs/NewsCard/news_card_bloc.dart';
-import 'package:onews/blocs/Permission/permission_cubit.dart';
+import 'package:onews/blocs/DownloadExtensionApk/download_extension_apk_bloc.dart';
+import 'package:onews/blocs/HeadlinesPage/headlines_page_bloc.dart';
+import 'package:onews/cubits/Permission/permission_cubit.dart';
 import 'package:onews/consts/Routes.dart';
 import 'package:onews/modules/ExtensionInfo.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -22,7 +22,7 @@ class LibaryExtensionCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     void selectExtension() {
       Navigator.pushNamed(context, Routes.NewsHeadlines);
-      context.read<NewsCardBloc>().add(SelectExtension(info));
+      context.read<HeadlinesPageBloc>().add(SelectExtension(info));
     }
 
     return GestureDetector(

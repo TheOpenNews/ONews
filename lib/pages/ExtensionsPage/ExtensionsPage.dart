@@ -4,8 +4,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:onews/blocs/ExtensionDownload/extension_download_bloc.dart';
-import 'package:onews/blocs/Extensions/extensions_bloc.dart';
+import 'package:onews/blocs/DownloadExtensionApk/download_extension_apk_bloc.dart';
+import 'package:onews/blocs/DownloadExtensionOverlay/download_extension_overlay_bloc.dart';
+import 'package:onews/blocs/ExtensionManager/extension_manager_bloc.dart';
 import 'package:onews/consts/Colors.dart';
 import 'package:onews/pages/ExtensionsPage/widgets/DownloadExtensionCardWidget.dart';
 import 'package:onews/Ui/BottomNavBarWidget.dart';
@@ -24,8 +25,7 @@ class _ExtensionsPageState extends State<ExtensionsPage> {
 
   @pragma('vm:entry-point')
   static void sendPortdownloadApkStatus(String id, int status, int progress) {
-    final SendPort send =
-        IsolateNameServer.lookupPortByName(downloadApkIsolate)!;
+    final SendPort send = IsolateNameServer.lookupPortByName(downloadApkIsolate)!;
     send.send([id, status, progress]);
   }
 
@@ -45,12 +45,13 @@ class _ExtensionsPageState extends State<ExtensionsPage> {
 
     recvPort.listen((message) {
       DownloadTaskStatus status = DownloadTaskStatus.values[message[1]];
-      debugPrint(status.toString() + " " + message.toString());
+      debugPrint(message.toString());
+      context.read<DownloadExtensionOverlayBloc>().add(UpdateDownloadStatus(message[2]));
       if (status == DownloadTaskStatus.complete) {
-        context.read<ExtensionDownloadBloc>().add(CompeletedTheExtensionDownload());
+        context.read<DownloadExtensionApkBloc>().add(CompeletedDownloadingExtensionApk());
         recvPort.close();
       } else if (status == DownloadTaskStatus.failed) {
-        context.read<ExtensionDownloadBloc>().add(FailedTheExtensionDownload());
+        context.read<DownloadExtensionApkBloc>().add(FailedDownloadingExtensionApk());
         recvPort.close();
       }
     });
@@ -59,29 +60,27 @@ class _ExtensionsPageState extends State<ExtensionsPage> {
   @override
   void initState() {
     super.initState();
-    initDownloadExtensionIsolate();
-    if (context.read<ExtensionsBloc>().state.extensionInfo.length == 0) {
-      context.read<ExtensionsBloc>().add(LoadExtensionsInfo());
+    if (context.read<ExtensionManagerBloc>().state.extensionInfo.length == 0) {
+      context.read<ExtensionManagerBloc>().add(QueryExtensionsInfo());
     }
   }
 
+  void onDownloadExtension() {
+    initDownloadExtensionIsolate();
+
+  }
+
   void reloadExtensions() {
-    context.read<ExtensionsBloc>().add(LoadExtensionsInfo());
+    context.read<ExtensionManagerBloc>().add(QueryExtensionsInfo());
   }
 
   bool interentError = false;
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ExtensionDownloadBloc, ExtensionDownloadState>(
+    return BlocListener<DownloadExtensionApkBloc, DownloadExtensionApkState>(
       listener: (context, state) {
-        if (state.downloadStatus == ExtensionDownloadStatus.Failed) {
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Failed To Download Extension")));
-        } else if (state.downloadStatus == ExtensionDownloadStatus.Completed) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text("Extension Downloaded")));
-        }
+      
       },
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -93,7 +92,7 @@ class _ExtensionsPageState extends State<ExtensionsPage> {
                 Container(
                   width: double.infinity,
                   padding: EdgeInsets.all(10),
-                  child: BlocConsumer<ExtensionsBloc, ExtensionsState>(
+                  child: BlocConsumer<ExtensionManagerBloc, ExtensionManagerState>(
                     listener: (context, state) {
                       if (state.loadState == ExtensionsLoadState.Error &&
                           !interentError) {
@@ -128,6 +127,7 @@ class _ExtensionsPageState extends State<ExtensionsPage> {
                                       .map(
                                         (info) => DownloadExtensionCardWidget(
                                           info: info,
+                                          onDownloadExtension: onDownloadExtension,
                                         ),
                                       )
                                       .toList(),

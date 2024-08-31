@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:onews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
+import 'package:onews/cubits/BottomNavBar/bottom_nav_bar_cubit.dart';
 import 'package:onews/consts/Colors.dart';
 
 class BottomNavBarWidget extends StatelessWidget {

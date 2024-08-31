@@ -11,7 +11,7 @@ const String CONTENT_IMAGE = "img";
 
 enum ContentType { p, img }
 
-class News extends Equatable {
+class PreviewNewsData extends Equatable {
   String title;
   String author;
   String author_link;
@@ -20,7 +20,7 @@ class News extends Equatable {
 
   List<MapEntry<ContentType, String>> content;
 
-  News({
+  PreviewNewsData({
     required this.content,
     this.title = "",
     this.author = "",
@@ -29,8 +29,8 @@ class News extends Equatable {
     this.thumbnail = "",
   });
 
-  factory News.parseNative(Map? map) {
-    News news = News(content: []);
+  factory PreviewNewsData.parseNative(Map? map) {
+    PreviewNewsData news = PreviewNewsData(content: []);
 
 Map header = map!["header"] as Map;
     news.title = header["title"] ?? "";

@@ -68,7 +68,7 @@ class NativeInterface {
   }
 
   // scrapeUrl: calls extension scrapeUrl 
-  static Future<News?> scrapeUrl(ExtensionInfo info, String url) async {
+  static Future<PreviewNewsData?> scrapeUrl(ExtensionInfo info, String url) async {
     _init();
     var newsPageMap = await _platform!.invokeMethod<Map>("scrapeUrl", {
       "extensionName": info.name,
@@ -79,6 +79,6 @@ class NativeInterface {
       return null;
     }
 
-    return News.parseNative(newsPageMap);
+    return PreviewNewsData.parseNative(newsPageMap);
   }
 }

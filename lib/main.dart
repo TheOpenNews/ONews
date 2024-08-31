@@ -1,7 +1,12 @@
-import 'package:onews/blocs/ExtensionDownload/extension_download_bloc.dart';
-import 'package:onews/blocs/NewsCard/news_card_bloc.dart';
-import 'package:onews/blocs/NewsPage/news_page_bloc.dart';
-import 'package:onews/blocs/Permission/permission_cubit.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:onews/Ui/DownloadExtensionOverlayWidget.dart';
+import 'package:onews/blocs/DownloadExtensionApk/download_extension_apk_bloc.dart';
+import 'package:onews/blocs/DownloadExtensionOverlay/download_extension_overlay_bloc.dart';
+import 'package:onews/blocs/HeadlinesPage/headlines_page_bloc.dart';
+import 'package:onews/blocs/PreviewPage/preview_page_bloc.dart';
+import 'package:onews/consts/Colors.dart';
+import 'package:onews/consts/Utils.dart';
+import 'package:onews/cubits/Permission/permission_cubit.dart';
 import 'package:onews/consts/Paths.dart';
 import 'package:onews/consts/Routes.dart';
 import 'package:onews/pages/ExtensionLibaryPage/ExtensionLibaryPage.dart';
@@ -11,8 +16,8 @@ import 'package:onews/pages/NewsPreviewPage/NewsPreviewPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:onews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
-import 'package:onews/blocs/Extensions/extensions_bloc.dart';
+import 'package:onews/cubits/BottomNavBar/bottom_nav_bar_cubit.dart';
+import 'package:onews/blocs/ExtensionManager/extension_manager_bloc.dart';
 import 'package:onews/pages/HomePage.dart';
 import 'package:onews/pages/PermissionsPage.dart';
 import 'package:onews/pages/SavedHeadlinesPage.dart';
@@ -37,10 +42,14 @@ class Onews extends StatelessWidget {
         providers: [
           BlocProvider(create: (context) => BottomNavBarCubit()),
           BlocProvider(create: (context) => PermissionCubit()),
-          BlocProvider(create: (context) => ExtensionDownloadBloc()),
-          BlocProvider(create: (context) => NewsCardBloc()),
+          BlocProvider(create: (context) => DownloadExtensionApkBloc()),
+          BlocProvider(
+              create: (context) =>
+                  ExtensionManagerBloc(context.read<ExtensionsRepo>())),
+          BlocProvider(create: (context) => HeadlinesPageBloc()),
           BlocProvider(create: (context) => NewsPageBloc()),
-          BlocProvider(create: (context) => ExtensionsBloc(context.read<ExtensionsRepo>())),
+          BlocProvider(create: (context) => DownloadExtensionOverlayBloc()),
+          
         ],
         child: MaterialApp(
           title: 'ONews',
@@ -56,31 +65,38 @@ class Onews extends StatelessWidget {
             useMaterial3: true,
           ),
           debugShowCheckedModeBanner: false,
-          initialRoute: Routes.Home,
-          routes: {
-            Routes.Home: (context) =>
-                BlocBuilder<BottomNavBarCubit, BottomNavBarState>(
-                  builder: (context, state) {
-                    return [
-                      HomePage(),
-                      ExtensionLibaryPage(),
-                      SavedHeadlinesPage(),
-                      //TODO: remove this, ugly 
-                      BlocBuilder<PermissionCubit, PermissionState>(
+          home: Stack(
+            children: [
+              MaterialApp(
+                initialRoute: Routes.Home,
+                routes: {
+                  Routes.Home: (context) =>
+                      BlocBuilder<BottomNavBarCubit, BottomNavBarState>(
                         builder: (context, state) {
-                          
-                          if (!state.storagePermission || !state.packagePermission) {
-                            return PermissionsPage();
-                          }
-                          return ExtensionsPage();
+                          return [
+                            HomePage(),
+                            ExtensionLibaryPage(),
+                            SavedHeadlinesPage(),
+                            //TODO: remove this, ugly
+                            BlocBuilder<PermissionCubit, PermissionState>(
+                              builder: (context, state) {
+                                if (!state.storagePermission ||
+                                    !state.packagePermission) {
+                                  return PermissionsPage();
+                                }
+                                return ExtensionsPage();
+                              },
+                            ),
+                          ][state.curIdx];
                         },
                       ),
-                    ][state.curIdx];
-                  },
-                ),
-            Routes.NewsHeadlines: (context) => HeadlinePreviewPage(),
-            Routes.NewsPreviewPage: (context) => NewsPreviewPage()
-          },
+                  Routes.NewsHeadlines: (context) => HeadlinePreviewPage(),
+                  Routes.NewsPreviewPage: (context) => NewsPreviewPage()
+                },
+              ),
+              DownloadExtensionOverlayWidget(),
+            ],
+          ),
         ),
       ),
     );

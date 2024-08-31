@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:onews/blocs/ExtensionDownload/extension_download_bloc.dart';
+import 'package:onews/Ui/CircularImgWidget.dart';
+import 'package:onews/blocs/DownloadExtensionApk/download_extension_apk_bloc.dart';
+import 'package:onews/blocs/DownloadExtensionOverlay/download_extension_overlay_bloc.dart';
 import 'package:onews/modules/ExtensionInfo.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -10,13 +12,25 @@ import 'package:url_launcher/url_launcher.dart';
 
 class DownloadExtensionCardWidget extends StatelessWidget {
   ExtensionInfo info;
+  Function onDownloadExtension;
   DownloadExtensionCardWidget({
     super.key,
     required this.info,
+    required this.onDownloadExtension,
   });
 
   @override
   Widget build(BuildContext context) {
+    void onDownload() {
+      onDownloadExtension();
+      context
+          .read<DownloadExtensionApkBloc>()
+          .add(StartDownloadingExtensionApk(info.apkURL, info));
+      context
+          .read<DownloadExtensionOverlayBloc>()
+          .add(ShowDownloadingOverlay());
+    }
+
     return Container(
       margin: EdgeInsets.only(
         bottom: 8,
@@ -34,26 +48,7 @@ class DownloadExtensionCardWidget extends StatelessWidget {
       padding: EdgeInsets.all(10),
       child: Row(
         children: [
-          Container(
-            width: 32,
-            height: 32,
-            clipBehavior: Clip.hardEdge,
-            padding: EdgeInsets.all(1),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                width: 1,
-                color: Colors.grey.withOpacity(0.5),
-              ),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: CachedNetworkImage(
-                imageUrl: info.logoURL,
-                fit: BoxFit.scaleDown,
-              ),
-            ),
-          ),
+          CircularImgWidget(imgURL: info.logoURL),
           SizedBox(width: 16),
           Expanded(
             child: Text.rich(
@@ -98,11 +93,7 @@ class DownloadExtensionCardWidget extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () {
-                  context
-                      .read<ExtensionDownloadBloc>()
-                      .add(DownloadExtensionApk(info.apkURL, info.apkName));
-                },
+                onPressed: onDownload,
                 icon: Icon(
                   Icons.download,
                   size: 20,
@@ -115,3 +106,4 @@ class DownloadExtensionCardWidget extends StatelessWidget {
     );
   }
 }
+

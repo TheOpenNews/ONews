@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:onews/blocs/BottomNavBar/bottom_nav_bar_cubit.dart';
-import 'package:onews/blocs/Permission/permission_cubit.dart';
+import 'package:onews/cubits/BottomNavBar/bottom_nav_bar_cubit.dart';
+import 'package:onews/cubits/Permission/permission_cubit.dart';
 import 'package:onews/consts/Colors.dart';
 import 'package:onews/Ui/BottomNavBarWidget.dart';
 import 'package:permission_handler/permission_handler.dart';

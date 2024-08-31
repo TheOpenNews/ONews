@@ -1,15 +1,15 @@
-part of 'extensions_bloc.dart';
+part of 'extension_manager_bloc.dart';
 
 enum ExtensionsLoadState { None, Loading , Error }
 
-class ExtensionsState extends Equatable {
+class ExtensionManagerState extends Equatable {
   ExtensionsLoadState loadState = ExtensionsLoadState.None;
   ExtensionsLoadState libaryLoadState = ExtensionsLoadState.None;
   List<ExtensionInfo> localExtensions = [];
   List<ExtensionInfo> extensionInfo = [];
   
 
-  ExtensionsState({
+  ExtensionManagerState({
     this.loadState = ExtensionsLoadState.None,
     this.libaryLoadState = ExtensionsLoadState.None,
     
@@ -17,14 +17,14 @@ class ExtensionsState extends Equatable {
     this.extensionInfo = const [],
   });
 
-  ExtensionsState copyWith({
+  ExtensionManagerState copyWith({
     ExtensionsLoadState? loadState,
     ExtensionsLoadState? libaryLoadState,
     List<ExtensionInfo>? localExtensions,
     List<ExtensionInfo>? extensionInfo,
 
   }) =>
-      ExtensionsState(
+      ExtensionManagerState(
         loadState: loadState ?? this.loadState,
         libaryLoadState: libaryLoadState ?? this.libaryLoadState,
         

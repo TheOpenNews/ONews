@@ -1,38 +1,26 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onews/NativeInterface.dart';
+import 'package:onews/consts/Utils.dart';
 import 'package:onews/modules/ExtensionInfo.dart';
-import 'package:onews/modules/NewsCard.dart';
-import 'package:bloc/bloc.dart';
+import 'package:onews/modules/HeadlineCard.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:permission_handler/permission_handler.dart';
 
-part 'news_card_event.dart';
-part 'news_card_state.dart';
+part 'headlines_page_event.dart';
+part 'headlines_page_state.dart';
 
-List<NewsCard> parseJsonDataToHeadlines(List<Object?> data) {
-  List<NewsCard> headlines = [];
-  for (var i = 0; i < data.length; i++) {
-    Map<String, String> cardData = Map();
-    var card = data[i];
-    (card as Map).forEach((key, value) {
-      cardData[key] = value as String;
-    });
-    headlines.add(NewsCard.fromMap(cardData));
-  }
-  return headlines;
-}
+class HeadlinesPageBloc extends Bloc<HeadlinesPageEvent, HeadlinesPageState> {
+  String _curCategory = "";
+  HeadlinesPageBloc()
+      : super(
+          HeadlinesPageState(
+            extensionInfo: ExtensionInfo(),
+            latestEvent: SelectPage(),
+            selectedCard: HeadlineCard(),
+          ),
+        ) {
 
-class NewsCardBloc extends Bloc<NewsCardEvent, NewsCardState> {
-  String curCategory = "";
-  NewsCardBloc()
-      : super(NewsCardState(
-          extensionInfo: ExtensionInfo("", "", "", "", ""),
-          latestEvent: SelectPage(1),
-          selectedCard: NewsCard("","","","")
-        )) {
     on<SelectExtension>(onSelectExtension);
     on<NextPage>(onNextPage);
     on<ChangeCategory>(onChangeCategory);
@@ -83,7 +71,7 @@ class NewsCardBloc extends Bloc<NewsCardEvent, NewsCardState> {
       debugPrint(data.toString());
       emit(
         state.copyWith(
-          newsCards: parseJsonDataToHeadlines(data["data"]),
+          newsCards: Utils.parseJsonDataToHeadlines(data["data"]),
           loadingStatus: NewsCardsLoadingStatus.None,
         ),
       );
@@ -127,7 +115,7 @@ class NewsCardBloc extends Bloc<NewsCardEvent, NewsCardState> {
         page: state.page + 1,
         newsCards: state.newsCards = [
           ...state.newsCards,
-          ...parseJsonDataToHeadlines(data["data"])
+          ...Utils.parseJsonDataToHeadlines(data["data"])
         ],
         loadingStatus: NewsCardsLoadingStatus.None,
       ));
@@ -135,11 +123,11 @@ class NewsCardBloc extends Bloc<NewsCardEvent, NewsCardState> {
   }
 
   void onChangeCategory(ChangeCategory event, emit) async {
-    curCategory = event.category;
+    _curCategory = event.category;
     emit(
       state.copyWith(
         newsDone: false,
-        category: event.category, 
+        category: event.category,
         page: 1,
         newsCards: [],
         loadingStatus: NewsCardsLoadingStatus.Loading,
@@ -152,7 +140,7 @@ class NewsCardBloc extends Bloc<NewsCardEvent, NewsCardState> {
       category: event.category,
     );
 
-    if(curCategory != event.category) {
+    if (_curCategory != event.category) {
       return;
     }
 
@@ -185,7 +173,7 @@ class NewsCardBloc extends Bloc<NewsCardEvent, NewsCardState> {
         page: 1,
         newsCards: state.newsCards = [
           ...state.newsCards,
-          ...parseJsonDataToHeadlines(data["data"])
+          ...Utils.parseJsonDataToHeadlines(data["data"])
         ],
         loadingStatus: NewsCardsLoadingStatus.None,
       ));
@@ -234,7 +222,7 @@ class NewsCardBloc extends Bloc<NewsCardEvent, NewsCardState> {
         page: event.page,
         newsCards: state.newsCards = [
           ...state.newsCards,
-          ...parseJsonDataToHeadlines(data["data"])
+          ...Utils.parseJsonDataToHeadlines(data["data"])
         ],
         loadingStatus: NewsCardsLoadingStatus.None,
       ));
@@ -281,7 +269,7 @@ class NewsCardBloc extends Bloc<NewsCardEvent, NewsCardState> {
       emit(
         state.copyWith(
           homePageHeadlinesState: HomePageHeadlinesState.None,
-          homePageHeadlines: parseJsonDataToHeadlines(data["data"]),
+          homePageHeadlines: Utils.parseJsonDataToHeadlines(data["data"]),
         ),
       );
     }

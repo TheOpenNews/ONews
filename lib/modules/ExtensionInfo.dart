@@ -10,9 +10,16 @@ class ExtensionInfo extends Equatable {
   String version = "";
   String base64Icon = "";
   List<String> categories = [];
-  
 
-  ExtensionInfo(this.name, this.siteURL, this.logoURL, this.apkName,this.base64Icon,{this.categories = const [],this.version = ""}) {
+  ExtensionInfo({
+    this.name = "",
+    this.siteURL = "",
+    this.logoURL = "",
+    this.apkName = "",
+    this.base64Icon = "",
+    this.categories = const [],
+    this.version = "",
+  }) {
     this.apkURL = Urls.ExtensionApkDir + "/" + this.apkName;
   }
 
@@ -22,13 +29,6 @@ class ExtensionInfo extends Equatable {
   }
 
   @override
-  List<Object?> get props => [
-        name,
-        logoURL,
-        siteURL,
-        apkURL,
-        base64Icon,
-        categories,
-        version
-      ];
+  List<Object?> get props =>
+      [name, logoURL, siteURL, apkURL, base64Icon, categories, version];
 }

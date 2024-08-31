@@ -1,19 +1,19 @@
-import 'package:onews/blocs/NewsCard/news_card_bloc.dart';
-import 'package:onews/blocs/NewsPage/news_page_bloc.dart';
+import 'package:onews/blocs/HeadlinesPage/headlines_page_bloc.dart';
+import 'package:onews/blocs/PreviewPage/preview_page_bloc.dart';
 import 'package:onews/consts/Routes.dart';
-import 'package:onews/modules/NewsCard.dart';
+import 'package:onews/modules/HeadlineCard.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HeadlineCardWidget extends StatelessWidget {
-  NewsCard card;
+  HeadlineCard card;
   HeadlineCardWidget({super.key, required this.card});
 
   @override
   Widget build(BuildContext context) {
     void onSelectHeadline() {
-      context.read<NewsPageBloc>().add(ShowNewsPage(card,context.read<NewsCardBloc>().state.extensionInfo));
+      context.read<NewsPageBloc>().add(ShowNewsPage(card,context.read<HeadlinesPageBloc>().state.extensionInfo));
       Navigator.pushNamed(context, Routes.NewsPreviewPage);
     }
 

@@ -22,11 +22,11 @@ class ExtensionsRepo {
     extensionsInfo.forEach((info) {
       onlineExtensions.add(
         ExtensionInfo(
-          info["name"] as String,
-          info["siteURL"] as String,
-          Urls.ExtensionApkDir + "/" + info["logoURL"] as String,
-          info["apk"] as String,
-          "",
+          name: info["name"] as String,
+          siteURL: info["siteURL"] as String,
+          logoURL: Urls.ExtensionApkDir + "/" + info["logoURL"] as String,
+          apkName: info["apk"] as String,
+          base64Icon: "",
           categories: [],
           version: info["version"] as String,
         ),
@@ -41,9 +41,17 @@ class ExtensionsRepo {
     data.forEach((key, value) {
       List<String> categories =
           (value["categories"] as List).map((cat) => cat as String).toList();
-      localExtensions.add(ExtensionInfo(key, "",
-          Urls.ExtensionApkDir + "/" + value["logoURL"] as String, "", "",
-          categories: categories, version: value["version"] as String));
+      localExtensions.add(
+        ExtensionInfo(
+          name: key,
+          base64Icon: "",
+          logoURL: Urls.ExtensionApkDir + "/" + value["logoURL"] as String,
+          apkName: "",
+          siteURL: "",
+          categories: categories,
+          version: value["version"] as String,
+        ),
+      );
     });
   }
 }

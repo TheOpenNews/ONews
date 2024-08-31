@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:onews/blocs/NewsCard/news_card_bloc.dart';
+import 'package:onews/blocs/HeadlinesPage/headlines_page_bloc.dart';
 import 'package:onews/consts/Colors.dart';
-import 'package:onews/modules/NewsCard.dart';
+import 'package:onews/modules/HeadlineCard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onews/pages/NewsHeadlinesPage/widgets/CategoryFilterWidget.dart';
@@ -32,11 +32,11 @@ class _HeadlinePreviewPageState extends State<HeadlinePreviewPage> {
           scrollController.position.maxScrollExtent) {
         if (stopLoadingNews) return;
         if (networkError) return;
-        // context.read<NewsCardBloc>().add(NextPage());
+        // context.read<HeadlinesPageBloc>().add(NextPage());
       }
     });
-    context.read<NewsCardBloc>().add(LoadHomePageHeadlines());
-    context.read<NewsCardBloc>().add(NextPage());
+    context.read<HeadlinesPageBloc>().add(LoadHomePageHeadlines());
+    context.read<HeadlinesPageBloc>().add(NextPage());
     super.initState();
   }
 
@@ -47,28 +47,28 @@ class _HeadlinePreviewPageState extends State<HeadlinePreviewPage> {
   }
 
   void _onSelectCategory(tag) {
-    context.read<NewsCardBloc>().add(ChangeCategory(tag));
+    context.read<HeadlinesPageBloc>().add(ChangeCategory(tag));
   }
 
   void _onTryAgain() {
     networkError = false;
-    context.read<NewsCardBloc>().add(
-          context.read<NewsCardBloc>().state.latestEvent,
+    context.read<HeadlinesPageBloc>().add(
+          context.read<HeadlinesPageBloc>().state.latestEvent,
         );
   }
 
-  void _errorTypeSnackbar(NewsCardState state) {
+  void _errorTypeSnackbar(HeadlinesPageState state) {
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appbar_widget(context.read<NewsCardBloc>().state, context),
+      appBar: _appbar_widget(context.read<HeadlinesPageBloc>().state, context),
       backgroundColor: Colors.white,
       body: Container(
         padding: EdgeInsets.only(left: 16, right: 16),
         clipBehavior: Clip.none,
-        child: BlocConsumer<NewsCardBloc, NewsCardState>(
+        child: BlocConsumer<HeadlinesPageBloc, HeadlinesPageState>(
           listener: (context, state) {
             _errorTypeSnackbar(state);
           },
@@ -106,7 +106,7 @@ class _HeadlinePreviewPageState extends State<HeadlinePreviewPage> {
     );
   }
 
-  Widget _load_more_news_widget(NewsCardState state) {
+  Widget _load_more_news_widget(HeadlinesPageState state) {
     if (state.loadingStatus == NewsCardsLoadingStatus.Loading) {
       return SizedBox();
     }
@@ -126,7 +126,7 @@ class _HeadlinePreviewPageState extends State<HeadlinePreviewPage> {
     );
   }
 
-  Widget _home_headlines_widget(BuildContext context, NewsCardState state) {
+  Widget _home_headlines_widget(BuildContext context, HeadlinesPageState state) {
     if (state.homePageHeadlines.length == 0 &&
         state.homePageHeadlinesState == HomePageHeadlinesState.None) {
       return SizedBox();
@@ -250,7 +250,7 @@ class _HeadlinePreviewPageState extends State<HeadlinePreviewPage> {
     );
   }
 
-  AppBar _appbar_widget(NewsCardState state, context) {
+  AppBar _appbar_widget(HeadlinesPageState state, context) {
     return AppBar(
       backgroundColor: Colors.white,
       iconTheme: IconThemeData(color: Colors.black.withOpacity(0.5)),
@@ -273,7 +273,7 @@ class _HeadlinePreviewPageState extends State<HeadlinePreviewPage> {
     );
   }
 
-  Widget _headlines_widget(NewsCardState state) {
+  Widget _headlines_widget(HeadlinesPageState state) {
     if (state.loadingStatus == NewsCardsLoadingStatus.Loading) {
       return Column(
         children: [
@@ -298,7 +298,7 @@ class _HeadlinePreviewPageState extends State<HeadlinePreviewPage> {
           ),
           TextButton(
             onPressed: () {
-              context.read<NewsCardBloc>().add(state.latestEvent);
+              context.read<HeadlinesPageBloc>().add(state.latestEvent);
             },
             child: Text(
               "Retry",

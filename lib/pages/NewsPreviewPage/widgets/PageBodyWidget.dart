@@ -4,9 +4,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:onews/blocs/Extensions/extensions_bloc.dart';
-import 'package:onews/blocs/NewsCard/news_card_bloc.dart';
-import 'package:onews/blocs/NewsPage/news_page_bloc.dart';
+import 'package:onews/blocs/ExtensionManager/extension_manager_bloc.dart';
+import 'package:onews/blocs/HeadlinesPage/headlines_page_bloc.dart';
+import 'package:onews/blocs/PreviewPage/preview_page_bloc.dart';
 import 'package:onews/consts/Colors.dart';
 import 'package:onews/modules/News.dart';
 import 'package:onews/pages/NewsPreviewPage/widgets/ImageElemWidget.dart';
@@ -40,7 +40,7 @@ class PageBodyWidget extends StatelessWidget {
     );
   }
 
-  News news;
+  PreviewNewsData news;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +87,7 @@ class PageBodyWidget extends StatelessWidget {
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
-                          context.read<NewsCardBloc>().state.category,
+                          context.read<HeadlinesPageBloc>().state.category,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 12,
@@ -156,7 +156,7 @@ class PageBodyWidget extends StatelessWidget {
                           borderRadius: BorderRadius.circular(100),
                           child: CachedNetworkImage(
                             imageUrl: context
-                                .read<NewsCardBloc>()
+                                .read<HeadlinesPageBloc>()
                                 .state
                                 .extensionInfo
                                 .logoURL,
@@ -164,7 +164,7 @@ class PageBodyWidget extends StatelessWidget {
                     ),
                     SizedBox(width: 8),
                     Text(
-                      context.read<NewsCardBloc>().state.extensionInfo.name,
+                      context.read<HeadlinesPageBloc>().state.extensionInfo.name,
                       style: TextStyle(
                         fontSize: 18,
                         fontVariations: [FontVariation("wght", 500)],
