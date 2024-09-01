@@ -29,6 +29,9 @@ class NewsPageState extends Equatable {
         extInfo: extInfo ?? this.extInfo,
       );
 
+
+  
+
   @override
   List<Object> get props => [
         card,

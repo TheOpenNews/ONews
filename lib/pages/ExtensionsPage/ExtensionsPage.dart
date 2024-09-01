@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:onews/Ui/CustomAppBarWidget.dart';
 import 'package:onews/blocs/DownloadExtensionApk/download_extension_apk_bloc.dart';
 import 'package:onews/blocs/DownloadExtensionOverlay/download_extension_overlay_bloc.dart';
 import 'package:onews/blocs/ExtensionManager/extension_manager_bloc.dart';
@@ -25,7 +26,8 @@ class _ExtensionsPageState extends State<ExtensionsPage> {
 
   @pragma('vm:entry-point')
   static void sendPortdownloadApkStatus(String id, int status, int progress) {
-    final SendPort send = IsolateNameServer.lookupPortByName(downloadApkIsolate)!;
+    final SendPort send =
+        IsolateNameServer.lookupPortByName(downloadApkIsolate)!;
     send.send([id, status, progress]);
   }
 
@@ -46,12 +48,18 @@ class _ExtensionsPageState extends State<ExtensionsPage> {
     recvPort.listen((message) {
       DownloadTaskStatus status = DownloadTaskStatus.values[message[1]];
       debugPrint(message.toString());
-      context.read<DownloadExtensionOverlayBloc>().add(UpdateDownloadStatus(message[2]));
+      context
+          .read<DownloadExtensionOverlayBloc>()
+          .add(UpdateDownloadStatus(message[2]));
       if (status == DownloadTaskStatus.complete) {
-        context.read<DownloadExtensionApkBloc>().add(CompeletedDownloadingExtensionApk());
+        context
+            .read<DownloadExtensionApkBloc>()
+            .add(CompeletedDownloadingExtensionApk());
         recvPort.close();
       } else if (status == DownloadTaskStatus.failed) {
-        context.read<DownloadExtensionApkBloc>().add(FailedDownloadingExtensionApk());
+        context
+            .read<DownloadExtensionApkBloc>()
+            .add(FailedDownloadingExtensionApk());
         recvPort.close();
       }
     });
@@ -67,7 +75,6 @@ class _ExtensionsPageState extends State<ExtensionsPage> {
 
   void onDownloadExtension() {
     initDownloadExtensionIsolate();
-
   }
 
   void reloadExtensions() {
@@ -79,12 +86,20 @@ class _ExtensionsPageState extends State<ExtensionsPage> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<DownloadExtensionApkBloc, DownloadExtensionApkState>(
-      listener: (context, state) {
-      
-      },
+      listener: (context, state) {},
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: _appbar_widget(),
+        appBar: CustomAppBarWidget(
+          actions: [
+            IconButton(
+              onPressed: reloadExtensions,
+              icon: Icon(
+                Icons.restart_alt,
+                color: Colors.grey[800],
+              ),
+            ),
+          ],
+        ),
         body: Stack(
           children: [
             Column(
@@ -92,7 +107,8 @@ class _ExtensionsPageState extends State<ExtensionsPage> {
                 Container(
                   width: double.infinity,
                   padding: EdgeInsets.all(10),
-                  child: BlocConsumer<ExtensionManagerBloc, ExtensionManagerState>(
+                  child:
+                      BlocConsumer<ExtensionManagerBloc, ExtensionManagerState>(
                     listener: (context, state) {
                       if (state.loadState == ExtensionsLoadState.Error &&
                           !interentError) {
@@ -127,7 +143,8 @@ class _ExtensionsPageState extends State<ExtensionsPage> {
                                       .map(
                                         (info) => DownloadExtensionCardWidget(
                                           info: info,
-                                          onDownloadExtension: onDownloadExtension,
+                                          onDownloadExtension:
+                                              onDownloadExtension,
                                         ),
                                       )
                                       .toList(),
@@ -137,7 +154,8 @@ class _ExtensionsPageState extends State<ExtensionsPage> {
                           ),
                           SizedBox(height: 16),
                           state.loadState == ExtensionsLoadState.Loading
-                              ? CircularProgressIndicator(color: CColors.primaryBlue)
+                              ? CircularProgressIndicator(
+                                  color: CColors.primaryBlue)
                               : SizedBox(),
                         ],
                       );
@@ -191,38 +209,6 @@ class _ExtensionsPageState extends State<ExtensionsPage> {
           ),
         ],
       ),
-    );
-  }
-
-  AppBar _appbar_widget() {
-    return AppBar(
-      backgroundColor: Colors.white,
-      title: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            "ONews",
-            style: TextStyle(
-              fontSize: 26,
-              color: Colors.black,
-              fontVariations: [FontVariation('wght', 700)],
-            ),
-          ),
-        ],
-      ),
-      elevation: 2,
-      foregroundColor: Colors.white,
-      surfaceTintColor: Colors.white,
-      shadowColor: Colors.grey.withOpacity(0.1),
-      actions: [
-        IconButton(
-          onPressed: reloadExtensions,
-          icon: Icon(
-            Icons.restart_alt,
-            color: Colors.grey[800],
-          ),
-        ),
-      ],
     );
   }
 }

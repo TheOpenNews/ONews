@@ -1,15 +1,29 @@
 import 'package:onews/Ui/BottomNavBarWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:onews/Ui/CustomAppBarWidget.dart';
 import 'package:onews/cubits/BottomNavBar/bottom_nav_bar_cubit.dart';
 import 'package:onews/modules/HeadlineCard.dart';
+import 'package:onews/repos/SavedNewsRepo.dart';
 
 
-// temp page, remove later
 
-class SavedHeadlinesPage extends StatelessWidget {
+class SavedHeadlinesPage extends StatefulWidget {
   SavedHeadlinesPage({super.key});
+
+  @override
+  State<SavedHeadlinesPage> createState() => _SavedHeadlinesPageState();
+}
+
+class _SavedHeadlinesPageState extends State<SavedHeadlinesPage> {
   List<HeadlineCard> cards = [];
+
+
+  @override
+  void initState() {
+    super.initState();
+    // context.read<SavedNewsRepo>().loadSavedNews();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +31,7 @@ class SavedHeadlinesPage extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: Colors.white,
-          appBar: _appbar_widget(),
+          appBar: CustomAppBarWidget(),
           body: Stack(
             children: [
               Container(
@@ -27,6 +41,7 @@ class SavedHeadlinesPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+
                     Text(
                       "Sorry not implemented yet",
                       style: TextStyle(
@@ -50,29 +65,6 @@ class SavedHeadlinesPage extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  AppBar _appbar_widget() {
-    return AppBar(
-      backgroundColor: Colors.white,
-      title: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            "ONews",
-            style: TextStyle(
-              fontSize: 26,
-              color: Colors.black,
-              fontVariations: [FontVariation('wght', 700)],
-            ),
-          ),
-        ],
-      ),
-      elevation: 2,
-      foregroundColor: Colors.white,
-      surfaceTintColor: Colors.white,
-      shadowColor: Colors.grey.withOpacity(0.1),
     );
   }
 }

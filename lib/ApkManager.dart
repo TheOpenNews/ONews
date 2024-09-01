@@ -31,7 +31,6 @@ class ApkManager {
   static Future<bool> installApk(apkName) async {
     String filePath = "${Paths.ApplicationDownloadDir}/$apkName";
 
-
     File file = File(filePath);
     if (!(await file.exists())) {
       return false;

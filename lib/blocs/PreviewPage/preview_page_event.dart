@@ -19,3 +19,4 @@ class ShowNewsPage extends NewsPageEvent {
 }
 
 class LoadNewsPage extends NewsPageEvent {}
+

@@ -1,6 +1,7 @@
 import 'package:onews/Ui/BottomNavBarWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:onews/Ui/CustomAppBarWidget.dart';
 import 'package:onews/cubits/BottomNavBar/bottom_nav_bar_cubit.dart';
 import 'package:onews/modules/HeadlineCard.dart';
 
@@ -13,7 +14,7 @@ class HomePage extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: Colors.white,
-          appBar: _appbar_widget(),
+          appBar: CustomAppBarWidget(),
           // bottomNavigationBar: BottomNavBarWidget(),
           body: Stack(
             children: [
@@ -47,28 +48,6 @@ class HomePage extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-  AppBar _appbar_widget() {
-    return AppBar(
-      backgroundColor: Colors.white,
-      title: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            "ONews",
-            style: TextStyle(
-              fontSize: 26,
-              color: Colors.black,
-              fontVariations: [FontVariation('wght', 700)],
-            ),
-          ),
-        ],
-      ),
-      elevation: 2,
-      foregroundColor: Colors.white,
-      surfaceTintColor: Colors.white,
-      shadowColor: Colors.grey.withOpacity(0.1),
     );
   }
 }

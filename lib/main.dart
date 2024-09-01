@@ -5,10 +5,12 @@ import 'package:onews/blocs/DownloadExtensionOverlay/download_extension_overlay_
 import 'package:onews/blocs/HeadlinesPage/headlines_page_bloc.dart';
 import 'package:onews/blocs/PreviewPage/preview_page_bloc.dart';
 import 'package:onews/consts/Colors.dart';
+import 'package:onews/consts/LocalStorage.dart';
 import 'package:onews/consts/Utils.dart';
 import 'package:onews/cubits/Permission/permission_cubit.dart';
 import 'package:onews/consts/Paths.dart';
 import 'package:onews/consts/Routes.dart';
+import 'package:onews/cubits/SavedNews/saved_news_cubit.dart';
 import 'package:onews/pages/ExtensionLibaryPage/ExtensionLibaryPage.dart';
 import 'package:onews/pages/ExtensionsPage/ExtensionsPage.dart';
 import 'package:onews/pages/NewsHeadlinesPage/HeadlinePreviewPage.dart';
@@ -23,6 +25,7 @@ import 'package:onews/pages/PermissionsPage.dart';
 import 'package:onews/pages/SavedHeadlinesPage.dart';
 import 'package:onews/repos/ExtensionsRepo.dart';
 import 'package:onews/repos/LocalExtensionsRepo.dart';
+import 'package:onews/repos/SavedNewsRepo.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +42,8 @@ class Onews extends StatelessWidget {
       providers: [
         RepositoryProvider(create: (context) => ExtensionsRepo()),
         RepositoryProvider(create: (context) => LocalExtensionsRepo()),
+        RepositoryProvider(create: (context) => SavedNewsRepo()),
+        
         
       ],
       child: MultiBlocProvider(
@@ -46,11 +51,11 @@ class Onews extends StatelessWidget {
           BlocProvider(create: (context) => BottomNavBarCubit()),
           BlocProvider(create: (context) => PermissionCubit()),
           BlocProvider(create: (context) => DownloadExtensionApkBloc()),
-          BlocProvider(
-              create: (context) => ExtensionManagerBloc(context.read<ExtensionsRepo>(),context.read<LocalExtensionsRepo>())),
+          BlocProvider(create: (context) => ExtensionManagerBloc(context.read<ExtensionsRepo>(),context.read<LocalExtensionsRepo>())),
           BlocProvider(create: (context) => HeadlinesPageBloc()),
           BlocProvider(create: (context) => NewsPageBloc()),
           BlocProvider(create: (context) => DownloadExtensionOverlayBloc()),
+          BlocProvider(create: (context) => SavedNewsCubit()),
           
         ],
         child: MaterialApp(
@@ -71,6 +76,7 @@ class Onews extends StatelessWidget {
           home: Stack(
             children: [
               MaterialApp(
+          debugShowCheckedModeBanner: false,
                 initialRoute: Routes.Home,
                 routes: {
                   Routes.Home: (context) =>

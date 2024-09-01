@@ -1,6 +1,13 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:onews/consts/DateFormat.dart';
+import 'package:onews/consts/LocalStorage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
+import 'package:uuid/v4.dart';
 
 const String HEADER_TITLE = "title";
 const String HEADER_AUTHOR = "author";
@@ -18,7 +25,7 @@ class PreviewNewsData extends Equatable {
   String date;
   String thumbnail;
 
-  List<MapEntry<ContentType, String>> content;
+  List<List<String>> content;
 
   PreviewNewsData({
     required this.content,
@@ -32,7 +39,7 @@ class PreviewNewsData extends Equatable {
   factory PreviewNewsData.parseNative(Map? map) {
     PreviewNewsData news = PreviewNewsData(content: []);
 
-Map header = map!["header"] as Map;
+    Map header = map!["header"] as Map;
     news.title = header["title"] ?? "";
     news.thumbnail = header["img"] ?? "";
     news.author = header["author"] ?? "";
@@ -44,18 +51,65 @@ Map header = map!["header"] as Map;
       Map elem = (item as Map);
       switch (elem["type"]) {
         case "Paragraph":
-          news.content.add(MapEntry(ContentType.p, elem["val"]));
+          news.content.add([ContentType.p.toString(), elem["val"]]);
           break;
         case "Header":
           break;
         case "Img":
-          news.content.add(MapEntry(ContentType.img, elem["val"]));
+          news.content.add([ContentType.img.toString(), elem["val"]]);
           break;
         case "VidLink":
           break;
       }
-    });    
+    });
+
     return news;
+  }
+
+  Future<void> saveToLocalStroage() async {
+    Map jsonObj = convertToJson();
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String saved_news_str = prefs.getString(LocalStorage.SavedNews) ?? "{}";
+    Map saved_news = jsonDecode(saved_news_str);
+
+    if (saved_news.keys.contains(jsonObj["UUID"])) {
+      saved_news.remove(jsonObj["UUID"]);
+    } else {
+      saved_news[jsonObj["UUID"]] = jsonEncode(jsonObj);
+    }
+    saved_news_str = jsonEncode(saved_news);
+    prefs.setString(LocalStorage.SavedNews, saved_news_str);
+  }
+
+  Map<String, dynamic> convertToJson() {
+    String UUID = LocalStorage.UuidFromString(title);
+    return {
+      "title": title,
+      "thumbnail": thumbnail,
+      "author": author,
+      "author_link": author_link,
+      "date": date,
+      "content": jsonEncode(content),
+      "UUID": UUID,
+    };
+  }
+
+  factory PreviewNewsData.fromJson(Map<dynamic, dynamic> data) {
+    List<List<String>> content = [];
+    List<dynamic> unparsedContent = jsonDecode(data["content"]);
+    for (int i = 0; i < unparsedContent.length; i++) {
+      content.add(
+          [unparsedContent[i][0] as String, unparsedContent[i][1] as String]);
+    }
+    return PreviewNewsData(
+      title: data["title"],
+      content: content,
+      author: data["author"],
+      author_link: data["author_link"],
+      date: data["date"],
+      thumbnail: data["thumbnail"],
+    );
   }
 
   @override

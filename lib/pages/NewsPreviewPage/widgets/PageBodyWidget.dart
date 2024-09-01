@@ -4,7 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:onews/blocs/ExtensionManager/extension_manager_bloc.dart';
 import 'package:onews/blocs/HeadlinesPage/headlines_page_bloc.dart';
 import 'package:onews/blocs/PreviewPage/preview_page_bloc.dart';
 import 'package:onews/consts/Colors.dart';
@@ -12,7 +11,6 @@ import 'package:onews/modules/News.dart';
 import 'package:onews/pages/NewsPreviewPage/widgets/ImageElemWidget.dart';
 import 'package:onews/pages/NewsPreviewPage/widgets/TextElemWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class PageBodyWidget extends StatelessWidget {
   PageBodyWidget({
@@ -20,19 +18,13 @@ class PageBodyWidget extends StatelessWidget {
     required this.news,
   });
 
-  Widget mapNewsElemToUiElem(MapEntry<ContentType, String> elem) {
+  Widget mapNewsElemToUiElem(List<String> elem) {
     Widget widget = SizedBox();
-    switch (elem.key) {
-      case ContentType.img:
-        widget = ImageElemWidget(
-          src: elem.value,
-        );
-        break;
-      case ContentType.p:
-        widget = TextElemWidget(
-          text: elem.value,
-        );
-        break;
+    
+    if (elem[0] == ContentType.img.toString()) {
+      widget = ImageElemWidget(src: elem[1]);
+    } else if (elem[0] == ContentType.p.toString()) {
+      widget = TextElemWidget(text: elem[1]);
     }
     return Container(
       margin: EdgeInsets.only(bottom: 16),
@@ -120,7 +112,7 @@ class PageBodyWidget extends StatelessWidget {
           ),
           Container(
             width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.only(top:  10,left: 16,right: 16),
+            padding: EdgeInsets.only(top: 10, left: 16, right: 16),
             margin: EdgeInsets.only(top: 360 - 32),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -164,7 +156,11 @@ class PageBodyWidget extends StatelessWidget {
                     ),
                     SizedBox(width: 8),
                     Text(
-                      context.read<HeadlinesPageBloc>().state.extensionInfo.name,
+                      context
+                          .read<HeadlinesPageBloc>()
+                          .state
+                          .extensionInfo
+                          .name,
                       style: TextStyle(
                         fontSize: 18,
                         fontVariations: [FontVariation("wght", 500)],
@@ -181,7 +177,6 @@ class PageBodyWidget extends StatelessWidget {
               ],
             ),
           ),
-        
         ],
       ),
     );

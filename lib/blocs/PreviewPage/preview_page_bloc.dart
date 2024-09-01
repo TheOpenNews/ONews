@@ -21,6 +21,7 @@ class NewsPageBloc extends Bloc<NewsPageEvent, NewsPageState> {
         ) {
     on<ShowNewsPage>(onShowNewsPage);
     on<LoadNewsPage>(onLoadNewsPage);
+
   }
 
   void onShowNewsPage(ShowNewsPage event, emit) {
@@ -37,4 +38,5 @@ class NewsPageBloc extends Bloc<NewsPageEvent, NewsPageState> {
     }
     emit(state.copyWith(loadingStatus: PageNewsLoadingStatus.None, news: news));
   }
+
 }

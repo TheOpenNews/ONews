@@ -51,6 +51,8 @@ dependencies:
     git:
       url: https://github.com/t-88/flutter_app_installer-1.0.0-fork
       ref: master
+  shared_preferences: ^2.2.3
+  uuid: ^4.5.0
 
 dev_dependencies:
   flutter_test:
