@@ -1,11 +1,13 @@
 package com.example.onews
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Build
 import android.util.Base64
 import androidx.annotation.NonNull
@@ -22,6 +24,8 @@ import java.util.concurrent.Executors
 
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "onews/native.interface"
+    private lateinit var _deleteResult: MethodChannel.Result
+
     private val ExtensionMap: HashMap<String, ExtensionAbstract> =
             HashMap<String, ExtensionAbstract>()
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
@@ -38,7 +42,12 @@ class MainActivity : FlutterActivity() {
                 scrapeUrl(call, result)
             } else if (call.method == "scrapeHomePage") {
                 scrapeHomePage(call, result)
+            } else if (call.method == "deleteExtension") {
+                deleteExtension(call, result)
             }
+
+            
+           
         }
     }
 
@@ -108,6 +117,7 @@ class MainActivity : FlutterActivity() {
                     info.put("logoURL", extension.iconLink)
                     info.put("version", extension.version)
                     info.put("categories", extension.categories)
+                    info.put("packageName", it.applicationInfo.packageName)
                     output.put(className, info)
 
                     ExtensionMap.put(className, extension)
@@ -198,5 +208,20 @@ class MainActivity : FlutterActivity() {
             out.put("data", data)
             result.success(out)
         }
+    }
+    fun deleteExtension(call: MethodCall, result: MethodChannel.Result) {
+        _deleteResult = result
+        println("   _deleteResult " + _deleteResult)
+        val intent = Intent(Intent.ACTION_DELETE)
+        intent.data = Uri.parse("package:" + call.argument<String>("packageName"))
+       
+        startActivityForResult(intent, 1)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        println("   _deleteResult " + _deleteResult)
+        _deleteResult.success("")
     }
 }

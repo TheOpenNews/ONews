@@ -6,7 +6,7 @@ class NewsPageState extends Equatable {
   HeadlineCard card;
   PageNewsLoadingStatus loadingStatus;
   PreviewNewsData news;
-  ExtensionInfo? extInfo;
+  LocalExtensionInfo? extInfo;
 
   NewsPageState({
     required this.card,
@@ -20,7 +20,7 @@ class NewsPageState extends Equatable {
     HeadlineCard? card,
     PageNewsLoadingStatus? loadingStatus,
     PreviewNewsData? news,
-    ExtensionInfo?  extInfo,
+    LocalExtensionInfo?  extInfo,
   }) =>
       NewsPageState(
         card: card ?? this.card,

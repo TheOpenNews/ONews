@@ -22,6 +22,7 @@ import 'package:onews/pages/HomePage.dart';
 import 'package:onews/pages/PermissionsPage.dart';
 import 'package:onews/pages/SavedHeadlinesPage.dart';
 import 'package:onews/repos/ExtensionsRepo.dart';
+import 'package:onews/repos/LocalExtensionsRepo.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +38,8 @@ class Onews extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(create: (context) => ExtensionsRepo()),
+        RepositoryProvider(create: (context) => LocalExtensionsRepo()),
+        
       ],
       child: MultiBlocProvider(
         providers: [
@@ -44,8 +47,7 @@ class Onews extends StatelessWidget {
           BlocProvider(create: (context) => PermissionCubit()),
           BlocProvider(create: (context) => DownloadExtensionApkBloc()),
           BlocProvider(
-              create: (context) =>
-                  ExtensionManagerBloc(context.read<ExtensionsRepo>())),
+              create: (context) => ExtensionManagerBloc(context.read<ExtensionsRepo>(),context.read<LocalExtensionsRepo>())),
           BlocProvider(create: (context) => HeadlinesPageBloc()),
           BlocProvider(create: (context) => NewsPageBloc()),
           BlocProvider(create: (context) => DownloadExtensionOverlayBloc()),
@@ -53,6 +55,7 @@ class Onews extends StatelessWidget {
         ],
         child: MaterialApp(
           title: 'ONews',
+          debugShowMaterialGrid: false,
           theme: ThemeData(
             fontFamily: "Raleway",
             textTheme: Theme.of(context).textTheme.apply(fontFamily: 'Raleway'),

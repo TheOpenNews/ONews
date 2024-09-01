@@ -22,13 +22,14 @@ class DownloadExtensionCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void onDownload() {
-      onDownloadExtension();
       context
           .read<DownloadExtensionApkBloc>()
           .add(StartDownloadingExtensionApk(info.apkURL, info));
       context
           .read<DownloadExtensionOverlayBloc>()
           .add(ShowDownloadingOverlay());
+      onDownloadExtension();
+
     }
 
     return Container(

@@ -6,6 +6,7 @@ import 'package:onews/modules/ExtensionInfo.dart';
 import 'package:onews/modules/HeadlineCard.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:onews/modules/LocalExtensionInfo.dart';
 
 part 'headlines_page_event.dart';
 part 'headlines_page_state.dart';
@@ -15,7 +16,7 @@ class HeadlinesPageBloc extends Bloc<HeadlinesPageEvent, HeadlinesPageState> {
   HeadlinesPageBloc()
       : super(
           HeadlinesPageState(
-            extensionInfo: ExtensionInfo(),
+            extensionInfo: LocalExtensionInfo(),
             latestEvent: SelectPage(),
             selectedCard: HeadlineCard(),
           ),

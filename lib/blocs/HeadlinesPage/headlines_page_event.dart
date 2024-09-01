@@ -8,7 +8,7 @@ sealed class HeadlinesPageEvent extends Equatable {
 }
 
 class SelectExtension extends HeadlinesPageEvent {
-  ExtensionInfo info;
+  LocalExtensionInfo info;
   SelectExtension(this.info);
 }
 

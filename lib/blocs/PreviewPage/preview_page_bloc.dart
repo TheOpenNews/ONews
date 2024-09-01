@@ -1,6 +1,7 @@
 import 'package:onews/NativeInterface.dart';
 import 'package:onews/blocs/HeadlinesPage/headlines_page_bloc.dart';
 import 'package:onews/modules/ExtensionInfo.dart';
+import 'package:onews/modules/LocalExtensionInfo.dart';
 import 'package:onews/modules/News.dart';
 import 'package:onews/modules/HeadlineCard.dart';
 import 'package:bloc/bloc.dart';

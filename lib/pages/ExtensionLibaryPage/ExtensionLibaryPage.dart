@@ -22,7 +22,7 @@ class ExtensionLibaryPage extends StatefulWidget {
 }
 
 class _ExtensionLibaryPageState extends State<ExtensionLibaryPage> {
-  void loadLocalExtensions() async {
+  void onLoadLocalExtensions() async {
     context.read<ExtensionManagerBloc>().add(LoadLocalExtension());
   }
 
@@ -30,7 +30,7 @@ class _ExtensionLibaryPageState extends State<ExtensionLibaryPage> {
   void initState() {
     super.initState();
     if (context.read<ExtensionsRepo>().localExtensions.length == 0) {
-      loadLocalExtensions();
+      onLoadLocalExtensions();
     }
   }
 
@@ -46,8 +46,6 @@ class _ExtensionLibaryPageState extends State<ExtensionLibaryPage> {
               width: double.infinity,
               padding: EdgeInsets.all(10),
               child: (() {
-                debugPrint("---------------------- " +
-                    state.libaryLoadState.toString());
                 if (state.libaryLoadState == ExtensionsLoadState.Loading) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -69,6 +67,7 @@ class _ExtensionLibaryPageState extends State<ExtensionLibaryPage> {
                           .map(
                             (info) => LibaryExtensionCardWidget(
                               info: info,
+                              onReloadExtension: onLoadLocalExtensions,
                             ),
                           )
                           .toList()
@@ -129,7 +128,7 @@ class _ExtensionLibaryPageState extends State<ExtensionLibaryPage> {
       ),
       actions: [
         IconButton(
-          onPressed: loadLocalExtensions,
+          onPressed: onLoadLocalExtensions,
           icon: Icon(
             Icons.restart_alt,
             color: Colors.grey[800],

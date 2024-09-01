@@ -8,7 +8,7 @@ sealed class NewsPageEvent extends Equatable {
 
 class ShowNewsPage extends NewsPageEvent {
   HeadlineCard card;
-  ExtensionInfo info;
+  LocalExtensionInfo info;
   ShowNewsPage(this.card,this.info);
 
   @override

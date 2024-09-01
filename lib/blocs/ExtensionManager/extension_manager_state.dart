@@ -5,7 +5,7 @@ enum ExtensionsLoadState { None, Loading , Error }
 class ExtensionManagerState extends Equatable {
   ExtensionsLoadState loadState = ExtensionsLoadState.None;
   ExtensionsLoadState libaryLoadState = ExtensionsLoadState.None;
-  List<ExtensionInfo> localExtensions = [];
+  List<LocalExtensionInfo> localExtensions = [];
   List<ExtensionInfo> extensionInfo = [];
   
 
@@ -20,7 +20,7 @@ class ExtensionManagerState extends Equatable {
   ExtensionManagerState copyWith({
     ExtensionsLoadState? loadState,
     ExtensionsLoadState? libaryLoadState,
-    List<ExtensionInfo>? localExtensions,
+    List<LocalExtensionInfo>? localExtensions,
     List<ExtensionInfo>? extensionInfo,
 
   }) =>

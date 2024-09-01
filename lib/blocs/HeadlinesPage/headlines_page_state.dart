@@ -7,7 +7,7 @@ enum HomePageHeadlinesState {None , Loading}
 enum HeadlinesErrorType { Network, NoHeadlines, Extension, None }
 
 class HeadlinesPageState extends Equatable {
-  ExtensionInfo extensionInfo;
+  LocalExtensionInfo extensionInfo;
   List<HeadlineCard> newsCards;
   List<HeadlineCard> homePageHeadlines;
   NewsCardsLoadingStatus loadingStatus;
@@ -39,7 +39,7 @@ class HeadlinesPageState extends Equatable {
   });
 
   HeadlinesPageState copyWith({
-    ExtensionInfo? extensionInfo,
+    LocalExtensionInfo? extensionInfo,
     List<HeadlineCard>? newsCards,
     List<HeadlineCard>? homePageHeadlines,
     int? page,

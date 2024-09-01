@@ -137,7 +137,7 @@ class _ExtensionsPageState extends State<ExtensionsPage> {
                           ),
                           SizedBox(height: 16),
                           state.loadState == ExtensionsLoadState.Loading
-                              ? CircularProgressIndicator()
+                              ? CircularProgressIndicator(color: CColors.primaryBlue)
                               : SizedBox(),
                         ],
                       );

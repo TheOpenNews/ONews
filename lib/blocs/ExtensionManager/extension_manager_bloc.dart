@@ -3,14 +3,17 @@ import 'package:onews/NativeInterface.dart';
 import 'package:onews/modules/ExtensionInfo.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:onews/modules/LocalExtensionInfo.dart';
 import 'package:onews/repos/ExtensionsRepo.dart';
+import 'package:onews/repos/LocalExtensionsRepo.dart';
 
 part 'extension_manager_event.dart';
 part 'extension_manager_state.dart';
 
 class ExtensionManagerBloc extends Bloc<ExtensionManagerEvent,ExtensionManagerState> {
   final ExtensionsRepo _extensionsRepo;
-  ExtensionManagerBloc(this._extensionsRepo) : super(ExtensionManagerState()) {
+  final LocalExtensionsRepo _localExtensionsRepo;
+  ExtensionManagerBloc(this._extensionsRepo,this._localExtensionsRepo) : super(ExtensionManagerState()) {
     on<QueryExtensionsInfo>(onQueryExtensionsInfo);
     on<LoadLocalExtension>(onLoadLocalExtension);
   }
@@ -34,10 +37,10 @@ class ExtensionManagerBloc extends Bloc<ExtensionManagerEvent,ExtensionManagerSt
   void onLoadLocalExtension(LoadLocalExtension event, emit) async {
     emit(state.copyWith(libaryLoadState: ExtensionsLoadState.Loading));
     var data = await NativeInterface.loadLocalExtensions();
-    _extensionsRepo.loadLocalExtensions(data!);
+    _localExtensionsRepo.loadLocalExtensions(data!);
     emit(
       state.copyWith(
-        localExtensions: _extensionsRepo.localExtensions,
+        localExtensions: _localExtensionsRepo.localExtensions,
         libaryLoadState: ExtensionsLoadState.None,
       ),
     );
