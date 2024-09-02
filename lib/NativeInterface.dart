@@ -6,6 +6,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:onews/modules/ExtensionInfo.dart';
+import 'package:onews/modules/HeadlineCard.dart';
 import 'package:onews/modules/LocalExtensionInfo.dart';
 import 'package:onews/modules/News.dart';
 
@@ -73,18 +74,18 @@ class NativeInterface {
 
   // scrapeUrl: calls extension scrapeUrl
   static Future<PreviewNewsData?> scrapeUrl(
-      LocalExtensionInfo info, String url) async {
+      LocalExtensionInfo info, HeadlineCard card,String catregory) async {
     _init();
     var newsPageMap = await _platform!.invokeMethod<Map>("scrapeUrl", {
       "extensionName": info.name,
-      "url": url,
+      "url": card.link,
     });
 
     if (newsPageMap!.containsKey("error")) {
       return null;
     }
 
-    return PreviewNewsData.parseNative(newsPageMap);
+    return PreviewNewsData.parseNative(newsPageMap,info,catregory);
   }
 
   static deleteExtension(String packageName) async {

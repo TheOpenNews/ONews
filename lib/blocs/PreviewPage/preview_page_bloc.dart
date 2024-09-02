@@ -21,6 +21,7 @@ class NewsPageBloc extends Bloc<NewsPageEvent, NewsPageState> {
         ) {
     on<ShowNewsPage>(onShowNewsPage);
     on<LoadNewsPage>(onLoadNewsPage);
+    on<ShowNewsPageFromLocal>(onShowNewsPageFromLocal);
 
   }
 
@@ -31,12 +32,16 @@ class NewsPageBloc extends Bloc<NewsPageEvent, NewsPageState> {
   void onLoadNewsPage(LoadNewsPage event, emit) async {
     emit(state.copyWith(loadingStatus: PageNewsLoadingStatus.Loading));
     PreviewNewsData? news =
-        await NativeInterface.scrapeUrl(state.extInfo!, state.card.link);
+        await NativeInterface.scrapeUrl(state.extInfo!, state.card,event.category);
     if (news == null) {
       emit(state.copyWith(loadingStatus: PageNewsLoadingStatus.Failed));
       return;
     }
     emit(state.copyWith(loadingStatus: PageNewsLoadingStatus.None, news: news));
+  }
+
+ void onShowNewsPageFromLocal(ShowNewsPageFromLocal event, emit) async {
+    emit(state.copyWith(loadingStatus: PageNewsLoadingStatus.None, news: event.data));
   }
 
 }

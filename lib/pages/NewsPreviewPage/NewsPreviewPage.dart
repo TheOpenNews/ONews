@@ -1,4 +1,5 @@
 import 'package:onews/Ui/CustomAppBarWidget.dart';
+import 'package:onews/blocs/HeadlinesPage/headlines_page_bloc.dart';
 import 'package:onews/blocs/PreviewPage/preview_page_bloc.dart';
 import 'package:onews/consts/Colors.dart';
 import 'package:onews/consts/LocalStorage.dart';
@@ -20,14 +21,13 @@ class _NewsPageState extends State<NewsPreviewPage> {
 
   @override
   void initState() {
-    isSaved = false;
     super.initState();
-    context.read<NewsPageBloc>().add(LoadNewsPage());
-
+    isSaved = false;
+    // context.read<NewsPageBloc>().add(LoadNewsPage(context.read<HeadlinesPageBloc>().state.category));
   }
 
   void onTryAgain() {
-    context.read<NewsPageBloc>().add(LoadNewsPage());
+    // context.read<NewsPageBloc>().add(LoadNewsPage());
   }
 
   @override

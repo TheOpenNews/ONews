@@ -18,5 +18,12 @@ class ShowNewsPage extends NewsPageEvent {
       ];
 }
 
-class LoadNewsPage extends NewsPageEvent {}
+class LoadNewsPage extends NewsPageEvent {
+  String category;
+  LoadNewsPage(this.category);
+}
 
+class ShowNewsPageFromLocal extends NewsPageEvent {
+  PreviewNewsData data;
+  ShowNewsPageFromLocal(this.data);
+}

@@ -12,7 +12,6 @@ class LocalStorage {
     return Uuid().v5(Uuid.NAMESPACE_DNS, str);
   }
 
-
   static Future<Map<String,PreviewNewsData>> loadSavedNews() async {
     Map<String,PreviewNewsData> data = {};
     final SharedPreferences prefs = await SharedPreferences.getInstance();

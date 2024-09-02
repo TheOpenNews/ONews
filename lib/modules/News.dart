@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:onews/consts/DateFormat.dart';
 import 'package:onews/consts/LocalStorage.dart';
+import 'package:onews/modules/HeadlineCard.dart';
+import 'package:onews/modules/LocalExtensionInfo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:uuid/v4.dart';
@@ -24,6 +26,9 @@ class PreviewNewsData extends Equatable {
   String author_link;
   String date;
   String thumbnail;
+  String url;
+  String category;
+  LocalExtensionInfo? ext_info;
 
   List<List<String>> content;
 
@@ -34,9 +39,12 @@ class PreviewNewsData extends Equatable {
     this.author_link = "",
     this.date = "",
     this.thumbnail = "",
+    this.url = "",
+    this.category = "",
+    this.ext_info = null,
   });
 
-  factory PreviewNewsData.parseNative(Map? map) {
+  factory PreviewNewsData.parseNative(Map? map,LocalExtensionInfo ext_info,String category ) {
     PreviewNewsData news = PreviewNewsData(content: []);
 
     Map header = map!["header"] as Map;
@@ -44,8 +52,12 @@ class PreviewNewsData extends Equatable {
     news.thumbnail = header["img"] ?? "";
     news.author = header["author"] ?? "";
     news.author_link = header["author_link"] ?? "";
+    news.category = category;
+    
+    news.url = ext_info.siteURL;
     news.date = DDateFormat.parseDate(header["date"] ?? "");
-
+    news.ext_info = ext_info;
+    
     List content = map!["content"] as List;
     content.forEach((item) {
       Map elem = (item as Map);
@@ -85,13 +97,16 @@ class PreviewNewsData extends Equatable {
   Map<String, dynamic> convertToJson() {
     String UUID = LocalStorage.UuidFromString(title);
     return {
+      "url": url,
       "title": title,
       "thumbnail": thumbnail,
       "author": author,
       "author_link": author_link,
+      "category": category,
       "date": date,
       "content": jsonEncode(content),
       "UUID": UUID,
+      "ext_info": ext_info!.convertToJson(),
     };
   }
 
@@ -99,26 +114,38 @@ class PreviewNewsData extends Equatable {
     List<List<String>> content = [];
     List<dynamic> unparsedContent = jsonDecode(data["content"]);
     for (int i = 0; i < unparsedContent.length; i++) {
-      content.add(
-          [unparsedContent[i][0] as String, unparsedContent[i][1] as String]);
+      content.add([unparsedContent[i][0] as String, unparsedContent[i][1] as String]);
     }
+
+    debugPrint(data.keys.toString());
+    debugPrint(data["ext_info"].toString());
+
     return PreviewNewsData(
+      url: data["url"],
       title: data["title"],
       content: content,
       author: data["author"],
       author_link: data["author_link"],
+      category: data["category"],
       date: data["date"],
       thumbnail: data["thumbnail"],
+      ext_info: LocalExtensionInfo.fromJson(data["ext_info"]),
     );
+  }
+
+  HeadlineCard toCard() {
+    return HeadlineCard(date: date, imgURL: thumbnail, link: url, title: title);
   }
 
   @override
   List<Object?> get props => [
         title,
+        category,
         thumbnail,
         author,
         author_link,
         date,
         content,
+        url,
       ];
 }

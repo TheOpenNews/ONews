@@ -20,7 +20,7 @@ class PageBodyWidget extends StatelessWidget {
 
   Widget mapNewsElemToUiElem(List<String> elem) {
     Widget widget = SizedBox();
-    
+
     if (elem[0] == ContentType.img.toString()) {
       widget = ImageElemWidget(src: elem[1]);
     } else if (elem[0] == ContentType.p.toString()) {
@@ -147,20 +147,12 @@ class PageBodyWidget extends StatelessWidget {
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(100),
                           child: CachedNetworkImage(
-                            imageUrl: context
-                                .read<HeadlinesPageBloc>()
-                                .state
-                                .extensionInfo
-                                .logoURL,
+                            imageUrl: news.ext_info!.logoURL,
                           )),
                     ),
                     SizedBox(width: 8),
                     Text(
-                      context
-                          .read<HeadlinesPageBloc>()
-                          .state
-                          .extensionInfo
-                          .name,
+                      news.ext_info!.name,
                       style: TextStyle(
                         fontSize: 18,
                         fontVariations: [FontVariation("wght", 500)],

@@ -22,7 +22,7 @@ import 'package:onews/cubits/BottomNavBar/bottom_nav_bar_cubit.dart';
 import 'package:onews/blocs/ExtensionManager/extension_manager_bloc.dart';
 import 'package:onews/pages/HomePage.dart';
 import 'package:onews/pages/PermissionsPage.dart';
-import 'package:onews/pages/SavedHeadlinesPage.dart';
+import 'package:onews/pages/SavedHeadlinesPage/SavedHeadlinesPage.dart';
 import 'package:onews/repos/ExtensionsRepo.dart';
 import 'package:onews/repos/LocalExtensionsRepo.dart';
 import 'package:onews/repos/SavedNewsRepo.dart';
